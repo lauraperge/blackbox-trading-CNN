@@ -32,7 +32,7 @@ def read_concat_file(file_with_path, sep = ","):
          ## TXT
             if len(files) > 1:
               ## if more files
-                df = pd.concat([pd.read_csv(f, encoding='latin1', header = None)
+                df = pd.concat([pd.read_csv(f, encoding='latin1')
                                for f in glob.glob(file_with_path + '*.txt')], ignore_index=True)
             else:
               ## if one file
@@ -65,17 +65,71 @@ def spec_sample(data, freq, length = None):
     else:
         return('Error.')
 
-# def sliding window(data, size):
-#     pd.rolling
-# df = read_concat_file('../data/gemini')
-# newdf = univar_ts(df, varname = 'Close', datename = 'Date')
-# newdf = spec_sample(newdf, freq = '10T', length = 10)
-# print(newdf)
+## Report
+def main():
+ ## read data
+    dataname = str(input('Please type in the name of the data with path!'))
+    print('Report of data:')
+    print('Reading in...')
+    df = read_concat_file(dataname)
+    print(df.head())
 
-# plt.figure(figsize=(12, 7), frameon=False, facecolor='brown', edgecolor='blue')
-# plt.title('')
-# plt.xlabel('minutes')
-# plt.ylabel('price')
-# plt.plot(df[[9]])
-# plt.legend()
-# plt.show()
+ ## time series
+    varname = str(input('Please type in the name of the variable you wish to transform into a time series!'))
+    datename = str(input('Please type in the name of the variable representing the date-time!'))
+    newdf = univar_ts(df, varname = varname, datename = datename)
+
+ ## report existing
+    print('The number of missing values (might show missing period):' +
+          str(newdf.isnull().sum()))
+    print('The head: ')
+    print(newdf.head())
+    print('The length is: ' + str(len(newdf)))
+
+    newdf.plot(grid=True)
+    plt.show()
+
+ ## restrict, check
+    newdf2 = newdf.copy()
+
+    try:
+        datetime_res = str(input(
+            'If you want to see the data up to a specific date-time, pls type in as yyyy-mm-dd hh:mm:ss.'))
+        newdf2 = newdf2.loc[:datetime_res]  # '2018-08-23 01:50:00'
+    except:
+        print('No date given.')
+
+    try:
+        length = input('Do you want to restrict data for the first N values? If yes, pls type in the number.')
+        newdf2 = newdf2.iloc[:(length-1), :]
+    except:
+        print('No number given.')
+
+    ## report this
+    print('The number of missing values after transformation (might show missing period):' +
+          str(newdf2.isnull().sum()))
+    print('The head: ')
+    print(newdf2.head())
+    print('The length is: ' + str(len(newdf2)))
+
+    newdf2.plot(grid=True)
+    plt.show()
+ 
+ ## resample, check
+    newdf3 = newdf.copy()
+    try:
+        freq = str(input('The original data will be downsampled to 10 min freq, if not asked otherwise to check for missing period. If you have a specific frequency in mind, type in (e.g. 5T means 5 min)'))
+        newdf3 = spec_sample(newdf3, freq = freq)
+    except:
+        newdf3 = spec_sample(newdf3, freq='10T')
+
+    print('The number of missing values after transformation to preferred frequency (might show missing period):' + str(newdf3.isnull().sum()))
+    print('The head: ')
+    print(newdf3.head())
+    print('The length is: ' + str(len(newdf3)))
+
+
+    newdf3.plot(grid = True)
+    plt.show()
+
+main()
