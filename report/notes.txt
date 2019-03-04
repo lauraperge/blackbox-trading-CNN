@@ -1,3 +1,12 @@
+
+TEX FILES TO CLEAN UP
+KEEP READING ON MAIN LITERATURE
+
 - data: FX is needed because stocks, S&P500, etc. only available on trading days: proposes issue of weekends (remember later when evaluating)
 - algo: momentum based / trend following ones are interesting for our goal (look at this for starters: https://github.com/datacamp/datacamp-community-tutorials/blob/master/Python%20Finance%20Tutorial%20For%20Beginners/Python%20For%20Finance%20Beginners%20Tutorial.ipynb)
 - GEMINI BTCUSD DATA: USE ONLY UNTIL 2018/08/23 01:50:00 some missing after
+- backtesting: 
+pitfalls: external events, liquidity constraints, model overfit, lookahead
+components: strategy, P&L calc.
+
+
