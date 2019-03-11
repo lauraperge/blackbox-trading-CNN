@@ -9,3 +9,6 @@ import pandas as pd
 ## Not perfect, super easy, used by many
 
 
+
+## Local mins and max-es
+
