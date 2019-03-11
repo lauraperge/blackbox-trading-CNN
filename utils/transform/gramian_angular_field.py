@@ -3,13 +3,15 @@
 import math
 import numpy as np 
 from sklearn.preprocessing import MinMaxScaler
-import matplotlib
 import matplotlib.pyplot as plt 
 
-# GAF transformation class
+# GAF transformation fct
 
 def gramian_angular_field(serie):
-    """Compute the Gramian Angular Field of an image"""
+    """Compute the Gramian Angular Field of a time series"""
+    # Right Array Type
+    serie = np.array([serie]).reshape(-1, 1)
+
     # Min-Max scaling to [-1, 1] (!)
     scaler = MinMaxScaler(feature_range=(-1, 1), copy=True)
     scaler.fit(serie)
@@ -35,15 +37,8 @@ def cos_sum(a, b):
     """COS(a + b) to work with tabulate."""
     return(math.cos(a + b))
 
-# ## Not sure about this one yet
-# def create_time_series(size, time):
-#     """Generate time serie of length size and dynamic with respect to time."""
-#     # Generating time series
-#     support = np.arange(0, size)
-#     serie = np.cos(support + float(time))
-#     return(t, series)
 
-# gaf, phi, r, scaled_ts = gramian_angular_field(np.array([[1, 2, 4.35, 2, 5]]).reshape(-1,1))
+# gaf, phi, r, scaled_ts = gramian_angular_field([1.4, 32, 36, 4, 15, 2])
 
 # plt.imshow(gaf, cmap = "Greys")
 # plt.imsave('test.png', gaf, dpi=1200, cmap="Greys")

@@ -10,3 +10,4 @@ components: strategy, P&L calc.
 - for later: cross validation and model selection (approach - ts or we can ignore the fact that it is ts)
 - careful with lookahead bias (even at the time of normalization)
 - when labelling data: window size determines the size of trend windows recognized, if I have an image, I want it to be labelled according to the latest data point
+- only odd windowsize
