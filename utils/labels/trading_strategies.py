@@ -36,5 +36,5 @@ def local_min_max(serie, window_size):
         print('Please define an odd window_size!')
         return(False, window_size, serie)
 
-labelled, ws, original = local_min_max([1, 223, 3.6, 3, 6, 7, 87, 312, .34,.2, 3], window_size = 3)
-print(labelled)
+# labelled, ws, original = local_min_max([1, 223, 3.6, 3, 6, 7, 87, 312, .34,.2, 3], window_size = 3)
+# print(labelled)
