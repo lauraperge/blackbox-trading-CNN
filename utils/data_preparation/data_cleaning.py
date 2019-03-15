@@ -65,22 +65,71 @@ def spec_sample(data, freq, length = None):
     else:
         return('Error.')
 
+def create_cleaned_set(file_with_path, varname, datename, freq = None, datetime_last = None, length = None):
+    """Run all chosen transformations on the data.
+    
+    Parameters
+    -------
+        file_with_path : string
+            first defining strings of name of data file with path
+        
+        varname :  string
+            name of column of dataset to keep
+        
+        datename : string
+            name of column representing date-time in dataset
+        
+        freq : (default = None)
+            'BH' - business hour
+            'H' - hour
+            'T', 'min' - minute
+            'S' - second
+            'L', 'ms' - milliseconds
+            'U', 'us' - microseconds
+            'N' - nanoseconds
+            define the frequency of the data
+        
+        datetime_last : (default = None)
+            date of the last data point if data should be downsized
+        
+        length : (default = None)
+            length of dataset if data should be downsized
+    """
+    
+    # read in data (concatenate multiple files if necessary)
+    df = read_concat_file(file_with_path)
+
+    # turn into ts
+    df = univar_ts(df, varname, datename)
+
+    # change frequency if required
+    if freq != None:
+        df = spec_sample(df, freq, length)
+    
+    # cut end of data if required
+    if datetime_last != None:
+        df = df.loc[:datetime_last]
+    
+    return(df)
+
+
+
 ## Report
-def main():
+def report():
  ## read data
-    dataname = str(input('Please type in the name of the data with path!'))
-    print('Report of data:')
+    dataname = str(input('Please type in the name of the data with path! '))
+    print('Report of data: ')
     print('Reading in...')
     df = read_concat_file(dataname)
     print(df.head())
 
  ## time series
-    varname = str(input('Please type in the name of the variable you wish to transform into a time series!'))
-    datename = str(input('Please type in the name of the variable representing the date-time!'))
+    varname = str(input('Please type in the name of the variable you wish to transform into a time series! '))
+    datename = str(input('Please type in the name of the variable representing the date-time! '))
     newdf = univar_ts(df, varname = varname, datename = datename)
 
  ## report existing
-    print('The number of missing values (might show missing period):' +
+    print('The number of missing values (might show missing period): ' +
           str(newdf.isnull().sum()))
     print('The head: ')
     print(newdf.head())
@@ -94,19 +143,19 @@ def main():
 
     try:
         datetime_res = str(input(
-            'If you want to see the data up to a specific date-time, pls type in as yyyy-mm-dd hh:mm:ss.'))
+            'If you want to see the data up to a specific date-time, pls type in as yyyy-mm-dd hh:mm:ss. '))
         newdf2 = newdf2.loc[:datetime_res]  # '2018-08-23 01:50:00'
     except:
         print('No date given.')
 
     try:
-        length = input('Do you want to restrict data for the first N values? If yes, pls type in the number.')
+        length = input('Do you want to restrict data for the first N values? If yes, pls type in the number. ' )
         newdf2 = newdf2.iloc[:(length-1), :]
     except:
-        print('No number given.')
+        print('No number given. ')
 
     ## report this
-    print('The number of missing values after transformation (might show missing period):' +
+    print('The number of missing values after transformation (might show missing period): ' +
           str(newdf2.isnull().sum()))
     print('The head: ')
     print(newdf2.head())
@@ -118,12 +167,12 @@ def main():
  ## resample, check
     newdf3 = newdf.copy()
     try:
-        freq = str(input('The original data will be downsampled to 10 min freq, if not asked otherwise to check for missing period. If you have a specific frequency in mind, type in (e.g. 5T means 5 min)'))
+        freq = str(input('The original data will be downsampled to 10 min freq, if not asked otherwise to check for missing period. If you have a specific frequency in mind, type in (e.g. 5T means 5 min) '))
         newdf3 = spec_sample(newdf3, freq = freq)
     except:
         newdf3 = spec_sample(newdf3, freq='10T')
 
-    print('The number of missing values after transformation to preferred frequency (might show missing period):' + str(newdf3.isnull().sum()))
+    print('The number of missing values after transformation to preferred frequency (might show missing period): ' + str(newdf3.isnull().sum()))
     print('The head: ')
     print(newdf3.head())
     print('The length is: ' + str(len(newdf3)))
@@ -132,4 +181,4 @@ def main():
     newdf3.plot(grid = True)
     plt.show()
 
-main()
+# report()

@@ -11,3 +11,10 @@ components: strategy, P&L calc.
 - careful with lookahead bias (even at the time of normalization)
 - when labelling data: window size determines the size of trend windows recognized, if I have an image, I want it to be labelled according to the latest data point
 - only odd windowsize
+- GAF: when scaled to [-1, 1] it is not bijective, (arccos on [0,2pi]) -> issue of not being able to recreate time series - if you can recreate ts then maybe you can figure out a missing value inputation
+- GAF: right now we scale the series per window - is that a good approach?
+    -> yes, because than the images are independent
+    -> yes, it also solves the issue of having to create images for every CV round
+    -> picture should not be dependent on entire distribution of data
+    -> no, because then the picture is not specific for a dataset?
+    -> no, because for small window size there will be a 1, a -1 and just a couple meaningful numbers

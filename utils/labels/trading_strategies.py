@@ -4,7 +4,10 @@ import numpy as np
 ## Local mins and max-es
 def local_min_max(serie, window_size):
     """Determines local minimums and maximums in odd sized sliding widows and labels the data accordingly.
-        Returns [labelled serie, window size, serie].
+        For price at local max: Sell,
+        For price at local min: Buy,
+        Otherwise: Hold,
+        Returns [labelled serie, window size, input serie].
     """
 
     if window_size % 2 ==1:
@@ -14,13 +17,12 @@ def local_min_max(serie, window_size):
         window_size_use = window_size - 1
 
         ## For the labels
-        print(serie.shape)
         label = np.empty(serie.shape, dtype = "S10")
         label[:] = 'None'
 
         mid_idx = int(window_size_use/2)
         for idx in index_set[:-window_size_use]:
-            #print(serie[idx:(idx + window_size_use)])
+            
             if np.amin(serie[idx:(idx + window_size)]) == serie[idx + mid_idx]:
                 label[idx + mid_idx] = 'Buy'
             elif np.amax(serie[idx:(idx + window_size)]) == serie[idx + mid_idx]:
