@@ -1,5 +1,9 @@
+FOR NEXT TIME:
 
-TEX FILES TO CLEAN UP
+->> labelled_image_preparation: make sure that output is ready for CNN (datacamp.com/community/tutorials/cnn-tensorflow-python)
+->> once this is ready: run everything thru one dataset in notebook
+->> then write down relevant Intro and Methodology Points 
+
 
 - data: FX is needed because stocks, S&P500, etc. only available on trading days: proposes issue of weekends (remember later when evaluating)
 - algo: momentum based / trend following ones are interesting for our goal (look at this for starters: https://github.com/datacamp/datacamp-community-tutorials/blob/master/Python%20Finance%20Tutorial%20For%20Beginners/Python%20For%20Finance%20Beginners%20Tutorial.ipynb)

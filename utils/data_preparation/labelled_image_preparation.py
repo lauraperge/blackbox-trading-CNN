@@ -15,29 +15,41 @@ def data_to_labelled_img(data, label_window_size, image_widow_size, image_trf_st
 
     Parameters
     -------
+        data :  pandas (time) series
+            input data
+
         label_window_size : int 
             the window size for data labelling (needs to be odd, should be smaller than length of series)
         
         image_window_size : int
             the window size for image creation (should be smaller than length of series)
 
-        image_trf_strat : ('GAF', 'RP')
-            the image transformation strategy, either 'GAF' or 'RP'.
+        image_trf_strat : ('GASF', 'GADF', 'RP')
+            the image transformation strategy, either 'GASF', 'GADF' or 'RP'
+            'GASF' - Gramian Angular Summation Field
+            'GADF' - Gramian Angular Difference Field
+            'RP' - Recurrence Plot.
 
-        Returns: [data with new column of labels, images with respective labels, input data]
+    Returns
+    -----------------------------------------
+        data_new:
+            data with new column of labels
+
+        images: list of matrices with names
+            transformed matrices according to transformation setting with names set to label
+        
+        images with respective labels, input data]
+
     """
-    if len(data) < label_window_size:
-        print('Label window size should not exceed the length of the data.')
-        return()
-    elif len(data) < image_widow_size:
-        print('Image window size should not exceed the length of the data.')
-        return()
+    series = np.array(data.values)
+    series_labelled = local_min_max(series)
+    data_new = pd.DataFrame(series_labelled)
+
+    if image_trf_strat == "GASF":
+        
+    elif image_trf_strat == "GADF":
+        
+    elif image_trf_strat == 'RP':
     else:
-        # if window size is fine
-        data_labelled = local_min_max(data)
-        if image_trf_strat == "GAF":
-            
-        elif image_trf_strat == 'RP':
-        else:
-            print('Please define the image_trf_strat: GF - for Gramian Angular Field, or RP - for recurrence plot')
-            return()
+        print('Please define the image_trf_strat: GASF, GADF or RP')
+        return()
