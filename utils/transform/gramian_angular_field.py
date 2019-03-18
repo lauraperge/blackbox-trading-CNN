@@ -43,7 +43,7 @@ def GASF(serie, window_size=None):
     elif window_size != None:
         ## Technical arrays, variables
         serie2 = np.array(serie)
-        index_set = np.arange(len(serie2))[:-(window_size)]
+        index_set = np.arange(len(serie2))[:-(window_size-1)]
 
         gasfs = []
         phis = []
@@ -233,14 +233,16 @@ def sin_diff(a, b):
     """SIN(a-b) to work with tabulate"""
     return(math.sin(a - b))
 
-# gadf, phi, r, scaled_ts, ts = GADF([1.4, 32, 36, 4, 15, 2, 56, 4.5,78,9,23,45,7,8,42,56,1.3], 5)
 
+# gadf, phi, r, scaled_ts, ts = GADF(
+#     [1, 23, 4, 5, 6, 46, 2, 1.2, 4, 6, 18, 23, 4, 5, 7, 56, 1], 5)
+# print(np.array(gadf).shape)
 # plt.imshow(gadf, cmap="Greys")
 # # plt.show()
 # for i in gadf:
 #     plt.imshow(i, cmap = "Greys")
 #     plt.show()
 
-# print(gadf)
+# print(np.array(gadf).shape)
 
 # plt.imsave('test.png', gasf, dpi=1200, cmap="Greys")

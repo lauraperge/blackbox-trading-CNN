@@ -6,7 +6,7 @@ from scipy.spatial.distance import pdist
 from scipy.spatial.distance import squareform
 
 # Recurrence Plot for various windows in time series
-def recurrence_plot(serie, window_size = None):
+def RP(serie, window_size = None):
     """ Compute the Recurrence Plot of a time series (for each sliding window defined by window_size).
    
     Parameters

@@ -1,8 +1,10 @@
 FOR NEXT TIME:
 
-->> labelled_image_preparation: make sure that output is ready for CNN (datacamp.com/community/tutorials/cnn-tensorflow-python)
-->> once this is ready: run everything thru one dataset in notebook
-->> then write down relevant Intro and Methodology Points 
+->> create notebook loading in a dataset, running the cleaning code, then run labelled image prep on subset - if runs be HAPPY
+->> if above done maybe train-test split for holdout (later other CV too)
+->> if done add markov transition field to potential transformations and check that too
+->> then write down relevant Intro, Data and Methodology Points 
+->> then CNN (+Google Collab set up )
 
 
 - data: FX is needed because stocks, S&P500, etc. only available on trading days: proposes issue of weekends (remember later when evaluating)
@@ -22,3 +24,5 @@ components: strategy, P&L calc.
     -> picture should not be dependent on entire distribution of data
     -> no, because then the picture is not specific for a dataset?
     -> no, because for small window size there will be a 1, a -1 and just a couple meaningful numbers
+- I get (floor(label_window_wize/2)) less images, because I don't have labels for those.
+- When splitting train and test -> delete overlapping images

@@ -7,12 +7,31 @@ def local_min_max(serie, window_size):
         For price at local max: Sell,
         For price at local min: Buy,
         Otherwise: Hold,
-        Returns [labelled serie, window size, input serie].
+        Parameters
+        ---------------------------------------
+            serie :  np.array
+                input series
+            
+            window_size : int (must be odd)
+                size of window to use for labelling, must be odd
+            
+        Return
+        ---------------------------------------
+            labelled_np : numpy array
+                series and calculated labels (Buy, Hold, Sell) in a numpy array
+                
+            labelled_pd : 
+                series and calculated labels (Buy, Hold, Sell) in a pandas DataFrame
+
+            ws : int
+                window size
+
+            original : np.array
+                orignal input series
     """
 
     if window_size % 2 ==1:
         ## Technical arrays, variables
-        serie = np.array(serie)
         index_set = np.arange(len(serie))
         window_size_use = window_size - 1
 
@@ -29,14 +48,22 @@ def local_min_max(serie, window_size):
                 label[idx + mid_idx] = 'Sell'
             else:
                 label[idx + mid_idx] = 'Hold'
-            
-        serie_labelled = np.transpose(
-            np.array((label, serie)))
+        
+        # numpy output
+        serie_labelled_np = np.array((serie, label)).transpose().reshape(-1,2)
 
-        return(serie_labelled, window_size, serie)
+        # pandas output
+        serie_labelled_pd = pd.DataFrame(data={'Series': serie, 'Strategy': label})
+        serie_labelled_pd ['Strategy'] = serie_labelled_pd['Strategy'].str.decode('utf-8')
+        serie_labelled_pd.loc[serie_labelled_pd['Strategy'] == 'None', 'Strategy'] = None
+
+        return(serie_labelled_np, serie_labelled_pd, window_size, serie)
     else: 
         print('Please define an odd window_size!')
         return(False, window_size, serie)
 
-# labelled, ws, original = local_min_max([1, 223, 3.6, 3, 6, 7, 87, 312, .34,.2, 3], window_size = 3)
-# print(labelled)
+# labelled_np, labelled_pandas, ws, original = local_min_max(np.array([1, 223, 3.6, 3, 6, 7, 87, 312, .34,.2, 3]), window_size = 3)
+
+# print(labelled_pandas)
+
+# print(labelled_np)
