@@ -86,20 +86,21 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             return()
 
         # Label names (as column name for image labels) 
-        label_names = {"Sell":  np.int(np.argwhere(label_colnames == "Sell")[[0]]),
-                       "Buy": np.int(np.argwhere(label_colnames == "Buy")[[0]]),
-                       "Hold": np.int(np.argwhere(label_colnames == "Hold")[[0]])
+        
+        label_names = {np.int(np.argwhere(label_colnames == "Sell")) : "Sell",
+                       np.int(np.argwhere(label_colnames == "Buy")) : "Buy",
+                       np.int(np.argwhere(label_colnames == "Hold")) : "Hold"
                         }
         return(labelled_pd, images, image_labels, label_names)
 
 
-dta = pd.DataFrame(data=np.array(
-    [1, 23, 4, 5, 6, 46, 2, 1.2, 4, 6, 18, 23, 4, 5, 7, 56, 1, 1.7]), columns=["Series"])
+# dta = pd.DataFrame(data=np.array(
+#     [1, 23, 4, 5, 6, 46, 2, 1.2, 4, 6, 18, 23, 4, 5, 7, 56, 1, 1.7]), columns=["Series"])
 
-labelled_pd, images, image_labels, label_names = data_to_labelled_img(
-    data=dta, column_name="Series", label_window_size=3, image_window_size=5, image_trf_strat="GASF")
+# labelled_pd, images, image_labels, label_names = data_to_labelled_img(
+#     data=dta, column_name="Series", label_window_size=3, image_window_size=5, image_trf_strat="GASF")
 
-print(labelled_pd)
-print(images)
-print(image_labels)
-print(label_names)
+# print(labelled_pd)
+# print(images)
+# print(image_labels)
+# print(label_names)

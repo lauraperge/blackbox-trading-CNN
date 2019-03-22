@@ -42,9 +42,11 @@ def local_min_max(serie, window_size):
         mid_idx = int(window_size_use/2)
         for idx in index_set[:-window_size_use]:
             
-            if np.amin(serie[idx:(idx + window_size)]) == serie[idx + mid_idx]:
-                label[idx + mid_idx] = 'Buy'
-            elif np.amax(serie[idx:(idx + window_size)]) == serie[idx + mid_idx]:
+            if (np.amin(serie[idx:(idx + window_size)]) == serie[idx + mid_idx]) & (serie[idx + mid_idx] < serie[idx + mid_idx + 1]):
+                # if mid is the minimum, and the next idx after the mid is strictly greater than the mid (so for constant series nothing is buy)
+                label[idx + mid_idx] = 'Buy' 
+            elif (np.amax(serie[idx:(idx + window_size)]) == serie[idx + mid_idx]) & (serie[idx + mid_idx] > serie[idx + mid_idx + 1]):
+                # if mid is the maximum, and the next idx after the mid is strictly smaller than the mid (so for constant series nothing is sell)
                 label[idx + mid_idx] = 'Sell'
             else:
                 label[idx + mid_idx] = 'Hold'

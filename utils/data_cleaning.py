@@ -7,6 +7,19 @@ import os
 def read_concat_file(file_with_path, sep = ","):
     """
     Read in all files starting with "file" string ending in ".csv" or ".txt", concatenate and return as pandas dataframe.
+
+    Parameters
+    -------------------------------------
+        file_with_path : string
+            path to data file (enough to enter distinctive part of the path, and the relevant files' data will be concatenated)
+        
+        sep : string (default = ",")
+            string separating columns in data
+    
+    Returns
+    --------------------------------------
+        data : pandas.DataFrame
+            input data as one dataframe from all data files found on the referred path
     """
 
     # Look for files
@@ -39,13 +52,30 @@ def read_concat_file(file_with_path, sep = ","):
                 df = pd.read_csv(files[0], encoding='latin1', header=None)
             return(df)
         else:
-            return("Could not recognize type.")
+            raise Exception("Could not recognize type.")
     else:
-        return("No files with the given name.")
+        raise Exception("No files with the given name.")
+
 
 def univar_ts (data, varname, datename):
     """ 
     Turns a pandas dataset to a univariate time series if the variable name and date index is given by their column name.
+
+    Parameters
+    -------------------------------
+        data : pandas.DataFrame
+            input data
+
+        varname : string
+            name of column to turn into univariate time series
+        
+        dataname : string
+            name of column to be used as index for time series - must be datetime
+    
+    Returns
+    ------------------------------
+        data : pandas.Series
+            pandas timeseries object (univariate)
     """
     data_new = data.copy()
     data_new = data_new[[varname, datename]]
@@ -56,6 +86,30 @@ def univar_ts (data, varname, datename):
 def spec_sample(data, freq, length = None):
     """
     Samples the data, with the given frequency (last element) and the user can set how long of a series should be returned.
+
+    Parameters
+    -----------------------------
+        data : pandas.DataFrame, pandas.Series (timeseries!)
+            input data
+        
+        freq : (default = None)
+            'BH' - business hour
+            'H' - hour
+            'T', 'min' - minute
+            'S' - second
+            'L', 'ms' - milliseconds
+            'U', 'us' - microseconds
+            'N' - nanoseconds
+            define the frequency of the data
+        
+        length : int (default = None)
+            arbitrary length of data (must be < len(data))
+        
+    Returns
+    ----------------------------
+        data : pandas.Series, pandas.DataFrame (time series)
+            resampled output
+
     """
 
     if length == None:
@@ -63,7 +117,7 @@ def spec_sample(data, freq, length = None):
     elif isinstance(length, int) == True:
         return(data.resample(freq).last().iloc[:(length-1),:])
     else:
-        return('Error.')
+        raise Exception('Error.')
 
 def create_cleaned_set(file_with_path, varname, datename, freq = None, datetime_last = None, length = None):
     """Run all chosen transformations on the data.
@@ -111,8 +165,6 @@ def create_cleaned_set(file_with_path, varname, datename, freq = None, datetime_
         df = df.loc[:datetime_last]
     
     return(df)
-
-
 
 ## Report
 def report():
