@@ -29,3 +29,6 @@ components: strategy, P&L calc.
 - eying images:
     -> every sell and buy seems specific for its environment
 - idea for the end to potentially increase accuracy: small noise added and duplicate data (distort images)
+
+- if CNN is not enough - what if I use combination of LSTM & CNN
+- for potential comparison later: multilayer perceptron

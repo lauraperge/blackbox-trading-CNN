@@ -93,6 +93,8 @@ def spec_sample(data, freq, length = None):
             input data
         
         freq : (default = None)
+            'B' - business day
+            'D' - calendar day
             'BH' - business hour
             'H' - hour
             'T', 'min' - minute
@@ -134,6 +136,8 @@ def create_cleaned_set(file_with_path, varname, datename, freq = None, datetime_
             name of column representing date-time in dataset
         
         freq : (default = None)
+            'B' - business day
+            'D' - calendar day
             'BH' - business hour
             'H' - hour
             'T', 'min' - minute
