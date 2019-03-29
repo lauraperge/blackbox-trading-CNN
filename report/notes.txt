@@ -31,4 +31,7 @@ components: strategy, P&L calc.
 - idea for the end to potentially increase accuracy: small noise added and duplicate data (distort images)
 
 - if CNN is not enough - what if I use combination of LSTM & CNN
+-  maybe color channels different representations?
+- average pooling instead of max? https://www.quora.com/What-is-the-benefit-of-using-average-pooling-rather-than-max-pooling
 - for potential comparison later: multilayer perceptron
+- Maybe Tiled-CNN
