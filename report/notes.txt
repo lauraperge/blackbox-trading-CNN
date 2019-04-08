@@ -1,9 +1,9 @@
 FOR NEXT TIME:
 
-->> then CNN (+Google Colab set up )
-->> test data
+->> add markov transition field to potential transformations and check that too:
+    thoughts on that:
+    maybe not exactly agree what is done in the relevant paper: look at markov transition probs in multiple steps for the different gaps ( see notes on paper )
 ->> then write relevant Intro, Data and Methodology Points 
-->> if done add markov transition field to potential transformations and check that too
 
 
 - data: FX is needed because stocks, S&P500, etc. only available on trading days: proposes issue of weekends (remember later when evaluating)
