@@ -236,15 +236,13 @@ def sin_diff(a, b):
 
 if __name__ == "__main__":
 
-    # gadf, phi, r, scaled_ts, ts = GADF(
-    #     [1, 23, 4, 5, 6, 46, 2, 1.2, 4, 6, 18, 23, 4, 5, 7, 56, 1], 5)
-    # print(np.array(gadf).shape)
-    # plt.imshow(gadf, cmap="Greys")
-    # # plt.show()
-    # for i in gadf:
-    #     plt.imshow(i, cmap = "Greys")
-    #     plt.show()
+    gadf, phi, r, scaled_ts, ts = GADF(
+        [1, 23, 4, 5, 6, 46, 2, 1.2, 4, 6, 18, 23, 4, 5, 7, 56, 1], 5)
+    print(np.array(gadf).shape)
+    plt.imshow(gadf, cmap="Greys")
+    # plt.show()
+    for i in gadf:
+        plt.imshow(i, cmap = "Greys")
+        plt.show()
 
-    # print(np.array(gadf).shape)
-
-    # plt.imsave('test.png', gasf, dpi=1200, cmap="Greys")
+    print(np.array(gadf).shape)

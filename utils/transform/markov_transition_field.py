@@ -46,7 +46,7 @@ def MTF(serie, window_size, num_bin):
 
         for idx in index_set:
             
-            sb, m = MTF_nowindow(serie2[idx:(idx + window_size)], num_bin)
+            m, sb, s = MTF_nowindow(serie2[idx:(idx + window_size)], num_bin)
             
             mtfs.append(m)
             series_binned.append(sb)
@@ -58,6 +58,39 @@ def MTF(serie, window_size, num_bin):
         return MTF_nowindow(serie, num_bin)
 
 
+def MTF_nowindow(series, num_bin):
+    """Compute the Markov Transiiton Field of a time series. (Binned using quantiles)
+    The approach gives the transition probabilities between the states of the pairwise observations as if the trf. would be happening in one step.
+    It also shows probabilites of transition to previous states in one step.
+
+    Parameters
+    ------------------------
+        series : list or numpy array
+            time series to turn into a transition matrix
+        
+        num_bin : int
+            number of quantile bins to create (number of states for markov transition probs)
+
+    Returns
+    ------------------------
+        mtf : numpy matrix
+            Markov Transition Field of input series
+
+        X_binned : np.array
+            array of binned series
+
+        series : np.array
+            original input series
+        
+    """
+
+    mtf = np.eye(len(series))
+    X_binned, W = transition_mat(series, num_bin)
+
+    for irow, row in enumerate(X_binned):
+        for icol, col in enumerate(X_binned):
+            mtf[irow, icol] = W[row, col]
+    return mtf, X_binned, series
 
 def MTF_new_nowindow(series, num_bin):
     """NOT IN USE NOW. Compute the Markov Transiiton Field of a time series. (Binned using quantiles)
@@ -74,11 +107,14 @@ def MTF_new_nowindow(series, num_bin):
 
     Returns
     ------------------------
-        X_binned : np.array
-            array of binned series
-
         mtf : numpy matrix
             Markov Transition Field of input series
+
+        X_binned : np.array
+            array of binned series
+        
+        series : np.array
+            input series
     """
 
     mtf = np.eye(len(series))
@@ -88,7 +124,7 @@ def MTF_new_nowindow(series, num_bin):
         for icol, col in enumerate(X_binned[(irow + 1):]):
             mtf[irow, (irow+icol+1)] = mtf[(irow+icol+1), irow] = np.linalg.matrix_power(W, (icol+1))[row, col]
     
-    return X_binned, mtf
+    return mtf, X_binned, series
 
 
 def transition_mat(series, num_bin):
@@ -130,38 +166,8 @@ def transition_mat(series, num_bin):
     return X_binned, W
 
 
-def MTF_nowindow(series, num_bin):
-    """Compute the Markov Transiiton Field of a time series. (Binned using quantiles)
-    The approach gives the transition probabilities between the states of the pairwise observations as if the trf. would be happening in one step.
-    It also shows probabilites of transition to previous states in one step.
-
-    Parameters
-    ------------------------
-        series : list or numpy array
-            time series to turn into a transition matrix
-        
-        num_bin : int
-            number of quantile bins to create (number of states for markov transition probs)
-
-    Returns
-    ------------------------
-        X_binned : np.array
-            array of binned series
-
-        mtf : numpy matrix
-            Markov Transition Field of input series
-        
-    """
-
-    mtf = np.eye(len(series))
-    X_binned, W = transition_mat(series, num_bin)
-
-    for irow, row in enumerate(X_binned):
-        for icol, col in enumerate(X_binned):
-            mtf[irow, icol] = W[row, col]
-    return X_binned, mtf
-
 if __name__ == "__main__":
+    
     series = np.random.normal(0, 2.3, 40)
     m, binned, series = MTF(serie = series, window_size = 20, num_bin = 4)
     for img in m:

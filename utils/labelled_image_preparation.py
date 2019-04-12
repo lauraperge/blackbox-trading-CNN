@@ -8,9 +8,10 @@ from sklearn.preprocessing import MinMaxScaler
 from labels.trading_strategies import local_min_max
 from transform.gramian_angular_field import GASF, GADF
 from transform.recurrence_plot import RP
+from transform.markov_transition_field import MTF
 
 
-def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat):
+def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat, num_bin=4):
     """Turns data into series of images with labels defining a trading strategy. 
     Made to suit the input of the CNN in Tensorflow.
 
@@ -29,11 +30,16 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             the window size for image creation (should be smaller than length of series, but more than half of the label window size)
             (please note that the TP transformation will result in images of size (image_window_size-1, image_window_size-1))
 
-        image_trf_strat : ('GASF', 'GADF', 'RP')
-            the image transformation strategy, either 'GASF', 'GADF' or 'RP'
+        image_trf_strat : ('GASF', 'GADF', 'RP', 'MTF')
+            the image transformation strategy, either 'GASF', 'GADF', 'RP' or 'MTF'
             'GASF' - Gramian Angular Summation Field
             'GADF' - Gramian Angular Difference Field
-            'RP' - Recurrence Plot.
+            'RP' - Recurrence Plot
+            'MTF' - Markov Transition Field.
+        
+        num_bin : int (default = 4)
+            if image_trf_strat is 'MTF' num_bin determines the number of bins (by quantiles) to create per images in the MTF algorithm
+            Default is 4.
 
     Returns
     -----------------------------------------
@@ -81,8 +87,14 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             images, serie = RP(series[:-np.int(label_window_size/2)], image_window_size)
             images = np.array(images)
 
+        elif image_trf_strat == 'MTF':
+            #transformation
+            images, binned_serie, serie = MTF(
+                series[:-np.int(label_window_size/2)], window_size = image_window_size, num_bin = num_bin)
+            images = np.array(images)
+
         else:
-            print('Please define the image_trf_strat: GASF, GADF or RP')
+            print('Please define the image_trf_strat: GASF, GADF, RP or MTF')
             return()
 
         # Label names (as column name for image labels) 
@@ -93,14 +105,13 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
                         }
         return(labelled_pd, images, image_labels, label_names)
 
+if __name__ == "__main__":
+    dta = pd.DataFrame(data=np.array(np.random.normal(0, 2.3, 40)), columns=["Series"])
 
-# dta = pd.DataFrame(data=np.array(
-#     [1, 23, 4, 5, 6, 46, 2, 1.2, 4, 6, 18, 23, 4, 5, 7, 56, 1, 1.7]), columns=["Series"])
+    labelled_pd, images, image_labels, label_names = data_to_labelled_img(
+        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat="MTF", num_bin=4)
 
-# labelled_pd, images, image_labels, label_names = data_to_labelled_img(
-#     data=dta, column_name="Series", label_window_size=3, image_window_size=5, image_trf_strat="GASF")
-
-# print(labelled_pd)
-# print(images)
-# print(image_labels)
-# print(label_names)
+    print(labelled_pd)
+    print(images)
+    print(image_labels)
+    print(label_names)

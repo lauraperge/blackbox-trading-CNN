@@ -71,11 +71,13 @@ def recurrence_plot_nowindow(serie):
 
     return(distances, serie)
 
-# RP_mat, ser = recurrence_plot([1.4,32,36,4, 15, 2], 4)
-# print(RP_mat)
+if __name__ == "__main__":
+    
+    RP_mat, ser = recurrence_plot([1.4,32,36,4, 15, 2], 4)
+    print(RP_mat)
 
-# for i in RP_mat:
-#     plt.imshow(i, cmap="Greys")
-#     plt.show()
+    for i in RP_mat:
+        plt.imshow(i, cmap="Greys")
+        plt.show()
 
-# plt.imsave('test.png', RP_mat, dpi=1200, cmap="Greys")
+    plt.imsave('test.png', RP_mat, dpi=1200, cmap="Greys")
