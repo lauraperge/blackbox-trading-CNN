@@ -28,10 +28,8 @@ components: strategy, P&L calc.
 - issue of constant series: the image of the action is empty if the series is contant before the action point!!!! - not too long contant series
 - eying images:
     -> every sell and buy seems specific for its environment
-- idea for the end to potentially increase accuracy: small noise added and duplicate data (distort images)
 
-- if CNN is not enough - what if I use combination of LSTM & CNN
 -  maybe color channels different representations?
 - average pooling instead of max? https://www.quora.com/What-is-the-benefit-of-using-average-pooling-rather-than-max-pooling
 - for potential comparison later: multilayer perceptron
-- Maybe Tiled-CNN
+- MTF: we assume that the within the timeframe of one image time flows forward: so only w ij with xixj i<=j which makes the image symmetrical

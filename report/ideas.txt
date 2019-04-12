@@ -1,0 +1,4 @@
+- does it really have to be one specific time series? if I want independent pictures, what if I just feed a huge amount of data from a lot of FX, lot of other assets and then just use it on whatever
+- for the end to potentially increase accuracy: small noise added and duplicate data (distort images)
+- if CNN is not enough - what if I use combination of LSTM & CNN
+- Maybe Tiled-CNN
