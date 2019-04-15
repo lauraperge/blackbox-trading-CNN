@@ -2,6 +2,9 @@
 \usepackage[english, science, titlepage]{ku-frontpage}
 \usepackage[utf8]{inputenc}
 
+\usepackage{cite}
+\usepackage{natbib, apalike, url}
+
 \setlength\arraycolsep{2 pt}
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{0}
@@ -15,6 +18,8 @@
 \advisor{Advisors: Rolf Poulsen, Kenneth H. M. Nielsen, Lasse Bøhling}
 %\frontpageimage{example.png}
 
+%% spellcheck-language "en"
+
 \begin{document}
 \maketitle
 
@@ -25,8 +30,15 @@
 \end{abstract}
 
 \section{Introduction}
-New ways of ts analysis, pattern recognition, algo trading, deep learning,...
-Introduce next sections, 
+Trading on financial markets has been around for more than 200 years and with time, the internet, and technological advancement it has changed and evolved into what it is today:  
+a versatile, international, online, easy-to-access, automated and truly immense beast. Its evolution is not over however, and the mentioned features make it the perfect subject 
+of artificial intelligence and machine learning. 
+Employing algorithms in trading for calculation of asset prices goes back to the beginning of the 20th century and in the early 1950s Harry Markowitz already brought computational finance 
+to existence in the pursuit of portfolio optimization. That time the computational resources were inadequate to efficiently utilize these algorithms in trading. From the 1970s to 1990s, 
+large-scale computerization, the introduction of PCs, the internet and then amongst other systems the ECN (Electronic Communication Network) changed the game. 
+
+Using automated computer algorithms to execute trading orders has become popular in the  
+
 
 \section{Related Work}
 
@@ -76,6 +88,9 @@ How long it takes to train, how long it takes to predict
 \section{Appendices}
 Calculations, explanations
 Hyperparameter optimization Results
-Othe roptimization results
+Other optimization results
+
+\bibliography{reference}
+\bibliographystyle{apalike}
 
 \end{document}

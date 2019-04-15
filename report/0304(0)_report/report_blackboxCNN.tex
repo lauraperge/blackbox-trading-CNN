@@ -1,0 +1,139 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[english, science, titlepage]{ku-frontpage}
+\usepackage[utf8]{inputenc}
+
+\usepackage{cite}
+\usepackage{natbib, apalike, url}
+
+\setlength\arraycolsep{2 pt}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{0}
+
+\assignment{Master Thesis}
+\author{Laura Perge}
+
+\title{Time Series Classification with CNN:}
+\subtitle{ Automated Trading by Pattern Recognition}
+\date{Handed in: \today}
+\advisor{Advisors: Rolf Poulsen, Kenneth H. M. Nielsen, Lasse Bøhling}
+%\frontpageimage{example.png}
+
+%% spellcheck-language "en"
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+    Something.
+\end{abstract}
+
+\section{Introduction}
+Trading on financial markets has been around for more than 200 years and with time, the internet, and technological advancement it has changed and evolved into what it is today:  
+a versatile, international, online, easy-to-access, automated and truly immense beast. Its evolution is not over however, and the mentioned features make it the perfect subject 
+of artificial intelligence and machine learning. Let us peak into the development of using algorithms and computational resources for trading using a summary by \cite{rialtohistory}. 
+
+Employing algorithms in trading for calculation of asset prices goes back to the beginning of the 20th century and in the early 1950s Harry Markowitz already brought computational finance 
+to existence in the pursuit of portfolio optimization. During that time, the computational resources were inadequate to efficiently utilize these algorithms in trading. From the 1970s to 1990s, 
+large-scale computerization, the introduction of PCs, the internet and then amongst other systems the ECN (Electronic Communication Network) completely changed the game. Automation became a 
+feasible solution, and algorithms are way faster to react with Buy/Sell orders on the market than humans. Trading is now not only for institutions or professionals and a chosen few but 
+for every person with access to the internet. Intraday and high frequency trading emerged and so, using algorithmic trading strategies with automated execution has become crucial 
+in order to trade on these markets. 
+
+There is another important thing that has been around for several decades but has just gained space due to technological progress and the wide-spread access to computational 
+power: machine learning and artificial intelligence. The first paper about creating a model of the human neural networks was \cite{mcculloch1943logical} and many more has followed ever since. 
+One more important milestone for our topic was the first CNN (convolutional neural network) by \cite{fukushima1979neural} which is the first deep learning model for handwritten character and other 
+pattern recognition.
+
+HERE STATE WHY CNN USE CNN: popular, good results, feature extraction, fins deeper connections in data...
+
+THEN: time series analysis, RNN, LSTM used for algotrading, ... But these models many times fail to predict prices and there is a higher error rate if we want to figure out tomorrows return... 
+Therefore, our model will not predict the next element of the series, but it learns to recognize periods, in the end of which you should make a buying or selling order. (...)
+
+
+\textbf{TO BE MODIFIED ACCORDING TO OUTCOME}
+The goal of this paper is to develop a simple but powerful model that can make real time trading decisions utilizing convolutional neural networks. For this, we need to capture as much dynamic 
+and static information from the one dimensional time series as possible which we achieve by turning them into images. The classification requires the labels to represent trading orders of "Buy", 
+"Sell" and "Hold", these are preliminarily defined on the training set using a suitable algorithm. 
+
+In Section 2, we look at the path of publications that led to our approach, then Section 3 gives a tour of the different datasets, and the methodologies we use from the data preparation to the evaluation phase. 
+Afterwards, in Section 4 we examine the results and assess them in a three-fold manner:
+technical fitness (how accurate is the classification?), financial profitability (how high are the returns?), swiftness (how quick is the model to come up with a prediction?). Section 5 concludes how close we 
+got to our objective and what are the possible proceedings of this work.
+
+\section{Related Work}
+
+\textbf{Not sure where I put the below yet:}
+We should note, that this approach resembles the one recently published by \cite{sezer2018algorithmic} but the novelty represented in this paper lies in the methodology of 
+the transformation of time series to images and our way of feeding them to the network. (In the end we figure what are the differences really, but there should be quite a lot.)
+
+\subsection{Financial Time Series Analysis}
+Forecasting, signal processing, time series pattern recognition
+
+\subsection{AI \& Deep Learning}
+Main architectures, ANN, RNN, CNN, LSTM, Perceptrons..
+
+\subsection{Algorithmic Trading}
+Traditional Algorithmic Trading methodologies to new ones employing deep learning in: forecasting based / automated ways and limits
+
+\section{Data and Methodology}
+\subsection{Data Overview}
+Overview of datasets of different frequencies, asset classes that I use
+Data cleaning steps
+What data I need
+Data transformation steps 
+Potential other ways of using data
+
+\subsection{Time Series: 1D to 2D}
+SHOULD BE EASY
+Idea of transformation
+
+GAF, RP (arvix.org/pdf/1710.00886.pdf 3.1 subsec), MTF
+Show image outputs of different types
+write about them 
+
+\subsection{Image Labelling}
+SHOULD BE EASY
+
+Labelling: don't forget discrepancy in labelling algo vs image labels
+Labelling algo: depends on window size
+
+\subsection{Deep CNN: Image Classification}
+
+How to classify the images, why CNN, \dots, 
+Introduce your base model - NOT DOING THIS YET BUT SKELETON:
+
+1. Feed image representations in different channels for colors
+
+2. Optimize number of layers, neurons - maybe tiled CNN
+
+3. Add regularization
+
+4. See if you can change the loss function to be minus return
+
+5. Other additions/optimization?
+
+\section{Evaluation and Results}
+
+\subsection{Classification Performance}
+confusion matrix, accuracy measurements, etc.
+
+\subsection{Financial Performance}
+description of trading according to model, measurements and ratios
+numbers (maybe against other trading algo)
+
+\subsection{Time Consumption}
+How long it takes to train, how long it takes to predict
+
+\section{Conclusion}
+
+\section{Appendices}
+Calculations, explanations
+Hyperparameter optimization Results
+Other optimization results
+
+\bibliography{reference}
+\bibliographystyle{apalike}
+
+\end{document}

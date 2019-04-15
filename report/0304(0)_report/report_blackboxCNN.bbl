@@ -1,0 +1,27 @@
+\begin{thebibliography}{}
+
+\bibitem[Fukushima, 1979]{fukushima1979neural}
+Fukushima, K. (1979).
+\newblock Neural network model for a mechanism of pattern recognition
+  unaffected by shift in position - neocognitron.
+\newblock {\em IEICE Technical Report, A}, 62(10):658--665.
+
+\bibitem[McCulloch and Pitts, 1943]{mcculloch1943logical}
+McCulloch, W.~S. and Pitts, W. (1943).
+\newblock A logical calculus of the ideas immanent in nervous activity.
+\newblock {\em The bulletin of mathematical biophysics}, 5(4):115--133.
+
+\bibitem[RIALTO.AI, 2018]{rialtohistory}
+RIALTO.AI (2018).
+\newblock Beginnings of algorithmic trading.
+\newblock
+  \url{https://medium.com/rialto-ai/beginnings-of-algorithmic-trading-19eccce902a1}.
+\newblock [Online blog post, accessed 2019-04-15].
+
+\bibitem[Sezer and Ozbayoglu, 2018]{sezer2018algorithmic}
+Sezer, O.~B. and Ozbayoglu, A.~M. (2018).
+\newblock Algorithmic financial trading with deep convolutional neural
+  networks: Time series to image conversion approach.
+\newblock {\em Applied Soft Computing}, 70:525--538.
+
+\end{thebibliography}

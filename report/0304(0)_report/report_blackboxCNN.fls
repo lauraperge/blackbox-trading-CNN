@@ -1,7 +1,7 @@
 PWD c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report
 INPUT C:\Users\Corvinus\AppData\Local\MiKTeX\2.9\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.tex
-OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.log
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.tex
+OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.log
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\article.cls
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\article.cls
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\size11.clo
@@ -61,9 +61,17 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geo
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.cfg
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\inputenc.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\inputenc.sty
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.aux
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.aux
-OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.aux
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\cite\cite.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\cite\cite.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\generic\bibtex\apalike.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\generic\bibtex\apalike.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.aux
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.aux
+OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.aux
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1ptm.fd
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmr7t.tfm
@@ -98,8 +106,6 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\pd1
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\pd1enc.def
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\00miktex\hyperref.cfg
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\00miktex\hyperref.cfg
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\hpdftex.def
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\hpdftex.def
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\oberdiek\rerunfilecheck.sty
@@ -108,14 +114,14 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\nam
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\nameref.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\gettitlestring.sty
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.pdf
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.pdf
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\logos\science-logo.pdf
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\logos\science-logo.pdf
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\logos\science-logo.pdf
@@ -141,8 +147,8 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\helveti
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\helvetic\phvr8r.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmr7t.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb7t.tfm
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.toc
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.toc
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.toc
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.toc
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb7t.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmr6.tfm
@@ -152,9 +158,7 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmsy10.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmsy8.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmsy6.tfm
-OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.toc
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmr7t.tfm
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb7t.tfm
+OUTPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.toc
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmr7t.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb7t.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\times\ptmb7t.vf
@@ -167,12 +171,26 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\times\p
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\times\ptmr7t.vf
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmr8r.tfm
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmr7t.tfm
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb7t.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\times\ptmb7t.vf
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb8r.tfm
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.aux
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
-INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\example-titlepage.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.bbl
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.bbl
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmri7t.tfm
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\courier\pcrr7t.tfm
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\times\ptmri7t.vf
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmri8r.tfm
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\courier\pcrr7t.vf
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\courier\pcrr8r.tfm
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.aux
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\report_blackboxCNN.out
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\enc\dvips\base\8r.enc
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\courier\ucrr8a.pfb
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\courier\ucrr8a.pfb
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\helvetic\uhvb8a.pfb
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\helvetic\uhvb8a.pfb
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\helvetic\uhvr8a.pfb
@@ -181,3 +199,5 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\times\
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\times\utmb8a.pfb
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\times\utmr8a.pfb
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\times\utmr8a.pfb
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\times\utmri8a.pfb
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\type1\urw\times\utmri8a.pfb

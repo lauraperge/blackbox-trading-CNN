@@ -2,3 +2,4 @@
 - for the end to potentially increase accuracy: small noise added and duplicate data (distort images)
 - if CNN is not enough - what if I use combination of LSTM & CNN
 - Maybe Tiled-CNN
+- https://github.com/seaweiqing/deep_trading/blob/master/notebook_output/6_neural_network.ipynb : CHANGE LOSS FUNCTION TO MINUS RETURNS!? ...
