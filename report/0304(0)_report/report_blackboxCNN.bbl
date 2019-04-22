@@ -6,6 +6,12 @@ Fukushima, K. (1979).
   unaffected by shift in position - neocognitron.
 \newblock {\em IEICE Technical Report, A}, 62(10):658--665.
 
+\bibitem[Goodfellow et~al., 2016]{goodfellow2016deep}
+Goodfellow, I., Bengio, Y., and Courville, A. (2016).
+\newblock {\em Deep Learning}.
+\newblock MIT Press.
+\newblock \url{http://www.deeplearningbook.org}.
+
 \bibitem[McCulloch and Pitts, 1943]{mcculloch1943logical}
 McCulloch, W.~S. and Pitts, W. (1943).
 \newblock A logical calculus of the ideas immanent in nervous activity.
