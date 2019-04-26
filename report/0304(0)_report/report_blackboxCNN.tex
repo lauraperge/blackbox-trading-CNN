@@ -55,27 +55,30 @@ Therefore, our model will not predict the next element of the series, but it lea
 \textbf{TO BE MODIFIED ACCORDING TO OUTCOME}
 The goal of this paper is to develop a simple but powerful model that can make real time trading decisions utilizing convolutional neural networks. For this, we need to capture as much dynamic 
 and static information from the one dimensional time series as possible which we achieve by turning them into images. The classification requires the labels to represent trading orders of "Buy", 
-"Sell" and "Hold", these are preliminarily defined on the training set using a suitable algorithm. 
+"Sell" and "Hold", these are preliminarily defined on the training set using a suitable algorithm. The ultimate objective is a compact multilevel trading model that takes care of both the creation 
+of image representations and the prediction of financially successful trading strategies using these images for data that is fed to the model in real time. 
+We should note, that this approach resembles the one recently published by \cite{sezer2018algorithmic} but the novelty represented in this paper lies in the methodology of 
+the transformation of time series to images and our way of feeding them to the network. \textbf{(In the end we figure what are the differences really, but there should be quite a lot.
+Keep stating innovations here.)}
 
-In Section 2, we look at the path of publications that led to our approach, then Section 3 gives a tour of the different datasets, and the methodologies we use from the data preparation to the evaluation phase. 
+In Section 2, we look at the path of publications that motivated and built the foundation of our approach. Then, Section 3 provides us with the information about the kind of data we use throughout 
+the paper, moreover we introduce the methodologies implemented from the data preparation to the prediction phase. These include the transformation of one dimensional time series into images, 
+how we proceed to create appropriate labels for these images, how we construct and train our CNN model on them and return predictions using the model. Furthermore, we propose a solution for an 
+actionable pipeline that could potentially be tailored to fit into a production environment.
 Afterwards, in Section 4 we examine the results and assess them in a three-fold manner:
-technical fitness (how accurate is the classification?), financial profitability (how high are the returns?), swiftness (how quick is the model to come up with a prediction?). Section 5 concludes how close we 
-got to our objective and what are the possible proceedings of this work.
+technical fitness (how accurate is the classification?), financial profitability (how high are the returns?), swiftness (how quick is the model to come up with a prediction?). Section 5 concludes how much 
+we closed in on grasping our objectives and what are some possible proceedings of this work.
 
 \section{Related Work}
 
-\textbf{Not sure where I put the below yet:}
-We should note, that this approach resembles the one recently published by \cite{sezer2018algorithmic} but the novelty represented in this paper lies in the methodology of 
-the transformation of time series to images and our way of feeding them to the network. (In the end we figure what are the differences really, but there should be quite a lot.)
 
 \subsection{Financial Time Series Analysis}
 Forecasting, signal processing, time series pattern recognition
 
-\subsection{AI \& Deep Learning}
-Main architectures, ANN, RNN, CNN, LSTM, Perceptrons..
+\subsection{Machine Learning \& Deep Learning}
 
-Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (deep) that also employ convolution in one or more layers 
-as a substitute for the matrix multiplication (see Chapter 9 in \cite{goodfellow2016deep}). 
+
+Main architectures, ANN, RNN, CNN, LSTM, Perceptrons..
 
 
 \subsection{Algorithmic Trading}
@@ -104,6 +107,11 @@ Labelling: don't forget discrepancy in labelling algo vs image labels
 Labelling algo: depends on window size
 
 \subsection{Deep CNN: Image Classification}
+Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (deep) that also employ convolution in one or more layers 
+as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). 
+
+Let us take a second to recap what we have so far. We have one-dimensional historical stock price data that we preprocessed and created images from the sliding windows of data points. We created 
+labels of trading actions on our original data and then matched these labels to the relevant images. 
 
 How to classify the images, why CNN, \dots, 
 Introduce your base model - NOT DOING THIS YET BUT SKELETON:
@@ -117,6 +125,8 @@ Introduce your base model - NOT DOING THIS YET BUT SKELETON:
 4. See if you can change the loss function to be minus return
 
 5. Other additions/optimization?
+
+\subsection{Actionable Pipeline}
 
 \section{Evaluation and Results}
 
