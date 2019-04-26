@@ -12,6 +12,11 @@ Goodfellow, I., Bengio, Y., and Courville, A. (2016).
 \newblock MIT Press.
 \newblock \url{http://www.deeplearningbook.org}.
 
+\bibitem[Hochreiter and Schmidhuber, 1997]{Hochr97LSTM}
+Hochreiter, S. and Schmidhuber, J. (1997).
+\newblock Long short-term memory.
+\newblock {\em Neural computation}, 9:1735--80.
+
 \bibitem[McCulloch and Pitts, 1943]{mcculloch1943logical}
 McCulloch, W.~S. and Pitts, W. (1943).
 \newblock A logical calculus of the ideas immanent in nervous activity.
@@ -29,5 +34,10 @@ Sezer, O.~B. and Ozbayoglu, A.~M. (2018).
 \newblock Algorithmic financial trading with deep convolutional neural
   networks: Time series to image conversion approach.
 \newblock {\em Applied Soft Computing}, 70:525--538.
+
+\bibitem[Tsay, 2005]{tsay2005analysis}
+Tsay, R.~S. (2005).
+\newblock {\em Analysis of financial time series}, volume 543.
+\newblock John wiley \& sons.
 
 \end{thebibliography}
