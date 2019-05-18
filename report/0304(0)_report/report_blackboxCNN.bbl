@@ -1,5 +1,10 @@
 \begin{thebibliography}{}
 
+\bibitem[Eckmann et~al., 1987]{jp1987recurrence}
+Eckmann, J.~P., Kamphorst, S.~O., and Ruelle, D. (1987).
+\newblock Recurrence plots of dynamical systems.
+\newblock {\em Europhysics Ltters}, 5:973--977.
+
 \bibitem[Fukushima, 1979]{fukushima1979neural}
 Fukushima, K. (1979).
 \newblock Neural network model for a mechanism of pattern recognition
@@ -12,10 +17,24 @@ Goodfellow, I., Bengio, Y., and Courville, A. (2016).
 \newblock MIT Press.
 \newblock \url{http://www.deeplearningbook.org}.
 
+\bibitem[Hatami et~al., 2018]{hatami2018classification}
+Hatami, N., Gavet, Y., and Debayle, J. (2018).
+\newblock Classification of time-series images using deep convolutional neural
+  networks.
+\newblock In {\em Tenth International Conference on Machine Vision (ICMV
+  2017)}, volume 10696, page 106960Y. International Society for Optics and
+  Photonics.
+
 \bibitem[Hochreiter and Schmidhuber, 1997]{Hochr97LSTM}
 Hochreiter, S. and Schmidhuber, J. (1997).
 \newblock Long short-term memory.
 \newblock {\em Neural computation}, 9:1735--80.
+
+\bibitem[Lemus, 2018]{lemus_2018}
+Lemus, G. (2018).
+\newblock Why financial time series lstm prediction fails.
+\newblock
+  \url{https://medium.com/datadriveninvestor/why-financial-time-series-lstm-prediction-fails-4d1486d336e0}.
 
 \bibitem[McCulloch and Pitts, 1943]{mcculloch1943logical}
 McCulloch, W.~S. and Pitts, W. (1943).
@@ -35,9 +54,22 @@ Sezer, O.~B. and Ozbayoglu, A.~M. (2018).
   networks: Time series to image conversion approach.
 \newblock {\em Applied Soft Computing}, 70:525--538.
 
+\bibitem[Sirignano and Cont, 2018]{sirignano2018universal}
+Sirignano, J. and Cont, R. (2018).
+\newblock Universal features of price formation in financial markets:
+  perspectives from deep learning.
+\newblock {\em Available at SSRN 3141294}.
+
 \bibitem[Tsay, 2005]{tsay2005analysis}
 Tsay, R.~S. (2005).
 \newblock {\em Analysis of financial time series}, volume 543.
 \newblock John wiley \& sons.
+
+\bibitem[Wang and Oates, 2015]{wang2015encoding}
+Wang, Z. and Oates, T. (2015).
+\newblock Encoding time series as images for visual inspection and
+  classification using tiled convolutional neural networks.
+\newblock In {\em Workshops at the Twenty-Ninth AAAI Conference on Artificial
+  Intelligence}.
 
 \end{thebibliography}
