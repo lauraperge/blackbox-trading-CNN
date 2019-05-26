@@ -30,7 +30,7 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             the window size for image creation (should be smaller than length of series, but more than half of the label window size)
             (please note that the TP transformation will result in images of size (image_window_size-1, image_window_size-1))
 
-        image_trf_strat : ('GASF', 'GADF', 'RP', 'MTF')
+        image_trf_strat : string or list of strings ('GASF', 'GADF', 'RP', 'MTF')
             the image transformation strategy, either 'GASF', 'GADF', 'RP' or 'MTF'
             'GASF' - Gramian Angular Summation Field
             'GADF' - Gramian Angular Difference Field
@@ -71,29 +71,30 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
         label_colnames = np.array(pd.get_dummies(labelled_pd.Strategy).columns)
 
         # images from first datapoint to (last_idx - floor(label_window_size/2))
-        if image_trf_strat == "GASF":
+        if "GASF" in image_trf_strat:
             # transformation
-            images,  phi, r, scaled_ts, ts = GASF(
+            images_GASF,  phi_GASF, r_GASF, scaled_ts_GASF, ts_GASF = GASF(
                 series[:-np.int(label_window_size/2)], image_window_size)
-            images = np.array(images)
-        elif image_trf_strat == "GADF":
+            images_GASF = np.array(images_GASF)
+        
+        if "GADF" in image_trf_strat:
             # transformation
-            images,  phi, r, scaled_ts, ts = GADF(
+            images_GADF,  phi_GADF, r_GADF, scaled_ts_GADF, ts_GADF = GADF(
                 series[:-np.int(label_window_size/2)], image_window_size)
-            images = np.array(images)
+            images_GADF = np.array(images_GADF)
 
-        elif image_trf_strat == 'RP':
+        if 'RP' in image_trf_strat:
             # transformation
-            images, serie = RP(series[:-np.int(label_window_size/2)], image_window_size)
-            images = np.array(images)
+            images_RP, serie_RP = RP(series[:-np.int(label_window_size/2)], image_window_size)
+            images_RP = np.array(images_RP)
 
-        elif image_trf_strat == 'MTF':
+        if 'MTF' in image_trf_strat:
             #transformation
-            images, binned_serie, serie = MTF(
+            images_MTF, binned_serie_MTF, serie_MTF = MTF(
                 series[:-np.int(label_window_size/2)], window_size = image_window_size, num_bin = num_bin)
-            images = np.array(images)
+            images_MTF = np.array(images_MTF)
 
-        else:
+        if len(image_trf_strat)==0:
             print('Please define the image_trf_strat: GASF, GADF, RP or MTF')
             return()
 
@@ -103,13 +104,22 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
                        np.int(np.argwhere(label_colnames == "Buy")) : "Buy",
                        np.int(np.argwhere(label_colnames == "Hold")) : "Hold"
                         }
+        
+        if (type(image_trf_strat) == list) & (len(image_trf_strat) > 1):
+            
+            images = []
+            for trf in image_trf_strat:
+                images.append(eval("images_" + trf))
+        else:
+            images = eval("images_" + image_trf_strat)
+
         return(labelled_pd, images, image_labels, label_names)
 
 if __name__ == "__main__":
     dta = pd.DataFrame(data=np.array(np.random.normal(0, 2.3, 40)), columns=["Series"])
 
     labelled_pd, images, image_labels, label_names = data_to_labelled_img(
-        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat="MTF", num_bin=4)
+        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["MTF", "GASF"], num_bin=4)
 
     print(labelled_pd)
     print(images)

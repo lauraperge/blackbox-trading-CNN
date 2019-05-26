@@ -6,7 +6,7 @@ from scipy.spatial.distance import pdist
 from scipy.spatial.distance import squareform
 
 # Recurrence Plot for various windows in time series
-def RP(serie, window_size = None):
+def RP(serie, window_size = None, padding = 0):
     """ Compute the Recurrence Plot of a time series (for each sliding window defined by window_size).
    
     Parameters
@@ -15,6 +15,9 @@ def RP(serie, window_size = None):
 
         window_size:  (default = None) int
             size of windows of time series to use as input for GADF matrices
+
+        padding : int (default = 0)
+            number of rows/columns of zero padding to be added to the right and bottom
     
     Returns
     --------------------------
@@ -38,7 +41,7 @@ def RP(serie, window_size = None):
             recurrence_plots = []
 
             for idx in index_set:
-                rp, os = recurrence_plot_nowindow(serie2[idx:(idx + window_size)])
+                rp, os = recurrence_plot_nowindow(serie2[idx:(idx + window_size)], padding=padding)
 
                 recurrence_plots.append(rp)
 
@@ -49,12 +52,15 @@ def RP(serie, window_size = None):
         return recurrence_plot_nowindow(serie)
 
 # Recurrence Plot transformation funtion
-def recurrence_plot_nowindow(serie):
+def recurrence_plot_nowindow(serie, padding = 0):
     """Compute the Recurrence Plot of a time series (for the full input).
     
     Parameters
     ---------------------
         serie : np.array or list
+
+        padding : int (Default = 0)
+            number of rows/columns of zero padding to be added to the right and bottom
 
     Returns
     ---------------------
@@ -69,13 +75,17 @@ def recurrence_plot_nowindow(serie):
     # R matrix: distances between pairs - NO THRESHOLDING
     distances = squareform(pdist(new_serie, 'euclidean'))
 
-    return(distances, serie)
+    if padding >= 0:
+        distances2 = np.zeros((distances.shape[0]+padding,distances.shape[0]+padding))
+        distances2[:-1,:-1] = distances
+
+    return(distances2, serie)
+
 
 if __name__ == "__main__":
     
-    RP_mat, ser = recurrence_plot([1.4,32,36,4, 15, 2], 4)
+    RP_mat, ser = RP([1.4,32,36,4, 15, 2], 4, padding = 1)
     print(RP_mat)
-
     for i in RP_mat:
         plt.imshow(i, cmap="Greys")
         plt.show()
