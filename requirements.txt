@@ -3,3 +3,12 @@ numpy
 scipy
 glob
 os
+matplotlib
+tensorflow
+sklearn
+sys
+math
+bitfinex
+datetime
+time
+pandas_datareader
