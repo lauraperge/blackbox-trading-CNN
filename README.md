@@ -29,7 +29,7 @@ Jupyter notebooks of CNN versions and Data Preparation
 
 * **data-check-and-prep** uses prewritten modules (See utils) to preliminarily check/modify the data, label and transform it to be ready for the CNN. It visualizes the input/output data and labelling. Its input is any raw dataset from the data or via API, its output goes into data/cnn_input/ and serves as input for the CNN notebooks.
 
-* **CNN-trial-version** is the first working version of a tensorflow CNN model with a test dataset and single color channel. It is not optimized or enhanced. input data is the output of data-check-and-prep
+* **CNN-trial-version** is the first (working - TO BE TESTED) version of a tensorflow CNN model with a test dataset and single color channel. It is not optimized or enhanced. input data is the output of data-check-and-prep
 
 * **CNN-trial-version-multiple color channels** is the first working version of a tensorflow CNN model with a test dataset and multiple color channels. It is not optimized or enhanced. input data is the output of data-check-and-prep
 
