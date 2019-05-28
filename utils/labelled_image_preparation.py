@@ -11,8 +11,9 @@ from transform.recurrence_plot import RP
 from transform.markov_transition_field import MTF
 
 
-def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat, num_bin=4):
-    """Turns data into series of images with labels defining a trading strategy. 
+def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat, num_bin=4, padding_RP = 0):
+    """Turns data into series of images with labels according to a trading strategy. 
+    The output images can be from multiple strategies at the same time.
     Made to suit the input of the CNN in Tensorflow.
 
     Parameters
@@ -40,6 +41,9 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
         num_bin : int (default = 4)
             if image_trf_strat is 'MTF' num_bin determines the number of bins (by quantiles) to create per images in the MTF algorithm
             Default is 4.
+
+        padding_RP :  int (default = 0)
+            number of rows/columns of zero padding to be added to the right and bottom
 
     Returns
     -----------------------------------------
@@ -85,7 +89,7 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
 
         if 'RP' in image_trf_strat:
             # transformation
-            images_RP, serie_RP = RP(series[:-np.int(label_window_size/2)], image_window_size)
+            images_RP, serie_RP = RP(series[:-np.int(label_window_size/2)], image_window_size, padding = padding_RP)
             images_RP = np.array(images_RP)
 
         if 'MTF' in image_trf_strat:
@@ -113,15 +117,16 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
         else:
             images = eval("images_" + image_trf_strat)
 
-        return(labelled_pd, images, image_labels, label_names)
+        return(labelled_pd, np.array(images), image_labels, label_names)
 
 if __name__ == "__main__":
     dta = pd.DataFrame(data=np.array(np.random.normal(0, 2.3, 40)), columns=["Series"])
 
     labelled_pd, images, image_labels, label_names = data_to_labelled_img(
-        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["MTF", "GASF"], num_bin=4)
-
-    print(labelled_pd)
-    print(images)
-    print(image_labels)
-    print(label_names)
+        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["RP", "GASF", "MTF"], num_bin=4, padding_RP=1)
+   
+    print(images.shape)
+    # print(labelled_pd)
+    # print(images)
+    # print(image_labels)
+    # print(label_names)
