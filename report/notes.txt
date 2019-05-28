@@ -1,8 +1,5 @@
 FOR NEXT TIME:
 
-->> add markov transition field to potential transformations and check that too:
-    thoughts on that:
-    maybe not exactly agree what is done in the relevant paper: look at markov transition probs in multiple steps for the different gaps ( see notes on paper )
 ->> then write relevant Intro, Data and Methodology Points 
 
 
