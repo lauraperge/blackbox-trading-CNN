@@ -11,7 +11,13 @@ from transform.recurrence_plot import RP
 from transform.markov_transition_field import MTF
 
 
-def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat, num_bin=4, padding_RP = 0):
+def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat, 
+                         num_bin=4, 
+                         padding_RP=0, 
+                         standardize_out_RP=False, 
+                         standardize_out_GASF = False, 
+                         standardize_out_GADF = False
+                         ):
     """Turns data into series of images with labels according to a trading strategy. 
     The output images can be from multiple strategies at the same time.
     Made to suit the input of the CNN in Tensorflow.
@@ -44,6 +50,15 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
 
         padding_RP :  int (default = 0)
             number of rows/columns of zero padding to be added to the right and bottom
+        
+        standardize_out_RP : bool (default = False)
+            whether the resulting RP images should be standardized between 0 and 1 (minmax scaler)
+
+        standardize_out_GASF : bool (default = False)
+            whether the resulting GASF images should be standardized between 0 and 1 (minmax scaler)
+
+        standardize_out_GADF : bool (default = False)
+            whether the resulting GADF images should be standardized between 0 and 1 (minmax scaler)
 
     Returns
     -----------------------------------------
@@ -78,18 +93,19 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
         if "GASF" in image_trf_strat:
             # transformation
             images_GASF,  phi_GASF, r_GASF, scaled_ts_GASF, ts_GASF = GASF(
-                series[:-np.int(label_window_size/2)], image_window_size)
+                series[:-np.int(label_window_size/2)], image_window_size, standardize_out=standardize_out_GASF)
             images_GASF = np.array(images_GASF)
         
         if "GADF" in image_trf_strat:
             # transformation
             images_GADF,  phi_GADF, r_GADF, scaled_ts_GADF, ts_GADF = GADF(
-                series[:-np.int(label_window_size/2)], image_window_size)
+                series[:-np.int(label_window_size/2)], image_window_size, standardize_out=standardize_out_GADF)
             images_GADF = np.array(images_GADF)
 
         if 'RP' in image_trf_strat:
             # transformation
-            images_RP, serie_RP = RP(series[:-np.int(label_window_size/2)], image_window_size, padding = padding_RP)
+            images_RP, serie_RP = RP(
+                series[:-np.int(label_window_size/2)], image_window_size, padding = padding_RP, standardize_out = standardize_out_RP)
             images_RP = np.array(images_RP)
 
         if 'MTF' in image_trf_strat:
@@ -126,6 +142,7 @@ if __name__ == "__main__":
         data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["RP", "GASF", "MTF"], num_bin=4, padding_RP=1)
    
     print(images.shape)
+    print(images)
     # print(labelled_pd)
     # print(images)
     # print(image_labels)
