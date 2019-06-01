@@ -1,3 +1,6 @@
+FOR REPORT CNN:
+https://www.youtube.com/watch?v=umGJ30-15_A
+
 FOR NEXT TIME:
 
 ->> then write relevant Intro, Data and Methodology Points 
@@ -22,7 +25,7 @@ components: strategy, P&L calc.
     -> no, because for small window size there will be a 1, a -1 and just a couple meaningful numbers
 - I get (floor(label_window_wize/2)) less images, because I don't have labels for those.
 - When splitting train and test -> delete overlapping images
-- name it : PictoPriceTrader
+
 - issue of constant series: the image of the action is empty if the series is contant before the action point!!!! - not too long contant series
 - eying images:
     -> every sell and buy seems specific for its environment
