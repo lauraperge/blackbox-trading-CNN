@@ -4,3 +4,4 @@
     - Maybe Tiled-CNN
     - https://github.com/seaweiqing/deep_trading/blob/master/notebook_output/6_neural_network.ipynb : CHANGE LOSS FUNCTION TO MINUS RETURNS!? ...
     - use DeCaf https://arxiv.org/pdf/1310.1531.pdf, https://www.tensorflow.org/hub/tutorials/image_retraining
+- make the images on the returns

@@ -2,8 +2,11 @@ FOR REPORT CNN:
 https://www.youtube.com/watch?v=umGJ30-15_A
 
 FOR NEXT TIME:
-
-->> then write relevant Intro, Data and Methodology Points 
+* Add further evaluation to Keras
+* Run entire Keras verison on google Colab
+* Get more data
+* Write
+* Plan evaluations
 
 
 - data: FX is needed because stocks, S&P500, etc. only available on trading days: proposes issue of weekends (remember later when evaluating)
@@ -34,3 +37,4 @@ components: strategy, P&L calc.
 - average pooling instead of max? https://www.quora.com/What-is-the-benefit-of-using-average-pooling-rather-than-max-pooling
 - for potential comparison later: multilayer perceptron
 - MTF: we assume that the within the timeframe of one image time flows forward: so only w ij with xixj i<=j which makes the image symmetrical
+- imbalanced data measures: https://arxiv.org/pdf/1708.02002.pdf

@@ -145,5 +145,5 @@ if __name__ == "__main__":
     print(images)
     print(labelled_pd)
     # print(images)
-    # print(image_labels)
+    print(image_labels)
     # print(label_names)

@@ -33,6 +33,10 @@ Jupyter notebooks of CNN versions and Data Preparation
 
 * **CNN-trial-version-multiple color channels** is the first working version of a tensorflow CNN model with a test dataset and multiple color channels. It is not optimized or enhanced. input data is the output of data-check-and-prep
 
+* **GC_CNN_trial_version_multiple_color_channels** same as before but used in Google Colaboratory
+
+* **CNN_keras_multiple_color_channels** working Keras based version of CNN model with 3H Bitcoin dataset and multiple color channels. Not optimized or enhanced. input data is the output of data-check-and-prep
+
 * **/Output/** contains logs from the CNN, later will contain other evaluation outputs as well
 
 ### report
