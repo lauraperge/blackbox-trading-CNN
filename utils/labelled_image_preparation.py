@@ -16,7 +16,8 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
                          padding_RP=0, 
                          standardize_out_RP=False, 
                          standardize_out_GASF = False, 
-                         standardize_out_GADF = False
+                         standardize_out_GADF = False,
+                         use_returns = False
                          ):
     """Turns data into series of images with labels according to a trading strategy. 
     The output images can be from multiple strategies at the same time.
@@ -59,6 +60,9 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
 
         standardize_out_GADF : bool (default = False)
             whether the resulting GADF images should be standardized between 0 and 1 (minmax scaler)
+        
+        use_returns : bool (default = False)
+            whether the returns should be used for image creation instead of the prices
 
     Returns
     -----------------------------------------
@@ -84,10 +88,21 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             series, label_window_size)
 
         # get one-hot encoding for the labels
-        image_labels = np.array(pd.get_dummies(labelled_pd.Strategy))[
-            (image_window_size-1):(-np.int(label_window_size/2)), :]
+        if use_returns == True:
+            ## if returns are used for image creation the first label we need is one step later (first return is nan)
+            image_labels = np.array(pd.get_dummies(labelled_pd.Strategy))[
+                image_window_size:(-np.int(label_window_size/2)), :]
+        else:
+            ## if prices used for image creation the first label is needed 1 step earlier
+            image_labels = np.array(pd.get_dummies(labelled_pd.Strategy))[
+                (image_window_size-1):(-np.int(label_window_size/2)), :]
+
         # for saving which column is which
         label_colnames = np.array(pd.get_dummies(labelled_pd.Strategy).columns)
+        
+        if use_returns == True:
+            return_series = series[1:]/series[:-1] -1
+            series = return_series
 
         # images from first datapoint to (last_idx - floor(label_window_size/2))
         if "GASF" in image_trf_strat:
@@ -130,6 +145,10 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             images = []
             for trf in image_trf_strat:
                 images.append(eval("images_" + trf))
+            
+            # channels last representation
+            images = np.moveaxis(images, 0, -1)
+
         else:
             images = eval("images_" + image_trf_strat)
 
@@ -139,11 +158,11 @@ if __name__ == "__main__":
     dta = pd.DataFrame(data=np.array(np.random.normal(0, 2.3, 40)), columns=["Series"])
 
     labelled_pd, images, image_labels, label_names = data_to_labelled_img(
-        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["RP", "GASF", "MTF"], num_bin=4, padding_RP=1)
+        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["RP", "GASF", "MTF"], num_bin=4, padding_RP=1,  use_returns=True)
    
     print(images.shape)
+    print(image_labels.shape)
+    # print(labelled_pd)
     print(images)
-    print(labelled_pd)
-    # print(images)
-    print(image_labels)
+    # print(image_labels)
     # print(label_names)

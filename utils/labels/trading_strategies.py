@@ -65,9 +65,9 @@ def local_min_max(serie, window_size):
         return(False, window_size, serie)
         
 if __name__ == "__main__":
-    pass
-labelled_np, labelled_pandas, ws, original = local_min_max(np.array([1, 223, 3.6, 3, 6, 7, 87, 312, .34,.2, 3]), window_size = 3)
+    
+    labelled_np, labelled_pandas, ws, original = local_min_max(np.array([1, 223, 3.6, 3, 6, 7, 87, 312, .34,.2, 3]), window_size = 3)
 
-print(labelled_pandas)
+    print(labelled_pandas)
 
-print(labelled_np)
+    print(labelled_np)

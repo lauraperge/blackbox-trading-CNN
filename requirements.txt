@@ -12,3 +12,5 @@ bitfinex
 datetime
 time
 pandas_datareader
+seaborn
+keras
