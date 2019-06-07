@@ -187,8 +187,30 @@ Introduce your base model - NOT DOING THIS YET BUT SKELETON:
 
 5. Other additions/optimization?
 
+\subsection{Evaluation Techniques}
+
+For assessing the technical performance of the CNN, we use class-wise and overall precision, recall and F1-scores, moreover we will also present the confusion matrix. 
+The formulas for the listed measurements are listed in equations ... .
+
+Furthermore, financial assessment is carried out on the test data which is done by setting an initial capital of USD $10,000$ and a flat transaction based trading commission of USD $5$ and then following the predicted trading order signals.
+In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. The procedure is described in algortihm ?.
+
+With this algorithm we can track the capital and the returns, moreover the following measurements are calculated for the financial performance evaluation:
+
+\begin{itemize}
+    \item total profit/loss: EQ
+    \item annual and annualized monthly returns: EQ
+    \item success ratio: EQ 
+\end{itemize}
+
+To be able to evaluate shorter and longer time periods and different economic regimes we test the model throughout 1 year periods in 2005, 2009 and May 2018 - June 2019. The models used will be trained on all previous available data to the first day of testing and then retrained every ???.
 \section{Evaluation Results}
 \label{sec:ER}
+
+In order to assess feasibility we will present how much time it takes for the model to train and to return predictions from the trained model. 
+
+As mentioned before, the universal model is trained on multiple datasets, including those we test individually too. Now, we will run the financial evaluation on the assets that are tested individually, thereby assuming that the if one wants to use the model to predict trading signals for a certain asset, they should add its historical prices to the universal dataset and retrain the model.
+We always use the part of the historical data that is before the date of the first testing for training purposes to avoid lookahead bias.
 
 \subsection{Classification Performance}
 \label{subsec:ER:ClassPerf}
