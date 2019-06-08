@@ -175,6 +175,23 @@ def create_cleaned_set(file_with_path, varname, datename, freq=None, datetime_la
     if datetime_last != None:
         df = df.loc[:datetime_last]
     
+    # weekdays NA check
+    if weekdays == True:
+
+        # Getting all weekdays between first and last date
+        all_weekdays = pd.date_range(
+            start=df.first('1D').index[0], 
+            end=df.last('1D').index[0], 
+            freq='B')
+
+        # All we need to do is reindex close using all_weekdays as the new index
+        df = df.reindex(all_weekdays)
+
+        # # Reindexing will insert missing values (NaN) for the dates that were not present
+        # in the original set. To cope with this, we can fill the missing by replacing them
+        # with the latest available price for each instrument.
+        df = df.fillna(method=fill_na_method)
+
     return(df)
 
 ## Report
@@ -244,4 +261,6 @@ def report():
     newdf3.plot(grid = True)
     plt.show()
 
-# report()
+if __name__ == "__main__":
+
+   # report()
