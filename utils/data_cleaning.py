@@ -121,7 +121,8 @@ def spec_sample(data, freq, length = None):
     else:
         raise Exception('Error.')
 
-def create_cleaned_set(file_with_path, varname, datename, freq = None, datetime_last = None, length = None):
+
+def create_cleaned_set(file_with_path, varname, datename, freq=None, datetime_last=None, length=None, weekdays=False, fill_na_method = None):
     """Run all chosen transformations on the data.
     
     Parameters
@@ -152,6 +153,12 @@ def create_cleaned_set(file_with_path, varname, datename, freq = None, datetime_
         
         length : (default = None)
             length of dataset if data should be downsized
+
+        weekdays: bool (default = False)
+            if the data is only on weekdays (e.g. stock prices) it should be True, reindexes data so missing values become apparent
+        
+        fill_na_method: {‘backfill’, ‘bfill’, ‘pad’, ‘ffill’, None}, default None
+            Method to use for filling holes in reindexed Series pad / ffill: propagate last valid observation forward to next valid backfill / bfill: use NEXT valid observation to fill gap
     """
     
     # read in data (concatenate multiple files if necessary)
