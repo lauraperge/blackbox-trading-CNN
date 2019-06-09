@@ -159,6 +159,14 @@ def create_cleaned_set(file_with_path, varname, datename, freq=None, datetime_la
         
         fill_na_method: {‘backfill’, ‘bfill’, ‘pad’, ‘ffill’, None}, default None
             Method to use for filling holes in reindexed Series pad / ffill: propagate last valid observation forward to next valid backfill / bfill: use NEXT valid observation to fill gap
+   
+    Returns
+    -------------------------------------
+        df: Pandas.DataFrame 
+            pandas univariate time series object with chosen variable as the only column
+
+        num_missing: int
+            number of missing instances (if any)
     """
     
     # read in data (concatenate multiple files if necessary)
@@ -176,23 +184,27 @@ def create_cleaned_set(file_with_path, varname, datename, freq=None, datetime_la
         df = df.loc[:datetime_last]
     
     # weekdays NA check
+    num_missing = df.isnull().sum()
     if weekdays == True:
 
         # Getting all weekdays between first and last date
         all_weekdays = pd.date_range(
-            start=df.first('1D').index[0], 
-            end=df.last('1D').index[0], 
+            start=str(df.first('1D').index[0]), 
+            end=str(df.last('1D').index[0]), 
             freq='B')
 
         # All we need to do is reindex close using all_weekdays as the new index
         df = df.reindex(all_weekdays)
 
+        #overwrite here if weekdays == True
+        num_missing = df.isnull().sum()
         # # Reindexing will insert missing values (NaN) for the dates that were not present
         # in the original set. To cope with this, we can fill the missing by replacing them
         # with the latest available price for each instrument.
-        df = df.fillna(method=fill_na_method)
+        if fill_na_method != None:
+            df = df.fillna(method=fill_na_method)
 
-    return(df)
+    return(df, num_missing)
 
 ## Report
 def report():
@@ -262,5 +274,4 @@ def report():
     plt.show()
 
 if __name__ == "__main__":
-
-   # report()
+    pass
