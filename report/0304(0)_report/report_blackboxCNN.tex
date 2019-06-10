@@ -1,6 +1,10 @@
 \documentclass[11pt, a4paper]{article}
 \usepackage[english, science, titlepage]{ku-frontpage}
 \usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 
 \usepackage{cite, hyperref, nameref}
 \usepackage{natbib, apalike, url}
@@ -39,8 +43,7 @@ People have been trading on financial markets for more than 200 years and with t
 a versatile, international, online, easy-to-access, automated and truly immense beast. Its evolution is not over, however, and the mentioned features make it just the perfect subject of 
 artificial intelligence and machine learning applications. 
 
-But what were some major milestones of this evolution? As nicely summarized by \cite{rialtohistory}  employing algorithms in trading for calculation of asset prices goes back to the beginning of 
-the 20th century. In the early 1950s, Harry Markowitz brought computational finance to existence in the pursuit of portfolio optimization. During that time, the computational 
+But what were some major milestones of this evolution? As nicely summarized by \cite{rialtohistory}  employing algorithms in trading for calculation of asset prices goes back to the beginning of the 20th century. In the early 1950s, Harry Markowitz brought computational finance to existence in the pursuit of portfolio optimization. During that time, the computational 
 resources were inadequate to efficiently utilize these algorithms in trading. From the 1970s to 1990s, 
 large-scale computerization, the introduction of PCs, the internet and then amongst other systems the ECN (Electronic Communication Network) completely changed the game. Automation became a 
 feasible solution, and algorithms are way faster to react with Buy/Sell orders on the market than humans. Trading is now not only for institutions or professionals and a chosen few but for 
@@ -86,33 +89,88 @@ we closed in on grasping our objectives and what are some possible proceedings o
 \section{Related Work}
 \label{sec:RelWork}
 
-The overall heuristics of this paper largely resembles the one published by \cite{sezer2018algorithmic}. They propose a deep CNN based algorithmic trading model which they train on financial time series to predict trading orders. The paper diverts from our approach in that it transforms the one dimensional time series into images using 15 different technical indicators over different time periods and fits them into a grid. Their results showed that the performance of their model was quite good against Buy \& Hold and other algorithmic methods even on periods long out of sample. The main point of improvement in the conclusion is regarding the image creation which we hope to overcome using a mix of different techniques. 
+The overall heuristics of this paper largely resembles the one published by \cite{sezer2018algorithmic}. They propose a deep CNN based algorithmic trading model which they train on financial time series to predict trading orders. The paper diverts from our approach in that it transforms the one dimensional time series into images using 15 different technical indicators over different time periods and fits them into a grid. Their results showed that the performance of their model was quite good against Buy \& Hold and other algorithmic methods even on periods long out of sample. Their conclusion states that they could potentially improve performance by creating more meaningful images.
 
 One potential issue with the image transformation methodology used by the mentioned paper is that the resulting plot does not directly represent the input time series. The image is dependent of the choice of technical indicators and their ordering in the grid. Therefore, we turn to \cite{hatami2018classification} which proposes a similar model but with using Recurrence Plots for transformation; and \cite{wang2015encoding} which uses Markov Transition Fields and Gramian Angular Fields in the different color channels (RGB) of the resulting image. Both methods require a window of elements from the series and maps those to two dimensions according to different formulas which we cover in details in the section \nameref{subsec:DM:TS2IM}.
 
-%%% NOT SURE
-% \subsection{Financial Time Series Analysis}
-% \label{subsec:RW:FinTS}
-% Forecasting, signal processing, time series pattern recognition
-
-% \subsection{Machine Learning \& Deep Learning}
-% \label{subsec:RW:MLDL}
-
-% Main architectures, ANN, RNN, CNN, LSTM, Perceptrons..
-
-% \subsection{Algorithmic Trading}
-% \label{subsec:RW:AlgoTrd}
-% Traditional Algorithmic Trading methodologies to new ones employing deep learning in: forecasting based / automated ways and limits
-%%%
-
 \section{Data and Methodology}
+Overall, 6 models are trained, tuned and tested. There are 5 individual models each exclusively trained and tested on one assigned dataset. This is used to analyze the performance of asset-specific model builds. 
+Then, we train the universal model on data coming from 35 financial assets, including the 5 used in the asset-specific models, and test it on these 5 assets once again. This system allows us to compare the performance of the universal model to the asset-specific ones.
+
+In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of the assets and then use one model per asset to generate trading signals. On the other hand we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the assets selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
+
+In the upcoming subsections we will look into what data is used for each of the 6 models, how training, tuning and testing is approached to get comprehensive results, and what other trading techniques we match our performance against.
+
 \label{sec:DM}
-\subsection{Datasets}
+\subsection{Data}
 \label{subsec:DM:Data}
 
-\textbf{To Add: Overview of datasets of different frequencies, asset classes that I use}
+The 5 asset-specific models are based on the historical adjusted daily closing prices of the following indices, stocks, and ETF:
 
-In terms of further scaling, Recurrence Plots and Markov Transition Fields require no scaling steps, while for the Gramian Angular Field transformation, we first use min-max normalization between $[-1, 1]$ according to the general formula for $[a, b]$
+\begin{itemize}
+    \item S\&P 500,
+    \item Nikkei 225,
+    \item Nasdaq Composite,
+    \item Apple Inc.,
+    \item SPDR S\&P 500 ETF Trust.
+\end{itemize} 
+
+The universal model contains all five assets above and others listed in table \ref{tbl:univ_data}. The assets are selected to represent various asset classes: major stocks, stock indices, exchange traded funds, foreign exchange rates and commodity prices.
+
+\begin{table}[]
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Name}                   & \textbf{Symbol} & \textbf{Dates}          \\ \midrule
+\textbf{Main assets}            &                 &                         \\
+S\&P500                         & GSPC            & 1950/01/03 - 2019/06/07 \\
+Nikkei225                       & N225            & 1965/01/25 - 2019/06/07 \\
+Nasdaq                          & IXIC            & 1971/02/05 - 2019/06/07 \\
+AAPL                            & AAPL            & 1980/12/12 - 2019/06/07 \\
+SPY                             & SPY             & 1993/01/29 - 2019/06/07 \\ \midrule
+\textbf{Stock Indices}          &                 &                         \\
+DJI                             & DJI             & 1985/01/29 - 2019/06/07 \\
+DAX30                           & GDAXI           & 1987/12/30 - 2019/06/07 \\
+Shanghai Composite              & SSI             & 1990/12/19 - 2019/06/07 \\
+VIX                             & VIX             & 1990/01/02 - 2019/06/05 \\
+FTSE100                         & INDEXFTSE: UKX  & 1997/10/20 - 2019/05/31 \\
+FTSE250                         & INDEXFTSE: MCX  & 1997/10/20 - 2019/05/31 \\
+FTSE350                         & INDEXFTSE: NMX  & 1997/10/20 - 2019/05/31 \\
+Eurostoxx 50                    & STOXX50E        & 1986/12/31 - 2019/06/07 \\
+Russell 2000                    & RUT             & 1987/09/10 - 2019/06/07 \\ \midrule
+\textbf{Exchange Traded Funds}  &                 &                         \\
+QQQ                             & QQQ             & 1999/03/10 - 2019/06/07 \\
+XLF                             & XLF             & 1998/12/22 - 2019/06/07 \\
+XLU                             & XLU             & 1998/12/22 - 2019/06/07 \\
+XLP                             & XLP             & 1998/12/22 - 2019/06/07 \\
+EWZ                             & EWZ             & 2000/07/14 - 2019/06/07 \\
+EWH                             & EWH             & 1996/04/01 - 2019/06/07 \\
+XLY                             & XLY             & 1998/12/22 - 2019/06/07 \\
+XLE                             & XLE             & 1998/12/22 - 2019/06/07 \\ \midrule
+\textbf{Foreign Exchange Rates} &                 &                         \\
+GBPUSD                          & DEXUSUK         & 1971/01/04 - 2019/05/31 \\
+AUDUSD                          & DEXUSAL         & 1975/01/02 - 2019/05/31 \\
+NZDUSD                          & DEXUSNZ         & 1971/01/04 - 2019/05/31 \\
+EURUSD                          & DEXUSEU         & 1999/01/04 - 2019/05/31 \\ \midrule
+\textbf{Commodities}            &                 &                         \\
+Copper                          & Copper          & 1959/07/06 - 2019/06/07 \\
+WTI                             & DCOILWTICO      & 1986/01/02 - 2019/06/03 \\
+Europe Brent Spot Price         & FOB             & 1987/05/20 - 2019/06/03 \\
+Gold                            & XAUUSD          & 1979/12/29 - 2019/06/07 \\
+Silver                          & XAGUSD          & 1982/07/02 - 2019/06/07 \\
+Platinum                        & Platinum        & 1969/01/02 - 2019/06/07 \\
+Corn                            & Corn            & 1959/07/01 - 2019/06/07 \\
+Coffee                          & Coffee          & 1973/08/20 - 2019/06/07 \\
+Soybean oil                     & Soybean oil     & 1960/10/26 - 2019/06/07
+\end{tabular}
+\caption{Overview of datasets. The main assets' daily adjusted closing prices are each individually used to train and test asset-specific models, while all of the 35 assets' daily (adjusted) closing prices are used to train the universal model. }
+\label{tbl:univ_data}
+\end{table}
+
+\textbf{DO I HAVE TO STATE SOURCES? IF I DO, IS IT ENOUGH TO PRESENT A MORE DETAILED TABLE IN THE APPENDICES WITH LINKS AND DATES OF DOWNLOAD?}
+
+Each asset's time series take values on business days. One-off missing values are imputed using forward filling which is just propagating the last valid non-missing value to the gaps. Afterwards, each price series is turned into return series. The return $r$ at time $t$ is defined $r_t = \frac{p_t}{p_{t-1}}-1$ where $p_t$ is the price given at any time point $t$.
+
+In terms of scaling, Recurrence Plots and Markov Transition Fields require no scaling steps, while for the Gramian Angular Field transformation, we first use min-max normalization between $[-1, 1]$ according to the general formula for $[a, b]$
 
 \begin{equation}
 \label{eq:minmax}
@@ -124,22 +182,30 @@ given $x = (x_1, \dots, x_n)$ is a univariate time series and $x_i$ is its $i^{t
 \subsection{Transformation Strategies: Time Series to Images}
 \label{subsec:DM:TS2IM}
 
-We will cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields.
+We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size 25 (\textbf{TBM!!}) of the different return time series. This means that for $n$ return values we get $n - \lceil\frac{window size}{2}\rceil$ images.
 
-The Recurrence Plots (RP) originally introduced by \cite{jp1987recurrence} implemented according to \cite{hatami2018classification} are useful when we wish to represent the periodicity of trajectories going through a phase space. The issue with visualization that the RP solves appears when the phase space has more than three dimensions. A recurrence represents the time a trajectory gets back to a previously visited location. In Figure \ref{fig:RP_Def} we use the same explanation presented in Figure 1 of \cite{hatami2018classification}.
+The Recurrence Plots (RP) originally introduced by \cite{jp1987recurrence} implemented according to \cite{hatami2018classification} are useful when we wish to represent the periodicity of trajectories going through a phase space. The issue with visualization that the RP solves appears when the phase space has more than three dimensions. A recurrence represents the time a trajectory gets back to a previously visited location. In Figure \ref{fig:RP_Def} we use the same explanation presented in Figure 1 of \cite{hatami2018classification}. In the plots it can be observed, how certain values tend to follow each other, for example $x_3 = 1, x_4 = 3$ and then this pattern re-occurs at $x_6, x_7$ which is reflected by $s_3$ and $s_6$ falling to the same phase on the map, and thus by the pixel at $(s_3, s_6)$ being equal to zero.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{images/RP.png}
-    \caption{The left plot shows a time series of 14 observations $x_i$, $i=1,\dots,14$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,13$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the 13 states: $R_{i,j} = Euclidean(s_i,s_j)$.}
+    \includegraphics[width=\textwidth]{images/RP.PNG}
+    \caption{The left plot shows a time series of 7 observations $x_i$, $i=1,\dots,7$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,13$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the 6 states: $R_{i,j} = Euclidean(s_i,s_j)$.}
     \label{fig:RP_Def}
 \end{figure}
 
 After the recurrence plots are created we scale them to fall in the interval $[0, 1]$ using the appropriate min-max scaling introduced in Equation \ref{eq:minmax} which is a requirement of the CNN input. 
 
-\textbf{(Add sth like this to RP: arvix.org/pdf/1710.00886.pdf 3.1 subsec)}
+As it is pointed out in \cite{hatami2018classification}, time series tend to show recurrent behaviour like periodicity, and this phenomenon is generally present in dynamic nonlinear systems or stochastic processes that generate the series. The recurrence plot, as described previously via Figure \ref{fig:RP_Def}, reveals which are the phases that trajectories tend to return to. To attain such a plot, each element of it is the result of this formula:
+\begin{equation}
+\label{eq:RP_R}
+    R_{i,j} = \theta(\epsilon-||\vec{s}_i - \vec{s}_j||),\quad \vec{s}(.) \in \mathbb{R}^m, \quad i,j = 1,\dots,K
+\end{equation}
 
-GAF
+where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing 25 consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in 24 states; finally, the R-matrix is calculated based on equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $24$ by $24$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. 
+
+% potentially mention RP on prices that increase or decrease similar while on returns it is more distinctive
+
+Another image transformation used is the Gramian Angular Field 
 
 MTF
 
@@ -229,11 +295,11 @@ How long it takes to train, how long it takes to predict
 \label{sec:Discuss}
 
 \section{Conclusion}
-\label{sec:Conclusion}
+\label{sec:Conclusion} 
 
 \section{Appendices}
 \label{sec:App}
-Calculations, explanations
+Calculations, explanations 
 Hyperparameter optimization Results
 Other optimization results
 

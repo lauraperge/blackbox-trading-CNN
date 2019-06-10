@@ -68,15 +68,18 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
     -----------------------------------------
         labelled_pd : pd.dataframe
             data with new column of labels
+        
+        price_at_image : np.array
+            the last price used to create an image (the price one would trade at given the order implied by the image)
 
         images : np.array
             array of transformed matrices according to transformation setting
         
         image_labels : np.array
-            array of labels for each image, with one-hot encoding
+            array of labels for each image, with one-hot encoding ("Sell", "Buy", "Hold" order for columns is default)
         
         label_names :
-            dictionary linking strategy name to column index in image_labels
+            dictionary linking strategy name to column index in image_labels ("Sell", "Buy", "Hold" order is default)
 
     """
     if image_window_size < np.ceil(label_window_size/2):
@@ -88,17 +91,25 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             series, label_window_size)
 
         # get one-hot encoding for the labels
+        dummies = pd.get_dummies(labelled_pd.Strategy)
+        dummies = dummies[['Sell', 'Buy', 'Hold']]
+        # for saving which column is which
+        label_colnames = np.array(dummies.columns)
+
         if use_returns == True:
             ## if returns are used for image creation the first label we need is one step later (first return is nan)
-            image_labels = np.array(pd.get_dummies(labelled_pd.Strategy))[
+            image_labels = np.array(dummies)[
                 image_window_size:(-np.int(label_window_size/2)), :]
+
+            price_at_image = np.array(labelled_pd.Series.values)[
+                image_window_size:(-np.int(label_window_size/2))].reshape((-1,1))
         else:
             ## if prices used for image creation the first label is needed 1 step earlier
-            image_labels = np.array(pd.get_dummies(labelled_pd.Strategy))[
+            image_labels = np.array(dummies)[
                 (image_window_size-1):(-np.int(label_window_size/2)), :]
-
-        # for saving which column is which
-        label_colnames = np.array(pd.get_dummies(labelled_pd.Strategy).columns)
+            
+            price_at_image = np.array(labelled_pd.Series.values)[
+                (image_window_size-1):(-np.int(label_window_size/2))].reshape((-1, 1))
         
         if use_returns == True:
             return_series = series[1:]/series[:-1] -1
@@ -152,17 +163,21 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
         else:
             images = eval("images_" + image_trf_strat)
 
-        return(labelled_pd, np.array(images), image_labels, label_names)
+        return(labelled_pd, price_at_image, np.array(images), image_labels, label_names)
 
 if __name__ == "__main__":
     dta = pd.DataFrame(data=np.array(np.random.normal(0, 2.3, 40)), columns=["Series"])
 
-    labelled_pd, images, image_labels, label_names = data_to_labelled_img(
-        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["RP", "GASF", "MTF"], num_bin=4, padding_RP=1,  use_returns=True)
+    labelled_pd, price_at_image, images, image_labels, label_names = data_to_labelled_img(
+        data=dta, column_name="Series", label_window_size=3, image_window_size=14, image_trf_strat=["RP", "GASF", "MTF"], num_bin=4, padding_RP=1,  use_returns=False)
    
-    print(images.shape)
+    print(price_at_image.shape)
     print(image_labels.shape)
+    print(price_at_image)
+    print(image_labels)
+    print(label_names)
     # print(labelled_pd)
-    print(images)
+    #print(images)
+
     # print(image_labels)
     # print(label_names)
