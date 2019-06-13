@@ -1,9 +1,17 @@
 \begin{thebibliography}{}
 
-\bibitem[Eckmann et~al., 1987]{jp1987recurrence}
-Eckmann, J.~P., Kamphorst, S.~O., and Ruelle, D. (1987).
-\newblock Recurrence plots of dynamical systems.
-\newblock {\em Europhysics Ltters}, 5:973--977.
+\bibitem[Campanharo et~al., 2011]{campanharo2011duality}
+Campanharo, A.~S., Sirer, M.~I., Malmgren, R.~D., Ramos, F.~M., and Amaral, L.
+  A.~N. (2011).
+\newblock Duality between time series and networks.
+\newblock {\em PloS one}, 6(8):e23378.
+
+\bibitem[de~Vitry, 2018]{gaf_medium}
+de~Vitry, L. (2018).
+\newblock Encoding time series as images, gramian angular field imaging.
+\newblock
+  \url{https://medium.com/analytics-vidhya/encoding-time-series-as-images-b043becbdbf3}.
+\newblock [Online blog post, accessed 2019-06-11].
 
 \bibitem[Fukushima, 1979]{fukushima1979neural}
 Fukushima, K. (1979).
@@ -29,6 +37,11 @@ Hatami, N., Gavet, Y., and Debayle, J. (2018).
 Hochreiter, S. and Schmidhuber, J. (1997).
 \newblock Long short-term memory.
 \newblock {\em Neural computation}, 9:1735--80.
+
+\bibitem[JP, 1987]{jp1987recurrence}
+JP, E. (1987).
+\newblock Recurrence plots of dynamical systems.
+\newblock {\em Europhysics Ltters}, 5:973--977.
 
 \bibitem[Lemus, 2018]{lemus_2018}
 Lemus, G. (2018).

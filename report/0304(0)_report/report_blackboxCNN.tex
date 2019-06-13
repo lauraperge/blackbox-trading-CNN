@@ -201,13 +201,54 @@ As it is pointed out in \cite{hatami2018classification}, time series tend to sho
     R_{i,j} = \theta(\epsilon-||\vec{s}_i - \vec{s}_j||),\quad \vec{s}(.) \in \mathbb{R}^m, \quad i,j = 1,\dots,K
 \end{equation}
 
-where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing 25 consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in 24 states; finally, the R-matrix is calculated based on equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $24$ by $24$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. 
+where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing 25 consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $24$ states; finally, the R-matrix is calculated based on equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $24$ by $24$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. 
 
 % potentially mention RP on prices that increase or decrease similar while on returns it is more distinctive
 
-Another image transformation used is the Gramian Angular Field 
+Another image transformation used is the Gramian Angular Field (GAF) that translates the typical Cartesian coordinates onto a polar coordinate system. The technique is introduced in \cite{wang2015encoding}, and is based on the Gramian matrix (named after J{\o}rgen Pedersen Gram), the entries of which are given by $G_{ij} = \langle v_i,v_j \rangle$ for a set of vectors $v_1,\dots, v_n$. These entries are inner products which measure the "similarity" of the two vectors. The Gram matrix is generally used for the calculation of the linear independence of a set of vectors. A beneficial property of the Gram matrix is that it preserves temporal dependency in the geometrical setting of the matrix, time flows from the top left to the bottom-right. For example, the Gramian matrix of a univariate time series: $x_t$ for $t=1, 2, 3$ can be computed as:
 
-MTF
+$$
+G =\begin{pmatrix} 
+\langle x_1,x_1 \rangle & \langle x_1,x_2 \rangle & \langle x_1,x_3 \rangle \\
+\langle x_2,x_1 \rangle & \langle x_2,x_2 \rangle & \langle x_2,x_3 \rangle \\
+\langle x_3,x_1 \rangle & \langle x_3,x_2 \rangle & \langle x_3,x_3 \rangle \\
+\end{pmatrix}
+$$
+
+As noted in \cite{gaf_medium} the use of the Gramian matrix can be motivated by the fact that plain univariate time series prove unsuccessful in explaining co-occurence and latent states in the data and the Gramian matrix provides an alternative visualization. This same article also shows that the traditional Gram matrix is unsuccessful in making a distinction between the Gaussian noise and the valuable information in the data, thus the entries of the GAF matrix are not simply given by the inner product (in an Euclidean setting). Following the definition in \cite{wang2015encoding}, to create a GAF plot from a time series $X = \{x_1,x_2, \dots x_n\}$ of n valued real observations, we first rescale $X$ using min-max scaling to the $[-1,1]$ interval, as described previously in equation \ref{eq:minmax}, and end-up with the scaled series $\Tilde{X}$. Now, we transform the time series into polar coordinates:
+\begin{align}
+\label{eq:gafencode}
+    \begin{cases}
+        \phi_i = \arccos(\Tilde{x}_i), \quad -1 \leq \Tilde{x}_i \leq 1, \quad \Tilde{x}_i \in \Tilde{X}\\
+        r_i = \frac{t_i}{N}, \quad t_i \in \mathbb{N}
+    \end{cases}
+\end{align}
+
+So, we transform the timestamp $t_i$ dividing by $N$ (the number of series instances) and get the radius. As for the angles, they are the angular cosine of the scaled series. Then, we create the Gramian Angular Field via taking the cosine sum between each pair of angles:
+
+\begin{equation}
+\label{eq:GAF}
+    GAF =\begin{pmatrix} 
+\cos(\phi_1 + \phi_1) & \cdots & \cos(\phi_1 + \phi_n)\\
+\cos(\phi_2 + \phi_1) & \cdots & \cos(\phi_2 + \phi_n)\\
+\vdots & \ddots & \vdots\\
+\cos(\phi_n + \phi_1) & \dots & \cos(\phi_n + \phi_n)\\
+\end{pmatrix} \\
+= \Tilde{X}' \cdot \Tilde{X} - \sqrt{I-\Tilde{X}^2}' \cdot \sqrt{I-\Tilde{X}^2}
+\end{equation}
+
+where $I$ is the unit row vector $[1, 1, \dots, 1]$. Notice, that this is a Gramian-like matrix with a penalized inner product given by: $\langle x, y\rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}= x \cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}$\footnote{Please see Appendices \nameref{app:GAF} for the proof.} There are several advantages to this construction one of which is preserving the absolute temporal relations. Another aspect is that the diagonal sustains the original (although transformed) time series. Furthermore, the entries $GAF_{ij}$ of the matrix represent the temporal correlation (cosine-similarity) with respect to the different $k= |i-j|$ time intervals, and the main diagonal displays the case of $k=0$. Figure \ref{fig:GAF} shows how the transformation happens for an example scaled time series of $14$ observations. Time can again be tracked going from the top-left to the bottom-right corner.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{images/GAF.png}
+    \caption{Plot 1 shows the time series scaled to the interval [-1, 1] which is then transformed to polar coordinates. In the polar coordinate system in Plot 2, the first point is the closest to the center, then as time moves forward, the coordinates vary among different angles but move further and further out towards the boundaries of the unit circle. Plot 3 shows the GAF plot that we get by applying the formula in equation \ref{eq:GAF}. Before applying the CNN, we use min-max scaling to the interval $[0,1]$ to fit the expected input of the model. As Plot 4 demonstrates, this scaling does not change the appearance of the image.}
+    \label{fig:GAF}
+\end{figure}
+
+% Importantly, the described encoding map in equation \ref{eq:gafencode} is bijective as $cos(\phi)$ is monotonic given that $\phi \in [0, \pi]$ which IS NOT TRUE HERE, is it? for the single angles yes, but we add them up, which results in non-bijective transformation, for the different input we can get the same output
+
+The third and last transformation strategy is called Markov Transition Field (MTF) and it entails encoding dynamic transition probabilities from a Markov Transition Matrix of discretized quantile bins in a quasi-Gramian matrix. The algorithm is introduced in \cite{wang2015encoding} and inspired by \cite{campanharo2011duality}.
 
 \subsection{Image Labelling}
 \label{subsec:DM:IL}
@@ -295,13 +336,23 @@ How long it takes to train, how long it takes to predict
 \label{sec:Discuss}
 
 \section{Conclusion}
-\label{sec:Conclusion} 
+\label{sec:Conclusion}
 
 \section{Appendices}
 \label{sec:App}
-Calculations, explanations 
-Hyperparameter optimization Results
-Other optimization results
+
+\subsection{Gramian Angular Field: penalized inner product}
+\label{app:GAF}
+\begin{equation}
+    \begin{split}
+        \cos(\phi_1 + \phi_2)  & = \cos(\arccos(x) + \arccos(y)) \\
+        & = \cos(\arccos(x)) \cdot \cos(\arccos(y)) - \sin(\arccos(x)) \cdot \sin(\arccos(y))\\
+        & = x\cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}\\
+        & = \langle x, y \rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}
+    \end{split}
+\end{equation}
+ Notice, that the entire operation does not satisfy the assumptions of an inner product (linearity limitation, not necessarily positive definite).
+
 
 \bibliography{reference}
 \bibliographystyle{apalike}
