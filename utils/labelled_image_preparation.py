@@ -12,7 +12,7 @@ from transform.markov_transition_field import MTF
 
 
 def data_to_labelled_img(data, column_name, label_window_size, image_window_size, image_trf_strat, 
-                         num_bin=4, 
+                         num_bin=5, 
                          padding_RP=0, 
                          standardize_out_RP=False, 
                          standardize_out_GASF = False, 

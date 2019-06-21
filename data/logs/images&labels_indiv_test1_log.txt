@@ -1,7 +1,7 @@
-Date from 2005-11-28 00:00:00 to 2006-12-31
-AAPL: 259 images of shape (259, 25, 25, 3)
-GSPC: 259 images of shape (259, 25, 25, 3)
-IXIC: 259 images of shape (259, 25, 25, 3)
-N225: 259 images of shape (259, 25, 25, 3)
-SPY: 259 images of shape (259, 25, 25, 3)
-it took this long to run: 3.144543409347534
+Date from 2005-12-05 00:00:00 to 2006-12-31
+AAPL: 259 images of shape (259, 20, 20, 3)
+GSPC: 259 images of shape (259, 20, 20, 3)
+IXIC: 259 images of shape (259, 20, 20, 3)
+N225: 259 images of shape (259, 20, 20, 3)
+SPY: 259 images of shape (259, 20, 20, 3)
+it took this long to run: 2.342017650604248

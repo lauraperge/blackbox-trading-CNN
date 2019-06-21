@@ -1,7 +1,7 @@
-Date from 2018-04-27 00:00:00 to 2019-06-07
-AAPL: 265 images of shape (265, 25, 25, 3)
-GSPC: 265 images of shape (265, 25, 25, 3)
-IXIC: 265 images of shape (265, 25, 25, 3)
-N225: 265 images of shape (265, 25, 25, 3)
-SPY: 265 images of shape (265, 25, 25, 3)
-it took this long to run: 3.3741233348846436
+Date from 2018-05-04 00:00:00 to 2019-06-07
+AAPL: 265 images of shape (265, 20, 20, 3)
+GSPC: 265 images of shape (265, 20, 20, 3)
+IXIC: 265 images of shape (265, 20, 20, 3)
+N225: 265 images of shape (265, 20, 20, 3)
+SPY: 265 images of shape (265, 20, 20, 3)
+it took this long to run: 2.4337172508239746

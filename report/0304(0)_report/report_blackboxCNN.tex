@@ -5,6 +5,7 @@
 \usepackage{amsfonts}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 \usepackage{cite, hyperref, nameref}
 \usepackage{natbib, apalike, url}
@@ -97,7 +98,8 @@ One potential issue with the image transformation methodology used by the mentio
 Overall, 6 models are trained, tuned and tested. There are 5 individual models each exclusively trained and tested on one assigned dataset. This is used to analyze the performance of asset-specific model builds. 
 Then, we train the universal model on data coming from 35 financial assets, including the 5 used in the asset-specific models, and test it on these 5 assets once again. This system allows us to compare the performance of the universal model to the asset-specific ones.
 
-In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of the assets and then use one model per asset to generate trading signals. On the other hand we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the assets selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
+In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of the assets and then use one model per asset to generate trading signals. 
+On the other hand, we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the assets selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
 
 In the upcoming subsections we will look into what data is used for each of the 6 models, how training, tuning and testing is approached to get comprehensive results, and what other trading techniques we match our performance against.
 
@@ -171,41 +173,38 @@ Soybean oil                     & Soybean oil     & 1960/10/26 - 2019/06/07
 Each asset's time series take values on business days. One-off missing values are imputed using forward filling which is just propagating the last valid non-missing value to the gaps. Afterwards, each price series is turned into return series. The return $r$ at time $t$ is defined $r_t = \frac{p_t}{p_{t-1}}-1$ where $p_t$ is the price given at any time point $t$.
 
 In terms of scaling, Recurrence Plots and Markov Transition Fields require no scaling steps, while for the Gramian Angular Field transformation, we first use min-max normalization between $[-1, 1]$ according to the general formula for $[a, b]$
-
 \begin{equation}
 \label{eq:minmax}
     x^{scaled}_i =(b-a)\frac{x_i-\min(x)}{\max(x) - \min(x)} + a
 \end{equation}
-
 given $x = (x_1, \dots, x_n)$ is a univariate time series and $x_i$ is its $i^{th}$ element. Note, that the scaling is done separately on the testing and training data to avoid look-ahead bias.
 
 \subsection{Transformation Strategies: Time Series to Images}
 \label{subsec:DM:TS2IM}
 
-We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size 25 (\textbf{TBM!!}) of the different return time series. This means that for $n$ return values we get $n - \lceil\frac{window size}{2}\rceil$ images.
+We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size $s = 20$ (\textbf{TBM!!}) of the different return time series. This means that for $n$ return values we get $(n - s + 1)$ images. 
 
-The Recurrence Plots (RP) originally introduced by \cite{jp1987recurrence} implemented according to \cite{hatami2018classification} are useful when we wish to represent the periodicity of trajectories going through a phase space. The issue with visualization that the RP solves appears when the phase space has more than three dimensions. A recurrence represents the time a trajectory gets back to a previously visited location. In Figure \ref{fig:RP_Def} we use the same explanation presented in Figure 1 of \cite{hatami2018classification}. In the plots it can be observed, how certain values tend to follow each other, for example $x_3 = 1, x_4 = 3$ and then this pattern re-occurs at $x_6, x_7$ which is reflected by $s_3$ and $s_6$ falling to the same phase on the map, and thus by the pixel at $(s_3, s_6)$ being equal to zero.
+The \textbf{Recurrence Plots (RP)} originally introduced by \cite{jp1987recurrence} implemented according to \cite{hatami2018classification} are useful when we wish to represent the periodicity of trajectories going through a phase space. The issue with visualization that the RP solves appears when the phase space has more than three dimensions. A recurrence represents the time a trajectory gets back to a previously visited location. In Figure \ref{fig:RP_Def} we use the same explanation presented in Figure 1 of \cite{hatami2018classification}. In the plots it can be observed, how certain values tend to follow each other, for example $x_3 = 1, x_4 = 3$ and then this pattern re-occurs at $x_6, x_7$ which is reflected by $s_3$ and $s_6$ falling to the same phase on the map, and thus by the pixel at $(s_3, s_6)$ being equal to zero.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/RP.PNG}
-    \caption{The left plot shows a time series of 7 observations $x_i$, $i=1,\dots,7$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,13$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the 6 states: $R_{i,j} = Euclidean(s_i,s_j)$.}
+    \caption{The left plot shows a time series of 7 observations $x_t$, $t=1,\dots,7$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,13$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the 6 states: $R_{i,j} = Euclidean(s_i,s_j)$.}
     \label{fig:RP_Def}
 \end{figure}
 
-After the recurrence plots are created we scale them to fall in the interval $[0, 1]$ using the appropriate min-max scaling introduced in Equation \ref{eq:minmax} which is a requirement of the CNN input. 
+After the recurrence plots are created, we scale them to fall in the interval $[0, 1]$ using the appropriate min-max scaling introduced in Equation \ref{eq:minmax} which is a requirement of the CNN input. 
 
 As it is pointed out in \cite{hatami2018classification}, time series tend to show recurrent behaviour like periodicity, and this phenomenon is generally present in dynamic nonlinear systems or stochastic processes that generate the series. The recurrence plot, as described previously via Figure \ref{fig:RP_Def}, reveals which are the phases that trajectories tend to return to. To attain such a plot, each element of it is the result of this formula:
 \begin{equation}
 \label{eq:RP_R}
     R_{i,j} = \theta(\epsilon-||\vec{s}_i - \vec{s}_j||),\quad \vec{s}(.) \in \mathbb{R}^m, \quad i,j = 1,\dots,K
 \end{equation}
-
-where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing 25 consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $24$ states; finally, the R-matrix is calculated based on equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $24$ by $24$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. 
+where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing $20$ consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $19$ states; finally, the R-matrix is calculated based on Equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $(19 \times 19)$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. Afterwards, to fit the image size of the two other transformation strategies introduced later, we add a size $1$ zero-padding to the right and bottom of the image.
 
 % potentially mention RP on prices that increase or decrease similar while on returns it is more distinctive
 
-Another image transformation used is the Gramian Angular Field (GAF) that translates the typical Cartesian coordinates onto a polar coordinate system. The technique is introduced in \cite{wang2015encoding}, and is based on the Gramian matrix (named after J{\o}rgen Pedersen Gram), the entries of which are given by $G_{ij} = \langle v_i,v_j \rangle$ for a set of vectors $v_1,\dots, v_n$. These entries are inner products which measure the "similarity" of the two vectors. The Gram matrix is generally used for the calculation of the linear independence of a set of vectors. A beneficial property of the Gram matrix is that it preserves temporal dependency in the geometrical setting of the matrix, time flows from the top left to the bottom-right. For example, the Gramian matrix of a univariate time series: $x_t$ for $t=1, 2, 3$ can be computed as:
+Another image transformation used is the \textbf{Gramian Angular Field (GAF)} that translates the typical Cartesian coordinates into a polar coordinate system. The technique is introduced in \cite{wang2015encoding}, and is based on the Gramian matrix (named after J{\o}rgen Pedersen Gram), the entries of which are given by $G_{ij} = \langle v_i,v_j \rangle$ for a set of vectors $v_1,\dots, v_n$. These entries are inner products which measure the "similarity" of the two vectors. The Gram matrix is generally used for the calculation of the linear independence of a set of vectors. A beneficial property of the Gram matrix is that it preserves temporal dependency in the geometrical setting of the matrix, time flows from the top left to the bottom-right. For example, the Gramian matrix of a univariate time series: $x_t$ for $t=1, 2, 3$ can be computed as:
 
 $$
 G =\begin{pmatrix} 
@@ -215,7 +214,7 @@ G =\begin{pmatrix}
 \end{pmatrix}
 $$
 
-As noted in \cite{gaf_medium} the use of the Gramian matrix can be motivated by the fact that plain univariate time series prove unsuccessful in explaining co-occurence and latent states in the data and the Gramian matrix provides an alternative visualization. This same article also shows that the traditional Gram matrix is unsuccessful in making a distinction between the Gaussian noise and the valuable information in the data, thus the entries of the GAF matrix are not simply given by the inner product (in an Euclidean setting). Following the definition in \cite{wang2015encoding}, to create a GAF plot from a time series $X = \{x_1,x_2, \dots x_n\}$ of n valued real observations, we first rescale $X$ using min-max scaling to the $[-1,1]$ interval, as described previously in equation \ref{eq:minmax}, and end-up with the scaled series $\Tilde{X}$. Now, we transform the time series into polar coordinates:
+As noted in \cite{gaf_medium} the use of the Gramian matrix can be motivated by the fact that plain univariate time series prove unsuccessful in explaining co-occurence and latent states in the data and the Gramian matrix provides an alternative visualization. This same article also shows that the traditional Gram matrix is unsuccessful in making a distinction between the Gaussian noise and the valuable information in the data, thus the entries of the GAF matrix are not simply given by the inner product (in an Euclidean setting). Following the definition in \cite{wang2015encoding}, to create a GAF plot from a time series $X = \{x_1,x_2, \dots x_n\}$ of n valued real observations, we first rescale $X$ using min-max scaling to the $[-1,1]$ interval, as described previously in Equation \ref{eq:minmax}, and end-up with the scaled series $\Tilde{X}$. Now, we transform the time series into polar coordinates:
 \begin{align}
 \label{eq:gafencode}
     \begin{cases}
@@ -223,8 +222,7 @@ As noted in \cite{gaf_medium} the use of the Gramian matrix can be motivated by 
         r_i = \frac{t_i}{N}, \quad t_i \in \mathbb{N}
     \end{cases}
 \end{align}
-
-So, we transform the timestamp $t_i$ dividing by $N$ (the number of series instances) and get the radius. As for the angles, they are the angular cosine of the scaled series. Then, we create the Gramian Angular Field via taking the cosine sum between each pair of angles:
+i.e. we convert the timestamp $t_i$ dividing by $N$ (the number of series instances) and get the radius. As for the angles, they are the angular cosine of the scaled series. Then, we create the Gramian Angular Field by taking the cosine sum between each pair of angles:
 
 \begin{equation}
 \label{eq:GAF}
@@ -236,39 +234,74 @@ So, we transform the timestamp $t_i$ dividing by $N$ (the number of series insta
 \end{pmatrix} \\
 = \Tilde{X}' \cdot \Tilde{X} - \sqrt{I-\Tilde{X}^2}' \cdot \sqrt{I-\Tilde{X}^2}
 \end{equation}
-
-where $I$ is the unit row vector $[1, 1, \dots, 1]$. Notice, that this is a Gramian-like matrix with a penalized inner product given by: $\langle x, y\rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}= x \cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}$\footnote{Please see Appendices \nameref{app:GAF} for the proof.} There are several advantages to this construction one of which is preserving the absolute temporal relations. Another aspect is that the diagonal sustains the original (although transformed) time series. Furthermore, the entries $GAF_{ij}$ of the matrix represent the temporal correlation (cosine-similarity) with respect to the different $k= |i-j|$ time intervals, and the main diagonal displays the case of $k=0$. Figure \ref{fig:GAF} shows how the transformation happens for an example scaled time series of $14$ observations. Time can again be tracked going from the top-left to the bottom-right corner.
+where $I$ is the unit row vector $[1, 1, \dots, 1]$. Notice, that this is a Gramian-like matrix with a penalized inner product given by\footnote{Please see Appendices \nameref{app:GAF} for the proof.}: $\langle x, y\rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}= x \cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}$. There are several advantages to this construction one of which is preserving the absolute temporal relations. Another aspect is that the diagonal sustains the original (although transformed) time series. Furthermore, the entries $GAF_{ij}$ of the matrix represent the temporal correlation (cosine-similarity) with respect to the different $k= |i-j|$ time intervals, and the main diagonal displays the case of $k=0$. Figure \ref{fig:GAF} shows how the transformation happens for an example scaled time series of $14$ observations. Time can again be tracked going from the top-left to the bottom-right corner.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/GAF.png}
-    \caption{Plot 1 shows the time series scaled to the interval [-1, 1] which is then transformed to polar coordinates. In the polar coordinate system in Plot 2, the first point is the closest to the center, then as time moves forward, the coordinates vary among different angles but move further and further out towards the boundaries of the unit circle. Plot 3 shows the GAF plot that we get by applying the formula in equation \ref{eq:GAF}. Before applying the CNN, we use min-max scaling to the interval $[0,1]$ to fit the expected input of the model. As Plot 4 demonstrates, this scaling does not change the appearance of the image.}
+    \caption{Plot 1 shows the time series scaled to the interval [-1, 1] which is then transformed to polar coordinates. In the polar coordinate system in Plot 2, the first point is the closest to the center, then as time moves forward, the coordinates vary among different angles but move further and further out towards the boundaries of the unit circle. Plot 3 shows the GAF plot that we get by applying the formula in Equation \ref{eq:GAF}. Before applying the CNN, we use min-max scaling to the interval $[0,1]$ to fit the expected input of the model. As Plot 4 demonstrates, this scaling does not change the appearance of the image.}
     \label{fig:GAF}
 \end{figure}
 
-% Importantly, the described encoding map in equation \ref{eq:gafencode} is bijective as $cos(\phi)$ is monotonic given that $\phi \in [0, \pi]$ which IS NOT TRUE HERE, is it? for the single angles yes, but we add them up, which results in non-bijective transformation, for the different input we can get the same output
+% Importantly, the described encoding map in Equation \ref{eq:gafencode} is bijective as $cos(\phi)$ is monotonic given that $\phi \in [0, \pi]$ which IS NOT TRUE HERE, is it? for the single angles yes, but we add them up, which results in non-bijective transformation, for the different input we can get the same output, maybe the radius makes it?
 
-The third and last transformation strategy is called Markov Transition Field (MTF) and it entails encoding dynamic transition probabilities from a Markov Transition Matrix of discretized quantile bins in a quasi-Gramian matrix. The algorithm is introduced in \cite{wang2015encoding} and inspired by \cite{campanharo2011duality}.
+The third and last transformation strategy introduced is called \textbf{Markov Transition Field (MTF)} and it entails encoding dynamic transition probabilities from a Markov Transition Matrix of discretized quantile bins in a quasi-Gramian matrix. The algorithm is introduced in \cite{wang2015encoding} and inspired by \cite{campanharo2011duality}.
+
+In its essence, the method consists of encoding the dynamic transition probabilities in a Markov Transition Matrix and then from that matrix create a new one that also preserves information about the sequentiality of the time series which is the MTF.
+To be more precise, given a time series $X_t$ (which, in our case, is the return series) we first identify its $Q$ quantile bins $q_j$ $(j \in [1,Q])$. In Figure \ref{fig:MTF}, Plot 1 illustrates this step. Afterwards, matrix $V$ is a $Q \times Q$ weighted adjacency matrix, with $V_{ij}$ representing the count of transitions from $q_i$ to $q_j$ within one time step. 
+%This is also a first-order Markov chain along the time axis.
+Then, the Markov Transition Matrix denoted by $W$ is constructed by normalization of $V$:
+
+\begin{equation}
+\label{eq:W}
+    W_{ij} = V_{ij}/\sum_j V_{ij}.
+\end{equation}
+
+Thus, $W_{ij}$ gives us the probability of moving from the $i^{th}$ bin to the $j^{th}$ bin within one time step. Now, the issue with this matrix is that we lose a lot of information and it fails to represent that the data is serial in time. Therefore, \cite{wang2015encoding} suggests a design that sustains the time dependence via the locations of the values in the matrix. The Markov Transition Field can then be described as:
+
+\begin{equation}
+    \label{eq:MTF}
+        MTF =\begin{pmatrix} 
+    W_{ij|x_1 \in q_i, x_1 \in q_j} & \cdots & W_{ij|x_1 \in q_i, x_n \in q_j}\\
+    W_{ij|x_2 \in q_i, x_1 \in q_j} & \cdots & W_{ij|x_2 \in q_i, x_n \in q_j}\\
+    \vdots & \ddots & \vdots\\
+    W_{ij|x_n \in q_i, x_1 \in q_j} & \dots & W_{ij|x_n \in q_i, x_n \in q_j}
+    \end{pmatrix}
+\end{equation}
+and an example can be observed in Plot 3 of Figure \ref{fig:MTF}. This resulting image, similarly to the previous two representations trails the flow of time from the top-left to the bottom-right corner.
+The entries of this matrix are already in the range $[0,1]$, so there is no need for further scaling before feeding it to the CNN. The images are created with the same sliding window technique discussed previously. A parameter to decide on is the number of quantile bins to create, and with window size set to $20$ it is set to $5$ (TBD!!!!) in our image construction.\footnote{It should be noted that the number of bins can be optimized via costly hyperparameter optimization but due to limitations in time and computational power this was not carried out in the study.}
+The MTF can also be understood as the multispan transition probabilities of the series within one step at different points in time.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{images/MTF.png}
+    \caption{Plot 1 shows the time series which is assigned to $Q=4$ quantile bins. In Plot 2.a), we can inspect th preliminary state of the Markov Transition Matrix $V$, the elements of which are the counts of the different transitions in the time series $X$, and in Plot 2.b) $W$ is the so-called right stochastic matrix or Markov Transition Matrix, a real stochastic matrix with transition probabilities between the different bins and each row summing to $1$ (see Equation \ref{eq:W}). Plot 3 shows the MTF plot that we get by applying the formula in Equation \ref{eq:MTF}.}
+    \label{fig:MTF}
+\end{figure}
 
 \subsection{Image Labelling}
 \label{subsec:DM:IL}
-The image labelling is done in two steps. First, we label the original time series, then the images.
+The image labelling is done in two steps. First, we label the original time series and, in a second step, the images using the labels from Step 1.
 The labelling algorithm is based on a simple idea and follows the one applied in \textit{Algorithm 1 in} \cite{sezer2018algorithmic}.
 
-The algorithm for the time series is as follows. We choose a \textit{labelling window size}, then we slide this labelling window on top of the series and label the window as "Buy" ("Sell") if the mid point of the window is the minimum (maximum) of the values in the window, otherwise they are "Hold". 
+The algorithm for the time series is as follows. We choose an odd labelling window size $l = 3$. The oddness is required since we slide this labelling window along the series and label the middle element of the window as "Buy" ("Sell") if the mid point of the window is the minimum (maximum) of the values in the window, otherwise they are "Hold". The process is illustrated in Plots 1-6 in Figure \ref{fig:Labelling}. 
+Two special cases are when, after a plunge, the series remains constant and then goes up again, and vice versa. They are also shown in Plots 7-10 in Figure \ref{fig:Labelling}, and the rule is as follows: 
+given the middle observation in the labelling window is sharing its property of being a local minimum (maximum) with at least one of its direct neighbours, then the label is a "Buy" ("Sell") only if the observation following the mid point is strictly greater (strictly less) than the mid point.
 
-Then, in Step 2, we digress from the mentioned literature. To label the images, we shift the labels, so an image is labelled as the last element of the series that is used for creating the image. There are multiple reasons for this diversion. Firstly, if we were to label an image based on the price at its mid point, the prediction of a label would come too late to actually trade at that price. Secondly, the choice of the labelling window size does not have to match the window size used for image creation which is also beneficial because the labelling window size allows us, to some extent, to choose the frequency of "Buy" and "Sell" orders. The process is illustrated in Figure \ref{fig:Labelling}.
+In Step 2, we digress from the mentioned literature. Each image is labelled as the last element of the series that is used for creating the image. In other words, considering image window size of $s$ and return series $X_t$ for $t = 1, \dots, n$ for $n > s$ which has labels defined by\footnote{The notation $\lfloor \cdot \rfloor$ refers to the floor function.} 
+$L_{\bar{t}}$ for 
+$\bar{t} = \left(1+\lfloor \frac{l}{2} \rfloor\right), \dots, \left(n-\lfloor \frac{l}{2} \rfloor\right)$ with labelling window size $l$, and each image made up of the subset of the series given by
+$X_{(i,\dots,(i+s-1))}$  
+for every
+$i = \left(1+\lfloor \frac{l}{2} \rfloor\right), \dots, \left(n-s+1-\lfloor \frac{l}{2} \rfloor\right)$ gets the label $L_{i+s-1}$. All in all, this indicates that given a series of $n$ returns, we can label $\left((n - s + 1)-\lfloor \frac{l}{2} \rfloor\right)$ of the $(n - s + 1)$ images created.
+There are multiple reasons to pursue this approach. Firstly, if we were to label an image based on the price at its mid point, the prediction of a label would come too late to actually trade at that price. Secondly, the choice of the labelling window size does not have to match the window size used for image creation which is also beneficial because the labelling window size allows us, to some extent, to choose the frequency of "Buy" and "Sell" orders because a smaller window size identifies more of them. 
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/Labelling.png}
-    \caption{Example of labelling. The upper part of the plot shows a time series on which a labelling window of size $3$ is applied which is visualized on two examples, a "Buy" and a "Sell" case. The lower part shows an example where image creation is done in a sliding window of size $5$ and that each image gets the same label as the last element of the series it was created on.}
+    \caption{Example of labelling. The figure visualizes the step-by-step labelling of an example series of $12$ observations with labelling window of size $l=3$. The grey rectangles show the scope of values considered in every labelling decision, and that the value in the middle time step is labelled in every step (Plots 1-6). Plots 7-8 show the process in the first special case, that is when the mid value is not the only local minimum, but shares this property with one of its neighbouring observations. The decision in the second special case, depicted in Plots 9-10, is similar, only with two consequent local maxima within the same window. It can also be seen in Plot 11 that the first and last $\lfloor \frac{l}{2} \rfloor = 1$ values cannot be labelled.}
     \label{fig:Labelling}
 \end{figure}
-
-Two special cases include when after a plunge the series remains constant and then goes up again, and then the reverse of this. The cases are illustrated in Figure \ref{fig: LabelEdge}
-
-\textbf{will be added}
 
 \subsection{Recognizing Patterns with Deep CNN}
 \label{subsec:DM:RecPatwCNN}
@@ -297,7 +330,7 @@ Introduce your base model - NOT DOING THIS YET BUT SKELETON:
 \subsection{Evaluation Techniques}
 
 For assessing the technical performance of the CNN, we use class-wise and overall precision, recall and F1-scores, moreover we will also present the confusion matrix. 
-The formulas for the listed measurements are listed in equations ... .
+The formulas for the listed measurements are listed in Equations ... .
 
 Furthermore, financial assessment is carried out on the test data which is done by setting an initial capital of USD $10,000$ and a flat transaction based trading commission of USD $5$ and then following the predicted trading order signals.
 In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. The procedure is described in algortihm ?.
@@ -314,7 +347,7 @@ To be able to evaluate shorter and longer time periods and different economic re
 \section{Evaluation Results}
 \label{sec:ER}
 
-In order to assess feasibility we will present how much time it takes for the model to train and to return predictions from the trained model. 
+In order to assess feasibility we present how much time it takes for the model to train and to return predictions from the trained model. 
 
 As mentioned before, the universal model is trained on multiple datasets, including those we test individually too. Now, we will run the financial evaluation on the assets that are tested individually, thereby assuming that the if one wants to use the model to predict trading signals for a certain asset, they should add its historical prices to the universal dataset and retrain the model.
 We always use the part of the historical data that is before the date of the first testing for training purposes to avoid lookahead bias.
