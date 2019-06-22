@@ -2,3 +2,7 @@
 notebooks/\.ipynb_checkpoints/
 
 *.pyc
+
+*.fdb_latexmk
+
+*.gz
