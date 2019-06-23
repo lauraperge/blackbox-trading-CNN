@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex report_blackboxCNN"] 1561133425 "report_blackboxCNN.aux" "report_blackboxCNN.bbl" "report_blackboxCNN" 1561133428
+["bibtex report_blackboxCNN"] 1561303230 "report_blackboxCNN.aux" "report_blackboxCNN.bbl" "report_blackboxCNN" 1561303233
   "C:/Users/Corvinus/AppData/Local/Programs/MiKTeX 2.9/bibtex/bst/bibtex/apalike.bst" 1291976391 24635 604dafcc79f521a11ea73e506e1fbd98 ""
   "reference.bib" 1560441297 4320 b5b3725c16b94811a6590062807cdeb6 ""
-  "report_blackboxCNN.aux" 1561133428 11485 8d5be6e586b37fd2c70e7a5f4aef7bae ""
+  "report_blackboxCNN.aux" 1561303233 13190 67d087119fdc63b78dd742bdd5da1dc7 ""
   (generated)
   "report_blackboxCNN.blg"
   "report_blackboxCNN.bbl"
-["pdflatex"] 1561133426 "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.tex" "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.pdf" "report_blackboxCNN" 1561133428
+["pdflatex"] 1561303230 "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.tex" "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.pdf" "report_blackboxCNN" 1561303233
   "C:/Users/Corvinus/AppData/Local/MiKTeX/2.9/miktex/data/le/pdftex/pdflatex.fmt" 1551715015 4168253 2795d828fe5526c85740fe6ccdc35a7b ""
   "C:/Users/Corvinus/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map" 1560197164 83751 6e4565e2a96ca36e797cc3ed7d4e67f8 ""
   "C:/Users/Corvinus/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc" 1458477487 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -132,8 +132,9 @@
   "C:/Users/Corvinus/AppData/Local/Programs/MiKTeX 2.9/tex/latex/tools/calc.sty" 1546712198 10212 357072c1d20578a30d6387d8a22e72ab ""
   "C:/Users/Corvinus/AppData/Local/Programs/MiKTeX 2.9/tex/latex/url/url.sty" 1388494052 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/Corvinus/AppData/Local/Programs/MiKTeX 2.9/tex/latex/xcolor/xcolor.sty" 1463135581 57049 34128738f682d033422ca125f82e5d62 ""
-  "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.aux" 1561133428 11485 8d5be6e586b37fd2c70e7a5f4aef7bae ""
-  "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.tex" 1561133422 36295 918cb6859e708c4a00d28055cae6132f ""
+  "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.aux" 1561303233 13190 67d087119fdc63b78dd742bdd5da1dc7 ""
+  "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.tex" 1561303226 39869 ebf4a5ed559cbec7b5e48fa68c797a89 ""
+  "images/Confusion matrix.png" 1561301667 20154 6153852aff0bad05d9bcd0645911ef90 ""
   "images/GAF.png" 1560435259 191687 81ef7c0a17724088a54e5156606b5072 ""
   "images/Labelling.png" 1561131410 126654 573ccd183d1b28d22b816cae8cd2faa5 ""
   "images/MTF.png" 1561123340 186777 af826d0fb6e7bea1915233efcc66f9ca ""
@@ -141,16 +142,16 @@
   "ku-frontpage.sty" 1499834948 5572 7130feb28f8947ab3e90533b0b88f858 ""
   "logos/science-english.pdf" 1499834948 71141 c04dc46be178488c9868ffcb30006256 ""
   "logos/science-logo.pdf" 1499834948 118817 f38834ded6564274de55e8e779115a02 ""
-  "report_blackboxCNN.aux" 1561133428 11485 8d5be6e586b37fd2c70e7a5f4aef7bae ""
-  "report_blackboxCNN.bbl" 1561133426 3512 efbcd62dc0c593697ff1267a83b18087 "bibtex report_blackboxCNN"
-  "report_blackboxCNN.out" 1561133428 1024 269b984e0e624836e243b3bc8249dd43 ""
-  "report_blackboxCNN.tex" 1561133422 36295 918cb6859e708c4a00d28055cae6132f ""
-  "report_blackboxCNN.toc" 1561133428 1095 ac721090964616444a4f1dcb9615af59 ""
+  "report_blackboxCNN.aux" 1561303233 13190 67d087119fdc63b78dd742bdd5da1dc7 ""
+  "report_blackboxCNN.bbl" 1561303230 3512 efbcd62dc0c593697ff1267a83b18087 "bibtex report_blackboxCNN"
+  "report_blackboxCNN.out" 1561303233 1176 49c7f75e9a11410c94539dd917e96330 ""
+  "report_blackboxCNN.tex" 1561303226 39869 ebf4a5ed559cbec7b5e48fa68c797a89 ""
+  "report_blackboxCNN.toc" 1561303233 1451 aad12730f3f8042b74885c5ca59743db ""
   (generated)
-  "report_blackboxCNN.out"
-  "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.log"
   "report_blackboxCNN.log"
-  "report_blackboxCNN.pdf"
   "report_blackboxCNN.toc"
+  "report_blackboxCNN.pdf"
   "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.pdf"
+  "c:/Users/Corvinus/Documents/UCPH/Thesis/blackbox-trading-CNN/report/0304(0)_report/report_blackboxCNN.log"
   "report_blackboxCNN.aux"
+  "report_blackboxCNN.out"

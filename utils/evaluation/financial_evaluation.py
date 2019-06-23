@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_commission= 1.0):
+def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_commission= 5.0):
     """ 
     Returns financial evaluation measurements of an algorithmic trading strategy given prices and relevant trading signals.
     Assets are traded in any increments.
@@ -26,8 +26,14 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
     
     Returns
     ------------------------------
+        capital : list of floats
+            amount of capital initially, and at every time step
+
         cumulative_return : np.float
             (ending_capital - init_capital)/init_capital
+        
+        total_profit_loss : np.float
+            total amount earned/lost over the period
         
         annualized_return_pct : np.float
             compounded annual return percentage
@@ -162,28 +168,41 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
                 capital.append(prices[idx] * num_units[-1])
 
     ending_capital = capital[-1]
-
-    cumulative_return = (ending_capital - initial_capital) / initial_capital
-
+    total_profit = ending_capital - initial_capital
+    cumulative_return =  total_profit / initial_capital
+    print(len(capital))
     annualized_return = (ending_capital/initial_capital)**(260/(len(capital)-1)) - 1
 
     all_trades = buys + sells
 
     success_ratio = winners/all_trades
 
-    if (ending_capital - initial_capital) > 0:
-        avg_trade_profit = (ending_capital - initial_capital) / winners
+    if total_profit > 0:
+        avg_trade_profit = total_profit / winners
         avg_trade_loss = None
-    elif (ending_capital - initial_capital) < 0:
+    elif total_profit < 0:
         avg_trade_profit = None
-        avg_trade_loss = (ending_capital - initial_capital) / losers
+        avg_trade_loss = total_profit / losers
     else:
         avg_trade_profit = None
         avg_trade_loss = None
 
 
-
-    return cumulative_return, annualized_return, all_trades, winners, losers, success_ratio, total_transaction_cost, avg_trade_profit, avg_trade_loss, buys, sells
+    to_return = {"capital" : capital, 
+                "total_profit_loss" : total_profit,
+                "cumulative_return" : cumulative_return,
+                "annualized_return" : annualized_return,
+                "all_trades" : all_trades,
+                "winners" : winners,
+                "losers" : losers,
+                "success_ratio" : success_ratio,
+                "total_transaction_cost" : total_transaction_cost,
+                "avg_trade_profit" : avg_trade_profit,
+                "avg_trade_loss" : avg_trade_loss,
+                "buys" : buys,
+                "sells" : sells
+    }
+    return to_return
 
 if __name__ == "__main__":
     prices = [.1, .5, .2, 1.1, .4, .8, .55, .12, .3, .14]
