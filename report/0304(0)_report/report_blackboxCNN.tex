@@ -2,7 +2,7 @@
 \usepackage[english, science, titlepage]{ku-frontpage}
 \usepackage[utf8]{inputenc}
 \usepackage{booktabs}
-\usepackage{amsfonts}
+\usepackage{amsfonts, amssymb}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -77,7 +77,7 @@ On the other hand, in this paper, we avert from the application of forecasting t
 \textbf{OBJECTIVES: TO BE MODIFIED ACCORDING TO OUTCOME}
 The goal of this paper is to develop a simple but powerful model that can make real-time trading decisions utilizing a convolutional neural network. For this, we need to capture as much dynamic 
 and static information from the one-dimensional time series as possible which we achieve by turning them into images. The classification exercise requires labels which we choose to represent trading orders of "Buy", "Sell" and "Hold". 
-These are preliminarily defined on the training set using a suitable algorithm that is designed to ensure profitability. The ultimate objective is a compact multilevel trading model that takes care of both the creation of image representations and the prediction of financially successful trading strategies using these images, for data that is fed to the model in real time. We also make a contrast between a model trained and used for a specific asset and a "universal" model of multiple assets motivated by the work of \cite{sirignano2018universal}. The expected outcome is that the universal model will give more robustly successful results.
+These are preliminarily defined on the training set using a suitable algorithm that is designed to ensure profitability. The ultimate objective is a compact multilevel trading model that takes care of both the creation of image representations and the prediction of financially successful trading strategies using these images, for data that is fed to the model in real time. We also make a contrast between a model trained and used for a specific financial instrument and a "universal" model of multiple assets motivated by the work of \cite{sirignano2018universal}. The expected outcome is that the universal model will give more robustly successful results.
 
 In the section \nameref{sec:RelWork}, we look at the path of publications that motivated and built the foundation of our approach. Then, the section \nameref{sec:DM} provides us with information about the kind of data we use throughout 
 the paper, moreover, we introduce the methodologies implemented from the data preparation to the prediction phase. These include the transformation of one-dimensional time series into two-dimensional images, 
@@ -98,8 +98,8 @@ One potential issue with the image transformation methodology used by the mentio
 Overall, 6 models are trained, tuned and tested. There are 5 individual models each exclusively trained and tested on one assigned dataset. This is used to analyze the performance of asset-specific model builds. 
 Then, we train the universal model on data coming from 35 financial assets, including the 5 used in the asset-specific models, and test it on these 5 assets once again. This system allows us to compare the performance of the universal model to the asset-specific ones.
 
-In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of the assets and then use one model per asset to generate trading signals. 
-On the other hand, we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the assets selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
+In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of them and then use one model per asset to generate trading signals. 
+On the other hand, we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the instruments selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
 
 In the upcoming subsections we will look into what data is used for each of the 6 models, how training, tuning and testing is approached to get comprehensive results, and what other trading techniques we match our performance against.
 
@@ -303,7 +303,7 @@ There are multiple reasons to pursue this approach. Firstly, if we were to label
     \label{fig:Labelling}
 \end{figure}
 
-\subsection{Recognizing Patterns with Deep CNN}
+\subsection{Recognizing Patterns with Deep CNN - NOT READY}
 \label{subsec:DM:RecPatwCNN}
 Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (deep) that also employ convolution in one or more layers as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). %As per Chapter 9.2 of \cite{goodfellow2016deep}) 
 There are three main arguments why CNNs are relatively popular and some of these make them particularly advantageous for the model.
@@ -314,8 +314,7 @@ textbf{Finish}
 % Let us take a second to recap what we have so far. We have one-dimensional historical stock price data that we preprocessed and created images from the sliding windows of data points. We created 
 %labels of trading actions on our original data and then matched these labels to the relevant images. 
 
-How to classify the images, why CNN, \dots, 
-Introduce your base model - NOT DOING THIS YET BUT SKELETON:
+SKELETON:
 
 1. Feed image representations in different channels for colors
 
@@ -323,47 +322,49 @@ Introduce your base model - NOT DOING THIS YET BUT SKELETON:
 
 3. Add regularization
 
-4. See if you can change the loss function to be minus return
+5. Other additions/optimization
 
-5. Other additions/optimization?
+6. Description of exact build of each model
 
 \subsection{Evaluation Techniques}
 
-For assessing the technical performance of the CNN, we use accuracy, class-wise and overall precision, recall and F1-scores, moreover we will also present the confusion matrix for the different models and testing periods (MAYBE SOME OF IT TO APPENDICES). 
+For assessing the technical performance of the CNN, we use accuracy, class-wise and average precision, recall and F1 scores, moreover we will also present the confusion matrix for the different models and testing periods. 
 The confusion matrix allows us to observe the absolute number of correctly and wrongly classified observations by classes. 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{images/Confusion matrix.png}
-    \caption{The structure of the confusion matrix. The notations "TS", "TB", and "TH" mean True Sell, True Buy and True Hold, while "FS", "FB", and "FH" mean False Sell, Buy, and Hold.}
+    \includegraphics[width=.5\textwidth]{images/Confusion_matrix.png}
+    \caption{The structure of the confusion matrix. The notations "TS", "TB", and "TH" mean True Sell, True Buy and True Hold, while "FS", "FB", and "FH" mean False Sell, Buy, and Hold, the subscript refers to the true class in case of false classification.}
     \label{fig:cmdef}
 \end{figure}
-The matrix that we will see in the section \nameref{subsec:ER:ClassPerf} has the structure in Figure\ref{fig:cmdef}.
-
-The accuracy tells us about the proportion of observations that is classified correctly over all the classes. Now, given we wish to calculate measurements for a classification on a set of $N$ values, i.e.: $N = TS + TB + TH + FS + FB + FH$, then the accuracy is given as:
+The matrix that we will see in the section \nameref{subsec:ER:ClassPerf} has the structure described in Figure \ref{fig:cmdef}.
+The accuracy tells us about the proportion of observations that is classified correctly over all the classes $k = \{S, B, H\}$ . Now, given we wish to calculate measurements for a classification on a set of $N$ values, i.e. $N = TS + TB + TH + \sum_k \left(FS_k + FB_k + FH_k\right)$ using the notations in Figure \ref{fig:cmdef}, the accuracy is:
 \begin{equation}
     \label{eq:acc}
-    Accuracy = \frac{TS + TB + TH}{N},
+    Accuracy = \frac{TS + TB + TH}{N}
 \end{equation}
-the class-wise precision for each class $K = \{S, B, H\}$ is given by
+the class-wise precision for each class $K$ is given by
 \begin{equation}
     \label{eq:pr}
-    \frac{TK}{TK + FK}
+    Precision_K = \frac{TK}{TK +  \sum_k FK_k}
 \end{equation}
 and the class-wise recall is then 
 \begin{equation}
     \label{eq:rec}
-    \frac{TK}{TK + }
+    Recall_K = \frac{TK}{TK +  \sum_{k  \smallsetminus \{K\}} Fk_K}
 \end{equation}
-
+or in other words, the precision of a class $K$ tells us the proportion of correct classifications among all the predictions of $K$, and the recall gives the percentage of the true $K$ class that is correctly classified as $K$. The F1 score is a useful measurement in unbalanced classification tasks, and it is the harmonic mean of the precision and the recall in every class:
 \begin{equation}
     \label{eq:f1}
+    F1_K = 2 \frac{Precision_K \cdot Recall_K}{Precision_K + Recall_K}.
 \end{equation}
+We will also see average results over the classes for each of these metrics.
 
-Furthermore, financial assessment is carried out on the test data which we start by setting an initial capital of USD $10,000$ and a flat transaction based trading commission of USD $5$, and the trading orders follow the trading order signals predicted by the model.
-In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. 
-The procedure is described in Algorithm ? with prices $p_t$ over the period $t=1, \dots, T$, trading signals $s_t$, trading commission $c$ and capital $C_t$ (initial capital $C_0$). Assets are assumed to be traded in any increments. After running the algorithm the following measurements are calculated for the financial performance evaluation:
+Furthermore, financial assessment is carried out on the test data which we start by setting an initial capital of $C_0 = 10000$ and a flat transaction based trading commission of $c = 5$ (both in USD). At every time step $t$ the trading orders are executed as per the signals ($s_t$) at price $p_t$ which are predicted by the model for the respective time step.
+In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. The Buy order is completed given money is available (up until the first Buy order, and after each executed Sell) and the Sell order is completed if units of the financial instrument are available for selling (i.e. after each executed Buy), otherwise they are handled as a Hold. In case of a Hold signal at $t$, trade does not take place, only the amount of capital $C_t$ is tracked at the given period.
+Assets are assumed to be traded in any increments. Using the described approach over the period $t=1, \dots, T$ the following measurements are calculated for the financial performance evaluation:
 
 \begin{itemize}
+    \item number of all executed trades: $n_{trade}$
     \item total profit/loss: 
     \begin{align}
         \label{eq:totPL}
@@ -379,7 +380,6 @@ The procedure is described in Algorithm ? with prices $p_t$ over the period $t=1
         \label{eq:annualized}
             r_{ann} = \frac{C_T}{C_0}^{\frac{260}{n}}-1
     \end{align}
-    \item number of all executed trades: $n_{trade}$
     \item average P \& L per trade:
     \begin{align}
         \label{eq:avgpl}
@@ -387,18 +387,14 @@ The procedure is described in Algorithm ? with prices $p_t$ over the period $t=1
     \end{align}
 \end{itemize}
 
-To be able to evaluate shorter and longer time periods and different economic regimes we test the model throughout 1 year periods in 2006, 2009 and May 2018 - June 2019. The models will be trained on all previous available data to the first day of testing and then retrained every ???. 
+To monitor the performance over different economic regimes, we test the model throughout 1 year periods in 2006, 2009 and May 2018 - June 2019. The models will be trained on all previous available data up to the first day of testing. 
+Moreover, the evaluation of competing algorithmic trading techniques, for the same testing periods with the same financial metrics provided in Equations \ref{eq:totPL} - \ref{eq:avgpl}, are carried out to make the evaluation more comprehensive.
+There are three methods considered for comparison: the Buy \& Hold, the momentum-based Relative Strength Index (RSI), and a volatility-based strategy using the Bollinger Bands (BB).\footnote{The strategies are described in the Appendices: \nameref{app:CompetingStrats}}
 
-Moreover, the evaluation of competing algorithmic trading techniques, for the same testing periods with the same financial metrics provided in Equations (...), are carried out to make the evaluation more comprehensive.
-There are three methods: the simple Buy \& Hold, the momentum-based Relative Strength Index (RSI), and a volatility-based strategy using the Bollinger Bands (BB).\footnote{The strategies are described in the Appendices: \nameref{app:CompetingStrats}}
+In order to assess feasibility we will also present how much time it takes for the model to train and to return predictions from the trained model.
 
 \section{Evaluation Results}
 \label{sec:ER}
-
-In order to assess feasibility we present how much time it takes for the model to train and to return predictions from the trained model. 
-
-As mentioned before, the universal model is trained on multiple datasets, including those we test individually too. Now, we will run the financial evaluation on the assets that are tested individually, thereby assuming that the if one wants to use the model to predict trading signals for a certain asset, they should add its historical prices to the universal dataset and retrain the model.
-We always use the part of the historical data that is before the date of the first testing for training purposes to avoid lookahead bias.
 
 \subsection{Classification Performance}
 \label{subsec:ER:ClassPerf}
@@ -411,9 +407,6 @@ description of results of Financial Evaluation, tables, text
 \subsection{Time Consumption}
 \label{subsec:ER:TimePerf}
 How long it takes to train, how long it takes to predict
-
-\subsection{Competing strategies}
-Table and some text for explanations
 
 \section{Discussion}
 \label{sec:Discuss}
@@ -439,13 +432,35 @@ Table and some text for explanations
 \subsection{Competing Strategies Description}
 \label{app:CompetingStrats}
 
-The implementations are as per https://github.com/bukosabino/ta
-
 \subsubsection{Buy \& Hold}
+The Buy \& Hold strategy is a simple and passive strategy based on buying an asset and keeping it for a long period of time, hoping for long term returns regardless of short term fluctuations on the market.
+This will be represented in the testing periods as a Buy order on the first date and a Sell order on the last date with no other trades executed in between.
 
 \subsubsection{Relative Strength Index}
+The RSI (\cite{wilder1986relative}) is a momentum oscillator $[0, 100]$ with values over 70 indicating an overbought and below 30 and oversold asset. A Buy order happens when the RSI rises above 30 from below and a Sell is indicated by decreasing below 70 from above. The metric is defined by the two step calculation for a look-back period of $d=20$ days:
+\begin{equation}
+    \label{eq:RSI1}
+    RSI_{step1} = 100 - \left[ \frac{100}{1 + \frac{Avg_d Gain}{Avg_d Loss}}\right]
+\end{equation}
+where $Avg_d Gain$ and $Avg_d Loss$ are the average percentage gains and/or losses during a look-back period of length $d$. After the first $d$ periods of data is available, the second step is just the smoothing of the step 1 formula:
+\begin{equation}
+    \label{eq:RSI2}
+    RSI_{step2} = 100 - \left[ \frac{100}{1 + \frac{Previous Avg_d Gain \cdot (d-1) + Current Gain}{Previous Avg_d Loss \cdot (d-1) + Current Loss}}\right].
+\end{equation}
 
 \subsubsection{Bollinger Bands}
+The Bollinger Bands (BB) (\cite{bollinger2002bollinger}) characterize the prices and the volatility of a financial asset. They can be depicted on the chart of an asset as a graphical band showing the envelope maximum and minimum of moving averages over the look- back period $d=20$, and the volatility is represented by the width of the envelope.
+If the $d$-period moving average is given by $MA_d$, the $d$-period standard deviation is given by $\sigma_d$ and $c=2$ is a customizable parameter then the bands are:
+\begin{equation}
+    \label{eq:BBlow}
+    lowerBB = MA_d - c \sigma_d
+\end{equation}
+and
+\begin{equation}
+    \label{eq:BBup}
+    upperBB = MA_d + c \sigma_d.
+\end{equation}
+The strategy is to Buy when the Adjusted Close price decreases below the $lowerBB$ and Sell if it increases above the $upperBB$.
 
 \bibliography{reference}
 \bibliographystyle{apalike}
