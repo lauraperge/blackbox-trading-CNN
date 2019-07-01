@@ -6,3 +6,5 @@ notebooks/\.ipynb_checkpoints/
 *.fdb_latexmk
 
 *.gz
+
+report/0304\(0\)_report/__latexindent_temp\.tex

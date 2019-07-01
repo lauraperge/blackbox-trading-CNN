@@ -1,5 +1,10 @@
 \begin{thebibliography}{}
 
+\bibitem[Bollinger, 2002]{bollinger2002bollinger}
+Bollinger, J. (2002).
+\newblock {\em Bollinger on Bollinger bands}.
+\newblock McGraw-Hill New York.
+
 \bibitem[Campanharo et~al., 2011]{campanharo2011duality}
 Campanharo, A.~S., Sirer, M.~I., Malmgren, R.~D., Ramos, F.~M., and Amaral, L.
   A.~N. (2011).
@@ -84,5 +89,10 @@ Wang, Z. and Oates, T. (2015).
   classification using tiled convolutional neural networks.
 \newblock In {\em Workshops at the Twenty-Ninth AAAI Conference on Artificial
   Intelligence}.
+
+\bibitem[Wilder~Jr, 1986]{wilder1986relative}
+Wilder~Jr, J.~W. (1986).
+\newblock The relative strength index.
+\newblock {\em J. of Technical Analysis of Stocks and Commodities}, 4:343--346.
 
 \end{thebibliography}

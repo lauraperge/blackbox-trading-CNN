@@ -5,13 +5,16 @@ import matplotlib.pyplot as plt
 import os
 
 
-def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_commission= 5.0):
+def financial_evaluation(varname, prices, signals, initial_capital = 10000.0, trading_commission= 5.0):
     """ 
     Returns financial evaluation measurements of an algorithmic trading strategy given prices and relevant trading signals.
     Assets are traded in any increments.
 
     Parameters
     -------------------------------
+        varname : string
+            name of asset/strategy or both as one string (for logging)
+
         prices : np.array or pd.Series (float)
             array, series of prices
         
@@ -58,6 +61,9 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
         
         avg_trade_loss : np.float
             total_loss/losers
+        
+        avg_profit_loss_trade : np.float
+            total profit or loss / number of all trades
 
         num_buys : np.int
             number of executed buy orders
@@ -66,6 +72,8 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
             number of executed sell orders
 
     """
+    if len(prices) != len(signals):
+        raise Exception("Please provide the same number of signals and prices.")
     # list to track owned capital
     capital = []
     # initial capital
@@ -170,7 +178,7 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
     ending_capital = capital[-1]
     total_profit = ending_capital - initial_capital
     cumulative_return =  total_profit / initial_capital
-    print(len(capital))
+    
     annualized_return = (ending_capital/initial_capital)**(260/(len(capital)-1)) - 1
 
     all_trades = buys + sells
@@ -187,8 +195,11 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
         avg_trade_profit = None
         avg_trade_loss = None
 
+    avg_profit_loss_trade = total_profit/all_trades
 
-    to_return = {"capital" : capital, 
+
+    to_return = {"varname" : varname,
+                "capital" : capital, 
                 "total_profit_loss" : total_profit,
                 "cumulative_return" : cumulative_return,
                 "annualized_return" : annualized_return,
@@ -199,6 +210,7 @@ def financial_evaluation(prices, signals, initial_capital = 10000.0, trading_com
                 "total_transaction_cost" : total_transaction_cost,
                 "avg_trade_profit" : avg_trade_profit,
                 "avg_trade_loss" : avg_trade_loss,
+                 "avg_profit_loss_trade": avg_profit_loss_trade,
                 "buys" : buys,
                 "sells" : sells
     }
@@ -208,4 +220,4 @@ if __name__ == "__main__":
     prices = [.1, .5, .2, 1.1, .4, .8, .55, .12, .3, .14]
     signals = ["Sell", "Buy", "Hold", "Hold", "Buy", "Sell", "Hold", "Buy", "Buy", "Hold"]
 
-    print(financial_evaluation(prices,signals))
+    print(financial_evaluation("LOL", prices,signals))
