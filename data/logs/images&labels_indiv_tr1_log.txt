@@ -1,7 +1,7 @@
 Date up to 2005-12-31
-AAPL: 6495 images of shape (6495, 40, 40, 3)
-GSPC: 14568 images of shape (14568, 40, 40, 3)
-IXIC: 9065 images of shape (9065, 40, 40, 3)
-N225: 10653 images of shape (10653, 40, 40, 3)
-SPY: 3330 images of shape (3330, 40, 40, 3)
-it took this long to run: 576.2075033187866
+AAPL: 6513 images of shape (6513, 18, 18, 3)
+GSPC: 14586 images of shape (14586, 18, 18, 3)
+IXIC: 9083 images of shape (9083, 18, 18, 3)
+N225: 10671 images of shape (10671, 18, 18, 3)
+SPY: 3348 images of shape (3348, 18, 18, 3)
+it took this long to run: 75.70282626152039

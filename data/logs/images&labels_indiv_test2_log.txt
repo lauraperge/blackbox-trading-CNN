@@ -1,7 +1,0 @@
-Date from 2008-11-06 00:00:00 to 2010-12-31
-AAPL: 521 images of shape (521, 40, 40, 3)
-GSPC: 521 images of shape (521, 40, 40, 3)
-IXIC: 521 images of shape (521, 40, 40, 3)
-N225: 521 images of shape (521, 40, 40, 3)
-SPY: 521 images of shape (521, 40, 40, 3)
-it took this long to run: 34.41700458526611

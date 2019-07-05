@@ -1,7 +1,7 @@
-Date from 2017-04-20 00:00:00 to 2019-06-07
-AAPL: 525 images of shape (525, 30, 30, 3)
-GSPC: 525 images of shape (525, 30, 30, 3)
-IXIC: 525 images of shape (525, 30, 30, 3)
-N225: 525 images of shape (525, 30, 30, 3)
-SPY: 525 images of shape (525, 30, 30, 3)
-it took this long to run: 8.52340579032898
+Date from 2017-05-08 00:00:00 to 2019-06-07
+AAPL: 522 images of shape (522, 18, 18, 3)
+GSPC: 522 images of shape (522, 18, 18, 3)
+IXIC: 522 images of shape (522, 18, 18, 3)
+N225: 522 images of shape (522, 18, 18, 3)
+SPY: 522 images of shape (522, 18, 18, 3)
+it took this long to run: 4.492961406707764
