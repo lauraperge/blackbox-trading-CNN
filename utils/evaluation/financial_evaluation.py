@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def financial_evaluation(varname, prices, signals, initial_capital = 10000.0, trading_commission= 5.0):
+def financial_evaluation(varname, prices, signals, initial_capital = 10000.0, trading_commission= 5.0, safety = False):
     """ 
     Returns financial evaluation measurements of an algorithmic trading strategy given prices and relevant trading signals.
     Assets are traded in any increments.
@@ -26,6 +26,9 @@ def financial_evaluation(varname, prices, signals, initial_capital = 10000.0, tr
 
         trading_commission : np.float (default = 1.0)
             amount subtracted from the capital per executed trade
+        
+        safety : boolean
+            whether safety measures should be implemented (only Buy if price is not higher than prev, only Sell vice verse)
     
     Returns
     ------------------------------
@@ -103,77 +106,162 @@ def financial_evaluation(varname, prices, signals, initial_capital = 10000.0, tr
     # track transaction costs
     total_transaction_cost = 0
 
-    for idx, order in enumerate(signals):
-        if order == "Buy":
-            ## given there is cash to spend
-            if money[-1] != 0:
-                ## amount of units bought, trading fee
-                num_units.append((money[-1]-trading_commission)/prices[idx])
-                total_transaction_cost += trading_commission
+    # no safety
+    if safety == False:
+        for idx, order in enumerate(signals):
+            if order == "Buy":
+                ## given there is cash to spend
+                if money[-1] != 0:
+                    ## amount of units bought, trading fee
+                    num_units.append((money[-1]-trading_commission)/prices[idx])
+                    total_transaction_cost += trading_commission
 
-                ## increase number of executed buy orders
-                buys += 1
+                    ## increase number of executed buy orders
+                    buys += 1
 
-                ## update money
-                money.append(0)
+                    ## update money
+                    money.append(0)
 
-                ## tracking capital
-                capital.append(prices[idx] * num_units[-1])
+                    ## tracking capital
+                    capital.append(prices[idx] * num_units[-1])
 
-                if capital[-1] > capital[-2]:
-                    winners += 1
-                elif capital[-1] < capital [-2]:
-                    losers +=1
+                    if capital[-1] > capital[-2]:
+                        winners += 1
+                    elif capital[-1] < capital [-2]:
+                        losers +=1
+                else:
+                    ## HOLD
+                    ## still tracking
+                    num_units.append(num_units[-1])
+                    money.append(money[-1])
+
+                    ## tracking capital
+                    capital.append(prices[idx] * num_units[-1])
+
+            elif order == "Sell":
+                ## given there are units of the asset to sell
+                if num_units[-1] != 0:
+                    ## amount of money received for sold units, trading fee
+                    money.append(num_units[-1] * prices[idx] - trading_commission)
+                    total_transaction_cost += trading_commission
+
+                    ## increase number of executed sell orders
+                    sells += 1
+
+                    ## update number of units
+                    num_units.append(0)
+
+                    ## tracking capital
+                    capital.append(money[-1])
+
+                    ## check if we won or lost with the trade
+                    if capital[-1] > capital[-2]:
+                        winners += 1
+                    elif capital[-1] < capital[-2]:
+                        losers += 1
+
+                else:
+                    ## HOLD
+                    ## still tracking
+                    num_units.append(num_units[-1])
+                    money.append(money[-1])
+
+                    ## tracking capital
+                    capital.append(money[-1])
+
+            elif order == "Hold":
+                ## still tracking 
+                num_units.append(num_units[-1])
+                money.append(money[-1])
+
+                ## tracking capital too
+                if money[-1] != 0:
+                    capital.append(money[-1])
+                else:
+                    capital.append(prices[idx] * num_units[-1])
+    else:
+        for idx, order in enumerate(signals):
+
+            if idx == 0:
+                greater = False
+                smaller = False
             else:
-                ## HOLD
+                greater = prices[idx] > prices[idx-1]
+                smaller = prices[idx] < prices[idx-1]
+
+            if (order == "Buy") & (greater == False):
+                ## given there is cash to spend
+                if money[-1] != 0:
+                    ## amount of units bought, trading fee
+                    num_units.append(
+                        (money[-1]-trading_commission)/prices[idx])
+                    total_transaction_cost += trading_commission
+
+                    ## increase number of executed buy orders
+                    buys += 1
+
+                    ## update money
+                    money.append(0)
+
+                    ## tracking capital
+                    capital.append(prices[idx] * num_units[-1])
+
+                    if capital[-1] > capital[-2]:
+                        winners += 1
+                    elif capital[-1] < capital[-2]:
+                        losers += 1
+                else:
+                    ## HOLD
+                    ## still tracking
+                    num_units.append(num_units[-1])
+                    money.append(money[-1])
+
+                    ## tracking capital
+                    capital.append(prices[idx] * num_units[-1])
+
+            elif (order == "Sell") & (smaller == False):
+                ## given there are units of the asset to sell
+                if num_units[-1] != 0:
+                    ## amount of money received for sold units, trading fee
+                    money.append(num_units[-1] *
+                                 prices[idx] - trading_commission)
+                    total_transaction_cost += trading_commission
+
+                    ## increase number of executed sell orders
+                    sells += 1
+
+                    ## update number of units
+                    num_units.append(0)
+
+                    ## tracking capital
+                    capital.append(money[-1])
+
+                    ## check if we won or lost with the trade
+                    if capital[-1] > capital[-2]:
+                        winners += 1
+                    elif capital[-1] < capital[-2]:
+                        losers += 1
+
+                else:
+                    ## HOLD
+                    ## still tracking
+                    num_units.append(num_units[-1])
+                    money.append(money[-1])
+
+                    ## tracking capital
+                    capital.append(money[-1])
+
+            else:
                 ## still tracking
                 num_units.append(num_units[-1])
                 money.append(money[-1])
 
-                ## tracking capital
-                capital.append(prices[idx] * num_units[-1])
+                ## tracking capital too
+                if money[-1] != 0:
+                    capital.append(money[-1])
+                else:
+                    capital.append(prices[idx] * num_units[-1])
 
-        elif order == "Sell":
-            ## given there are units of the asset to sell
-            if num_units[-1] != 0:
-                ## amount of money received for sold units, trading fee
-                money.append(num_units[-1] * prices[idx] - trading_commission)
-                total_transaction_cost += trading_commission
-
-                ## increase number of executed sell orders
-                sells += 1
-
-                ## update number of units
-                num_units.append(0)
-
-                ## tracking capital
-                capital.append(money[-1])
-
-                ## check if we won or lost with the trade
-                if capital[-1] > capital[-2]:
-                    winners += 1
-                elif capital[-1] < capital[-2]:
-                    losers += 1
-
-            else:
-                ## HOLD
-                ## still tracking
-                num_units.append(num_units[-1])
-                money.append(money[-1])
-
-                ## tracking capital
-                capital.append(money[-1])
-
-        elif order == "Hold":
-            ## still tracking 
-            num_units.append(num_units[-1])
-            money.append(money[-1])
-
-            ## tracking capital too
-            if money[-1] != 0:
-                capital.append(money[-1])
-            else:
-                capital.append(prices[idx] * num_units[-1])
 
     ending_capital = capital[-1]
     total_profit = ending_capital - initial_capital
@@ -220,4 +308,5 @@ if __name__ == "__main__":
     prices = [.1, .5, .2, 1.1, .4, .8, .55, .12, .3, .14]
     signals = ["Sell", "Buy", "Hold", "Hold", "Buy", "Sell", "Hold", "Buy", "Buy", "Hold"]
 
-    print(financial_evaluation("LOL", prices,signals))
+    print(financial_evaluation("LOL", prices,signals, safety = True))
+
