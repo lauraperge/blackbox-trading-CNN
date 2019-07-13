@@ -9,6 +9,7 @@
 
 \usepackage{cite, hyperref, nameref}
 \usepackage{natbib, apalike, url}
+\usepackage{float}
 
 \usepackage{url}
 \makeatletter
@@ -182,11 +183,11 @@ given $x = (x_1, \dots, x_n)$ is a univariate time series and $x_i$ is its $i^{t
 \subsection{Transformation Strategies: Time Series to Images}
 \label{subsec:DM:TS2IM}
 
-We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size $s = 20$ (\textbf{TBM!!}) of the different return time series. This means that for $n$ return values we get $(n - s + 1)$ images. 
+We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size $s = 30$ (\textbf{TBM!!}) of the different return time series. This means that for $n$ return values we get $(n - s + 1)$ images. 
 
 The \textbf{Recurrence Plots (RP)} originally introduced by \cite{jp1987recurrence} implemented according to \cite{hatami2018classification} are useful when we wish to represent the periodicity of trajectories going through a phase space. The issue with visualization that the RP solves appears when the phase space has more than three dimensions. A recurrence represents the time a trajectory gets back to a previously visited location. In Figure \ref{fig:RP_Def} we use the same explanation presented in Figure 1 of \cite{hatami2018classification}. In the plots it can be observed, how certain values tend to follow each other, for example $x_3 = 1, x_4 = 3$ and then this pattern re-occurs at $x_6, x_7$ which is reflected by $s_3$ and $s_6$ falling to the same phase on the map, and thus by the pixel at $(s_3, s_6)$ being equal to zero.
 
-\begin{figure}[ht]
+\begin{figure}[]
     \centering
     \includegraphics[width=\textwidth]{images/RP.PNG}
     \caption{The left plot shows a time series of 7 observations $x_t$, $t=1,\dots,7$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,13$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the 6 states: $R_{i,j} = Euclidean(s_i,s_j)$.}
@@ -200,7 +201,7 @@ As it is pointed out in \cite{hatami2018classification}, time series tend to sho
 \label{eq:RP_R}
     R_{i,j} = \theta(\epsilon-||\vec{s}_i - \vec{s}_j||),\quad \vec{s}(.) \in \mathbb{R}^m, \quad i,j = 1,\dots,K
 \end{equation}
-where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing $20$ consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $19$ states; finally, the R-matrix is calculated based on Equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $(19 \times 19)$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. Afterwards, to fit the image size of the two other transformation strategies introduced later, we add a size $1$ zero-padding to the right and bottom of the image.
+where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing $30$ consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $29$ states; finally, the R-matrix is calculated based on Equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $(29 \times 29)$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. Afterwards, to fit the image size of the two other transformation strategies introduced later, we add a size $1$ zero-padding to the right and bottom of the image.
 
 % potentially mention RP on prices that increase or decrease similar while on returns it is more distinctive
 
@@ -236,7 +237,7 @@ i.e. we convert the timestamp $t_i$ dividing by $N$ (the number of series instan
 \end{equation}
 where $I$ is the unit row vector $[1, 1, \dots, 1]$. Notice, that this is a Gramian-like matrix with a penalized inner product given by\footnote{Please see Appendices \nameref{app:GAF} for the proof.}: $\langle x, y\rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}= x \cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}$. There are several advantages to this construction one of which is preserving the absolute temporal relations. Another aspect is that the diagonal sustains the original (although transformed) time series. Furthermore, the entries $GAF_{ij}$ of the matrix represent the temporal correlation (cosine-similarity) with respect to the different $k= |i-j|$ time intervals, and the main diagonal displays the case of $k=0$. Figure \ref{fig:GAF} shows how the transformation happens for an example scaled time series of $14$ observations. Time can again be tracked going from the top-left to the bottom-right corner.
 
-\begin{figure}[ht]
+\begin{figure}[]
     \centering
     \includegraphics[width=\textwidth]{images/GAF.png}
     \caption{Plot 1 shows the time series scaled to the interval [-1, 1] which is then transformed to polar coordinates. In the polar coordinate system in Plot 2, the first point is the closest to the center, then as time moves forward, the coordinates vary among different angles but move further and further out towards the boundaries of the unit circle. Plot 3 shows the GAF plot that we get by applying the formula in Equation \ref{eq:GAF}. Before applying the CNN, we use min-max scaling to the interval $[0,1]$ to fit the expected input of the model. As Plot 4 demonstrates, this scaling does not change the appearance of the image.}
@@ -269,14 +270,23 @@ Thus, $W_{ij}$ gives us the probability of moving from the $i^{th}$ bin to the $
     \end{pmatrix}
 \end{equation}
 and an example can be observed in Plot 3 of Figure \ref{fig:MTF}. This resulting image, similarly to the previous two representations trails the flow of time from the top-left to the bottom-right corner.
-The entries of this matrix are already in the range $[0,1]$, so there is no need for further scaling before feeding it to the CNN. The images are created with the same sliding window technique discussed previously. A parameter to decide on is the number of quantile bins to create, and with window size set to $20$ it is set to $5$ (TBD!!!!) in our image construction.\footnote{It should be noted that the number of bins can be optimized via costly hyperparameter optimization but due to limitations in time and computational power this was not carried out in the study.}
+The entries of this matrix are already in the range $[0,1]$, so there is no need for further scaling before feeding it to the CNN. The images are created with the same sliding window technique discussed previously. A parameter to decide on is the number of quantile bins to create, and with window size set to $30$ it is set to $5$ in our image construction.\footnote{It should be noted that the number of bins can be optimized via costly hyperparameter optimization but due to limitations in time and computational power this was not carried out in the study.}
 The MTF can also be understood as the multispan transition probabilities of the series within one step at different points in time.
 
-\begin{figure}[ht!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/MTF.png}
-    \caption{Plot 1 shows the time series which is assigned to $Q=4$ quantile bins. In Plot 2.a), we can inspect th preliminary state of the Markov Transition Matrix $V$, the elements of which are the counts of the different transitions in the time series $X$, and in Plot 2.b) $W$ is the so-called right stochastic matrix or Markov Transition Matrix, a real stochastic matrix with transition probabilities between the different bins and each row summing to $1$ (see Equation \ref{eq:W}). Plot 3 shows the MTF plot that we get by applying the formula in Equation \ref{eq:MTF}.}
+    \caption{Plot 1 shows the time series which is assigned to $Q=4$ quantile bins. In Plot 2.a), we can inspect the preliminary state of the Markov Transition Matrix $V$, the elements of which are the counts of the different transitions in the time series $X$, and in Plot 2.b) $W$ is the so-called right stochastic matrix or Markov Transition Matrix, a real stochastic matrix with transition probabilities between the different bins and each row summing to $1$ (see Equation \ref{eq:W}). Plot 3 shows the MTF plot that we get by applying the formula in Equation \ref{eq:MTF}.}
     \label{fig:MTF}
+\end{figure}
+
+Overall, the three representations have some common properties, such as how the time dimension is represented in the way the different pixels are located. Also, all three methods provide us a way to transform sliding windows of time series into graphical representations that an image classifier can potentially recognize given proper labels. However, all three transformations show us a slightly different aspect of the series. While the recurrence plot highlights cyclicality and recurring patterns in the data, the GAF illustrates temporal dependencies and the MTF reveals the transition-related behavior in the series. Figure \ref{fig:allTrf} shows an example of all three transformations on the same return series of length $30$.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth]{images/allTrf.PNG}
+    \caption{Recurrence Plot, Gramian Angular Field and Markov Transition Field applied on the same return series consisting of 30 observations.}
+    \label{fig:allTrf}
 \end{figure}
 
 \subsection{Image Labelling}
@@ -284,7 +294,7 @@ The MTF can also be understood as the multispan transition probabilities of the 
 The image labelling is done in two steps. First, we label the original time series and, in a second step, the images using the labels from Step 1.
 The labelling algorithm is based on a simple idea and follows the one applied in \textit{Algorithm 1 in} \cite{sezer2018algorithmic}.
 
-The algorithm for the time series is as follows. We choose an odd labelling window size $l = 3$. The oddness is required since we slide this labelling window along the series and label the middle element of the window as "Buy" ("Sell") if the mid point of the window is the minimum (maximum) of the values in the window, otherwise they are "Hold". The process is illustrated in Plots 1-6 in Figure \ref{fig:Labelling}. 
+The algorithm for the time series is as follows. We choose an odd labelling window size $l = 5$. The oddness is required since we slide this labelling window along the series and label the middle element of the window as "Buy" ("Sell") if the mid point of the window is the minimum (maximum) of the values in the window, otherwise they are "Hold". The process is illustrated in Plots 1-6 in Figure \ref{fig:Labelling}. 
 Two special cases are when, after a plunge, the series remains constant and then goes up again, and vice versa. They are also shown in Plots 7-10 in Figure \ref{fig:Labelling}, and the rule is as follows: 
 given the middle observation in the labelling window is sharing its property of being a local minimum (maximum) with at least one of its direct neighbours, then the label is a "Buy" ("Sell") only if the observation following the mid point is strictly greater (strictly less) than the mid point.
 
@@ -299,7 +309,7 @@ There are multiple reasons to pursue this approach. Firstly, if we were to label
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/Labelling.png}
-    \caption{Example of labelling. The figure visualizes the step-by-step labelling of an example series of $12$ observations with labelling window of size $l=3$. The grey rectangles show the scope of values considered in every labelling decision, and that the value in the middle time step is labelled in every step (Plots 1-6). Plots 7-8 show the process in the first special case, that is when the mid value is not the only local minimum, but shares this property with one of its neighbouring observations. The decision in the second special case, depicted in Plots 9-10, is similar, only with two consequent local maxima within the same window. It can also be seen in Plot 11 that the first and last $\lfloor \frac{l}{2} \rfloor = 1$ values cannot be labelled.}
+    \caption{Example of labelling. The figure visualizes the step-by-step labelling of an example series of $12$ observations with labelling window of size $l=5$. The grey rectangles show the scope of values considered in every labelling decision, and that the value in the middle time step is labelled in every step (Plots 1-6). Plots 7-8 show the process in the first special case, that is when the mid value is not the only local minimum, but shares this property with one of its neighbouring observations. The decision in the second special case, depicted in Plots 9-10, is similar, only with two consequent local maxima within the same window. It can also be seen in Plot 11 that the first and last $\lfloor \frac{l}{2} \rfloor = 1$ values cannot be labelled.}
     \label{fig:Labelling}
 \end{figure}
 
@@ -309,7 +319,41 @@ Deep convolutional neural networks (CNN) are artificial neural networks (ANN) wi
 There are three main arguments why CNNs are relatively popular and some of these make them particularly advantageous for the model.
 Firstly, it can process fairly raw high dimensional data and extract the most important features for the given exercise. Secondly, the sparse connectivity in the network prove to be computationally very efficient .... And last but not least, ...
 
-textbf{Finish}
+The activation function that is mostly used throughout the model is Leaky ReLu, which is a version of the commonly used ReLu function. ReLu stands for rectified linear unit (\cite{hahnloser2000digital}) and is defined as
+\begin{equation}
+    \label{eq:ReLu}
+    y = f(x) = \max(0,x).
+\end{equation}
+The popularity of the ReLu is due to it is being computationally cheap, helping faster convergence as it is linear and does not lead to the vanishing of gradients. Lastly, it promotes sparsity since all negative inputs result in zero activation which helps the model in finding meaningful features faster and prevents against overfitting. 
+On the other hand, the fact that all negative results are turned into zero can be an issue when a value keeps giving negative results. In this case the ReLu turns it into zero every time and due to not being any slope below zero the neuron is very likely to remain inactive for the rest of the training. This way, these neurons will have no contribution to the network and this is an even bigger problem if more and more neurons turn up "dead". To prevent against the described disadvantages we use Leaky ReLu which solves the issue by introducing a slope in the negative side of the function (\cite{maas2013rectifier}):
+\begin{equation}
+    \label{eq:LeakyReLu}
+    y = f(x) = 
+   \begin{cases*}
+      x & \text{if $x \geq 0$} \\
+      \alpha x        & \text{if $x<0$}
+    \end{cases*}
+\end{equation}
+where we use $\alpha = 0.3$. The Leaky ReLu also helps accelerating the training process as it is more balanced than the simple ReLu. On the output layer we apply softmax activation that is usually used for multiclass classification problems as it normalizes the outputs of the last layer so it becomes a probability distribution over $K$ classes. The standard softmax function is $\sigma: \mathbb{R}^K \rightarrow \mathbb{R}^K$
+\begin{equation}
+    \label{eq:softmax}
+    \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}} 
+\end{equation}
+for $i = 1,\dots, K$ and $\mathbf{z} = (z_1, \dots, z_K) \in \mathbb{R}^K$.\footnote{For more on the softmax activation function please see \cite{nielsen2015neural}}
+For regularization three different methods were implemented: batch normalization, dropout layers and L2 kernel regularization. The batch normalization (\cite{ioffe2015batch}) is both useful to regularize the network and it improves training speed and performance by normalizing the input for each layer in the network for each mini-batch. This is used to avoid the problem of the varying distribution of input during training. The dropout (\cite{srivastava2014dropout}) is a method to reduce overfitting by randomly dropping nodes together with their connections from the network during training with a given drop-probability. The technique works by preventing co-adaptation among units (for more on the topic please see \cite{hinton2012improving}). The third regularization implemented is L2-regularization (or Ridge Regression) which works by penalizing the loss function (\cite{ng2004feature}). This is done by adding the penalty $\frac{1}{2}\lambda w^2$ to the loss function for each weight $w$ with regularization strength $\lambda = 0.01$ in our network. The penalty term helps reducing the role of peaky weights and thus the network pays attention to the nodes in a more balanced fashion.
+The loss function is the Kullback-Leibler divergence
+The optimizer is the Stochastic gradient descent optimizer (SGD) together with Nesterov momentum
+
+The model structure is depicted in Figure \ref{fig:CNNstruct}. It first takes the 3 input images, each of size $30 \times 30$, then we filter these 3 images with $32$ $3 \times 3 \times 3$ kernels (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use the relatively small filters due to our images being relatively small. The activation map of the layers is obtained by using Leaky ReLu, described previously in Equation \ref{eq:LeakyReLu}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using the same filters, stride and zero padding as previously. This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLu function. After, these convolutional layers are average pooled with $2 \times 2 \times 3$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLu followed by a dropout. The information from these layers is condensed in the following fully connected layer of size $128$ [!!!]. This is also followed by batch normalization and dropout and finally the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described model reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates after the fully connected layer and the parameters of the optimizer.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{images/CNNCtrf.png}
+    \caption{The basic structure of the Convolutional Neural Network used for trading order prediction.}
+    \label{fig:CNNstruct}
+\end{figure}
+
+\textbf{Finish}
 
 % Let us take a second to recap what we have so far. We have one-dimensional historical stock price data that we preprocessed and created images from the sliding windows of data points. We created 
 %labels of trading actions on our original data and then matched these labels to the relevant images. 
@@ -393,6 +437,8 @@ There are three methods considered for comparison: the Buy \& Hold, the momentum
 
 In order to assess feasibility we will also present how much time it takes for the model to train and to return predictions from the trained model.
 
+It is important to note that all presented results in the paper are biased to some extent, since creating unbiased results requires excessive computational resources and time which is not given within the scope of this research. To create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
+
 \section{Evaluation Results}
 \label{sec:ER}
 
@@ -411,8 +457,18 @@ How long it takes to train, how long it takes to predict
 \section{Discussion}
 \label{sec:Discuss}
 
+\subsection{Competing algorithmic strategies \& the CNN}
+
+
+\subsection{Asset-specific models \& Universal models}
+
+\subsection{Feasibility \& Constraints}
+Overall, looking at Table ??? and the training/prediction times both CNN settings are feasible. Retraining of the model does not take too long, and that can easily fit into the time when the markets are closed. Moreover, in our tests we used a model for two years worth of predictions and the results are still promising (HOPE SO!!!) which suggests that retraining of the model does not have to take place on a daily basis. The prediction time is quick enough even for intraday trading purposes. 
+
 \section{Conclusion}
 \label{sec:Conclusion}
+
+Potential ways to go: intraday and higher frequency trading, tuning of labelling and image window size and the entire model. Creating a model based on a combination of RNN/LSTM and CNN (further research how that is feasible in practice).
 
 \section{Appendices}
 \label{sec:App}
@@ -461,6 +517,99 @@ and
     upperBB = MA_d + c \sigma_d.
 \end{equation}
 The strategy is to Buy when the Adjusted Close price decreases below the $lowerBB$ and Sell if it increases above the $upperBB$.
+
+\subsection{Data Sources}
+
+The list of sources for all downloaded datasets can be found in Tables \ref{tbl:datasets_main}- \ref{tbl:datasets_commods}.
+
+\begin{table}[H]
+    \centering
+        \begin{tabular}{p{3.0cm} p{10.0cm}l}
+        \hline
+        \textbf{Symbol}                                                             & \textbf{Source}                                                                                                                                              & \textbf{Date of Download} \\ \hline
+       GSPC                                                                        & \url{https://finance.yahoo.com/quote/\%5EGSPC/history?period1=-630982800\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}    & June 8, 2019              \\
+        N225                                                                        & \url{https://finance.yahoo.com/quote/\%5EN225/history?period1=-157424400\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}    & June 8, 2019              \\
+        IXIC                                                                        & \url{https://finance.yahoo.com/quote/\%5EIXIC/history?period1=34556400\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}      & June 8, 2019              \\
+        AAPL                                                                        & \url{https://finance.yahoo.com/quote/AAPL/history?period1=345423600\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}         & June 8, 2019              \\
+        SPY                                                                         & \url{https://finance.yahoo.com/quote/SPY/history?period1=728262000\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\ \hline
+        \end{tabular}
+        \caption{Data sources: Testing datasets}
+    \label{tbl:datasets_main}
+\end{table}
+
+        \begin{table}[H]
+    \centering
+        \begin{tabular}{p{3.0cm} p{10.0cm}l}
+        \hline
+        \textbf{Symbol}                                                             & \textbf{Source}                                                                                                                                              & \textbf{Date of Download} \\ \hline
+       
+        DJI                                                                         & \url{https://finance.yahoo.com/quote/\%5EDJI/history?period1=-630982800\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}     & June 8, 2019              \\
+        GDAXI                                                                       & \url{https://finance.yahoo.com/quote/\%5EGDAXI/history?period1=567817200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}    & June 8, 2019              \\
+        SSI                                                                         & \url{https://finance.yahoo.com/quote/000001.SS/history?period1=661561200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}    & June 8, 2019              \\
+        VIX                                                                         & \url{https://finance.yahoo.com/quote/\%5EVIX/history?period1=631234800\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}      & June 8, 2019              \\
+        INDEXFTSE: UKX                                                              & \url{https://www.londonstockexchange.com/statistics/ftse/ftse.htm}                                                                          & June 8, 2019              \\
+        INDEXFTSE: MCX                                                              & \url{https://www.londonstockexchange.com/statistics/ftse/ftse.htm}                                                                          & June 8, 2019              \\
+        INDEXFTSE: NMX                                                              & \url{https://www.londonstockexchange.com/statistics/ftse/ftse.htm}                                                                          & June 8, 2019              \\
+        STOXX50E                                                                    & \url{https://finance.yahoo.com/quote/\%5ESTOXX50E/history?period1=536367600\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d} & June 8, 2019              \\
+        RUT                                                                         & \url{https://finance.yahoo.com/quote/\%5ERUT/history?period1=558223200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}      & June 8, 2019              \\ \hline
+        \end{tabular}
+        \caption{Data sources: Stocks \& Indices}
+        \label{tbl:datasets_stocks}
+    \end{table}
+    
+        \begin{table}[H]
+    \centering
+        \begin{tabular}{p{3.0cm} p{10.0cm}l}
+        \hline
+        \textbf{Symbol}                                                             & \textbf{Source}                                                                                                                                              & \textbf{Date of Download} \\ \hline
+        QQQ                                                                         & \url{https://finance.yahoo.com/quote/QQQ/history?period1=921020400\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        XLF                                                                         & \url{https://finance.yahoo.com/quote/XLF/history?period1=914281200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        XLU                                                                         & \url{https://finance.yahoo.com/quote/XLU/history?period1=914281200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        XLP                                                                         & \url{https://finance.yahoo.com/quote/XLP/history?period1=914281200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        EWZ                                                                         & \url{https://finance.yahoo.com/quote/EWZ/history?period1=963525600\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        EWH                                                                         & \url{https://finance.yahoo.com/quote/EWH/history?period1=828309600\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        XLY                                                                         & \url{https://finance.yahoo.com/quote/XLY/history?period1=914281200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\
+        XLE                                                                         & \url{https://finance.yahoo.com/quote/XLE/history?period1=914281200\&period2=1559944800\&interval=1d\&filter=history\&frequency=1d}          & June 8, 2019              \\ \hline
+        \end{tabular}
+        \caption{Data sources: Exchange Traded Funds}
+        \label{tbl:datasets_etfs}
+    \end{table}
+        
+        \begin{table}[H]
+    \centering
+        \begin{tabular}{p{3.0cm} p{10.0cm}l}
+        \hline
+        \textbf{Symbol}                                                             & \textbf{Source}                                                                                                                                              & \textbf{Date of Download} \\ \hline
+        DEXUSUK                                                                     & \url{https://fred.stlouisfed.org/categories/94}                                                                                             & June 8, 2019              \\
+        DEXUSAL                                                                     & \url{https://fred.stlouisfed.org/categories/94}                                                                                             & June 8, 2019              \\
+        DEXUSNZ                                                                     & \url{https://fred.stlouisfed.org/categories/94}                                                                                             & June 8, 2019              \\
+        DEXUSEU                                                                     & \url{https://fred.stlouisfed.org/categories/94}                                                                                             & June 8, 2019              \\ \hline
+       \end{tabular}
+        \caption{Data sources: Foreign Exchange Rates}
+        \label{tbl:datasets_FX}
+    \end{table}
+    
+        \begin{table}[H]
+    \centering
+        \begin{tabular}{p{3.0cm} p{10.0cm}l}
+        \hline
+        \textbf{Symbol}                                                             & \textbf{Source}                                                                                                                                              & \textbf{Date of Download} \\ \hline
+        
+       Copper                                                                      & \url{https://www.macrotrends.net/1476/copper-prices-historical-chart-data}                                                                  & June 8, 2019              \\
+        DCOILWTICO                                                                  & \url{https://fred.stlouisfed.org/graph/?g=NPX}                                                                                              & June 8, 2019              \\
+        FOB                                                                         & \url{https://www.eia.gov/dnav/pet/hist\_xls/RBRTEd.xls}                                                                                     & June 8, 2019              \\
+        XAUUSD                                                                      & \url{https://www.investing.com/currencies/xau-usd-historical-data}                                                                          & June 8, 2019              \\
+        XAGUSD                                                                      & \url{https://www.investing.com/currencies/xag-usd-historical-data}                                                                          & June 8, 2019              \\
+        Platinum                                                                    & \url{https://www.macrotrends.net/2540/platinum-prices-historical-chart-data}                                                                & June 8, 2019              \\
+        Corn                                                                        & \url{https://www.macrotrends.net/2532/corn-prices-historical-chart-data}                                                                    & June 8, 2019              \\
+        Coffee                                                                      & \url{https://www.macrotrends.net/2535/coffee-prices-historical-chart-data}                                                                  & June 8, 2019              \\
+        Soybean oil                                                                 & \url{https://www.macrotrends.net/2538/soybean-oil-prices-historical-chart-data}                                                             & June 8, 2019              \\ \hline
+        \end{tabular}
+        \caption{Data sources: Commodities}
+        \label{tbl:datasets_commods}
+    \end{table}
+
+    
 
 \bibliography{reference}
 \bibliographystyle{apalike}
