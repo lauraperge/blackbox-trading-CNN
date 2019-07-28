@@ -97,7 +97,7 @@ One potential issue with the image transformation methodology used by the mentio
 
 \section{Data and Methodology}
 Overall, 6 models are trained, tuned and tested. There are 5 individual models each exclusively trained and tested on one assigned dataset. This is used to analyze the performance of asset-specific model builds. 
-Then, we train the universal model on data coming from 35 financial assets, including the 5 used in the asset-specific models, and test it on these 5 assets once again. This system allows us to compare the performance of the universal model to the asset-specific ones.
+Then, we train the universal model on data coming from 35 financial assets, including the 5 used in the asset-specific models, and test it on these 5 assets once again. This system allows us to compare the performance of the universal model to the asset-specific ones. In order to obtain a more broad assessment, we assess performance on three training and testing time periods but this will be explained in further detail in the section \nameref{subsec:DM:Eval}.
 
 In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of them and then use one model per asset to generate trading signals. 
 On the other hand, we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the instruments selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
@@ -168,8 +168,6 @@ Soybean oil                     & Soybean oil     & 1960/10/26 - 2019/06/07
 \caption{Overview of datasets. The main assets' daily adjusted closing prices are each individually used to train and test asset-specific models, while all of the 35 assets' daily (adjusted) closing prices are used to train the universal model. }
 \label{tbl:univ_data}
 \end{table}
-
-\textbf{DO I HAVE TO STATE SOURCES? IF I DO, IS IT ENOUGH TO PRESENT A MORE DETAILED TABLE IN THE APPENDICES WITH LINKS AND DATES OF DOWNLOAD?}
 
 Each asset's time series take values on business days. One-off missing values are imputed using forward filling which is just propagating the last valid non-missing value to the gaps. Afterwards, each price series is turned into return series. The return $r$ at time $t$ is defined $r_t = \frac{p_t}{p_{t-1}}-1$ where $p_t$ is the price given at any time point $t$.
 
@@ -340,11 +338,30 @@ where we use $\alpha = 0.3$. The Leaky ReLu also helps accelerating the training
     \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}} 
 \end{equation}
 for $i = 1,\dots, K$ and $\mathbf{z} = (z_1, \dots, z_K) \in \mathbb{R}^K$.\footnote{For more on the softmax activation function please see \cite{nielsen2015neural}}
-For regularization three different methods were implemented: batch normalization, dropout layers and L2 kernel regularization. The batch normalization (\cite{ioffe2015batch}) is both useful to regularize the network and it improves training speed and performance by normalizing the input for each layer in the network for each mini-batch. This is used to avoid the problem of the varying distribution of input during training. The dropout (\cite{srivastava2014dropout}) is a method to reduce overfitting by randomly dropping nodes together with their connections from the network during training with a given drop-probability. The technique works by preventing co-adaptation among units (for more on the topic please see \cite{hinton2012improving}). The third regularization implemented is L2-regularization (or Ridge Regression) which works by penalizing the loss function (\cite{ng2004feature}). This is done by adding the penalty $\frac{1}{2}\lambda w^2$ to the loss function for each weight $w$ with regularization strength $\lambda = 0.01$ in our network. The penalty term helps reducing the role of peaky weights and thus the network pays attention to the nodes in a more balanced fashion.
-The loss function is the Kullback-Leibler divergence
-The optimizer is the Stochastic gradient descent optimizer (SGD) together with Nesterov momentum
 
-The model structure is depicted in Figure \ref{fig:CNNstruct}. It first takes the 3 input images, each of size $30 \times 30$, then we filter these 3 images with $32$ $3 \times 3 \times 3$ kernels (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use the relatively small filters due to our images being relatively small. The activation map of the layers is obtained by using Leaky ReLu, described previously in Equation \ref{eq:LeakyReLu}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using the same filters, stride and zero padding as previously. This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLu function. After, these convolutional layers are average pooled with $2 \times 2 \times 3$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLu followed by a dropout. The information from these layers is condensed in the following fully connected layer of size $128$ [!!!]. This is also followed by batch normalization and dropout and finally the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described model reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates after the fully connected layer and the parameters of the optimizer.
+For regularization, three different methods were implemented: batch normalization, dropout layers and L2 kernel regularization. The batch normalization (\cite{ioffe2015batch}) is both useful to regularize the network and it improves training speed and performance by normalizing the input for each layer in the network for each mini-batch. This is used to avoid the problem of the varying distribution of input during training. The dropout (\cite{srivastava2014dropout}) is a method to reduce overfitting by randomly dropping nodes together with their connections from the network during training with a given drop-probability. The technique works by preventing co-adaptation among units (for more on the topic please see \cite{hinton2012improving}). The third regularization implemented is L2-regularization (or Ridge Regression) which works by penalizing the loss function (\cite{ng2004feature}). This is done by adding the penalty $\frac{1}{2}\lambda w^2$ to the loss function for each weight $w$ with regularization strength $\lambda = 0.01$ in our network. The penalty term helps reducing the role of peaky weights and thus the network pays attention to the nodes in a more balanced fashion.
+
+The loss function is the Kullback-Leibler divergence which, for $n$ prediction vectors $\mathbf{y}^{pred}_i$ ($i= 1, \dots, n$) and $n$ corresponding true value vectors $\mathbf{y}^{true}_i$ ($i= 1, \dots, n$), is given as
+\begin{equation}
+    \label{eq:KL}
+    Loss_{KL} = \sum_{i=1}^{n}\mathbf{y}_i^{true} \log \left( \frac{\mathbf{y}_i^{true}}{\mathbf{y}_i^{pred}}\right)
+\end{equation}
+and it measures the similarity between the true and predicted distributions.
+
+As optimizer we apply Stochastic gradient descent (SGD) and for the optimization of this algorithm, Nesterov accelerated gradient (NAG). This was chosen by model tuning, generally this setting provided a faster convergence than Adam, Nadam or RMSProp. The SGD update for $w$ parameter at the $k^{th}$ iteration is
+\begin{equation}
+    \label{eq:SGD}
+    w_k = w_{k-1} - \eta_{k-1} \cdot \nabla f(w_{k-1})
+\end{equation}
+where $\eta$ is the learning rate and $\nabla f(w_{k-1})$ is the stochastic gradient at $w_{k-1}$. With the NAG we break this update into two parts. The Momentum optimization (first introduced by \cite{polyak1964some}) of SGD accelerates the optimization but it also makes it prone to overshooting. The NAG is similar to the Momentum, it also breaks the parameter update into two equations:
+\begin{align}
+\label{eq:NAG}
+    \begin{split}
+        v_t &  = \gamma v_{t-1} - \eta_{t-1} \nabla f(w_{t-1} + \gamma v_{t-1}) \\
+        w_t & = w_{t-1} + v_t 
+    \end{split}
+\end{align}
+where $\gamma$ is the momentum term determining how much of the previous time step's update vector is represented in the current update vector. In the Momentum method this induces the acceleration to the right direction. Since we use $\gamma v_{t-1}$ to change the $w_t$ parameters, the expression $w_{t-1} + \gamma v_{t-1}$ is an approximation of the next position of the parameter and this is used for calculating the gradient instead of the current parameters (\cite{ruder2016overview}).
 
 \begin{figure}[ht]
     \centering
@@ -352,6 +369,8 @@ The model structure is depicted in Figure \ref{fig:CNNstruct}. It first takes th
     \caption{The basic structure of the Convolutional Neural Network used for trading order prediction.}
     \label{fig:CNNstruct}
 \end{figure}
+
+The model structure is depicted in Figure \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLu, described previously in Equation \ref{eq:LeakyReLu}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLu function. After, these convolutional layers are average pooled with $2 \times 2 \times 3$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLu followed by a second dropout. The information from these layers is condensed in the following fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for individual models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates, L2 regularization strength and the parameters of the optimizer.
 
 \textbf{Finish}
 
@@ -371,6 +390,7 @@ SKELETON:
 6. Description of exact build of each model
 
 \subsection{Evaluation Techniques}
+\label{subsec:DM:Eval}
 
 For assessing the technical performance of the CNN, we use accuracy, class-wise and average precision, recall and F1 scores, moreover we will also present the confusion matrix for the different models and testing periods. 
 The confusion matrix allows us to observe the absolute number of correctly and wrongly classified observations by classes. 
@@ -431,7 +451,7 @@ Assets are assumed to be traded in any increments. Using the described approach 
     \end{align}
 \end{itemize}
 
-To monitor the performance over different economic regimes, we test the model throughout 1 year periods in 2006, 2009 and May 2018 - June 2019. The models will be trained on all previous available data up to the first day of testing. 
+To monitor the performance over different economic regimes, we test the model throughout approximately 2 year periods in 2006-2007, 2009-2010 and May 2017 - June 2019. The models will be trained on all previous available data up to the first day of testing. 
 Moreover, the evaluation of competing algorithmic trading techniques, for the same testing periods with the same financial metrics provided in Equations \ref{eq:totPL} - \ref{eq:avgpl}, are carried out to make the evaluation more comprehensive.
 There are three methods considered for comparison: the Buy \& Hold, the momentum-based Relative Strength Index (RSI), and a volatility-based strategy using the Bollinger Bands (BB).\footnote{The strategies are described in the Appendices: \nameref{app:CompetingStrats}}
 
