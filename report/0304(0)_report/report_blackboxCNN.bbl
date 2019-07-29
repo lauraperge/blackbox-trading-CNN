@@ -24,11 +24,24 @@ Fukushima, K. (1979).
   unaffected by shift in position - neocognitron.
 \newblock {\em IEICE Technical Report, A}, 62(10):658--665.
 
+\bibitem[Glorot et~al., 2011]{glorot2011deep}
+Glorot, X., Bordes, A., and Bengio, Y. (2011).
+\newblock Deep sparse rectifier neural networks.
+\newblock In {\em Proceedings of the fourteenth international conference on
+  artificial intelligence and statistics}, pages 315--323.
+
 \bibitem[Goodfellow et~al., 2016]{goodfellow2016deep}
 Goodfellow, I., Bengio, Y., and Courville, A. (2016).
 \newblock {\em Deep Learning}.
 \newblock MIT Press.
 \newblock \url{http://www.deeplearningbook.org}.
+
+\bibitem[Hahnloser et~al., 2000]{hahnloser2000digital}
+Hahnloser, R.~H., Sarpeshkar, R., Mahowald, M.~A., Douglas, R.~J., and Seung,
+  H.~S. (2000).
+\newblock Digital selection and analogue amplification coexist in a
+  cortex-inspired silicon circuit.
+\newblock {\em Nature}, 405(6789):947.
 
 \bibitem[Hatami et~al., 2018]{hatami2018classification}
 Hatami, N., Gavet, Y., and Debayle, J. (2018).
@@ -38,10 +51,23 @@ Hatami, N., Gavet, Y., and Debayle, J. (2018).
   2017)}, volume 10696, page 106960Y. International Society for Optics and
   Photonics.
 
+\bibitem[Hinton et~al., 2012]{hinton2012improving}
+Hinton, G.~E., Srivastava, N., Krizhevsky, A., Sutskever, I., and
+  Salakhutdinov, R.~R. (2012).
+\newblock Improving neural networks by preventing co-adaptation of feature
+  detectors.
+\newblock {\em arXiv preprint arXiv:1207.0580}.
+
 \bibitem[Hochreiter and Schmidhuber, 1997]{Hochr97LSTM}
 Hochreiter, S. and Schmidhuber, J. (1997).
 \newblock Long short-term memory.
 \newblock {\em Neural computation}, 9:1735--80.
+
+\bibitem[Ioffe and Szegedy, 2015]{ioffe2015batch}
+Ioffe, S. and Szegedy, C. (2015).
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock {\em arXiv preprint arXiv:1502.03167}.
 
 \bibitem[JP, 1987]{jp1987recurrence}
 JP, E. (1987).
@@ -54,10 +80,33 @@ Lemus, G. (2018).
 \newblock
   \url{https://medium.com/datadriveninvestor/why-financial-time-series-lstm-prediction-fails-4d1486d336e0}.
 
+\bibitem[Maas et~al., 2013]{maas2013rectifier}
+Maas, A.~L., Hannun, A.~Y., and Ng, A.~Y. (2013).
+\newblock Rectifier nonlinearities improve neural network acoustic models.
+\newblock In {\em Proc. icml}, volume~30, page~3.
+
 \bibitem[McCulloch and Pitts, 1943]{mcculloch1943logical}
 McCulloch, W.~S. and Pitts, W. (1943).
 \newblock A logical calculus of the ideas immanent in nervous activity.
 \newblock {\em The bulletin of mathematical biophysics}, 5(4):115--133.
+
+\bibitem[Ng, 2004]{ng2004feature}
+Ng, A.~Y. (2004).
+\newblock Feature selection, l 1 vs. l 2 regularization, and rotational
+  invariance.
+\newblock In {\em Proceedings of the twenty-first international conference on
+  Machine learning}, page~78. ACM.
+
+\bibitem[Nielsen, 2015]{nielsen2015neural}
+Nielsen, M.~A. (2015).
+\newblock {\em Neural networks and deep learning}, volume~25.
+\newblock Determination press San Francisco, CA, USA:.
+
+\bibitem[Polyak, 1964]{polyak1964some}
+Polyak, B.~T. (1964).
+\newblock Some methods of speeding up the convergence of iteration methods.
+\newblock {\em USSR Computational Mathematics and Mathematical Physics},
+  4(5):1--17.
 
 \bibitem[RIALTO.AI, 2018]{rialtohistory}
 RIALTO.AI (2018).
@@ -65,6 +114,11 @@ RIALTO.AI (2018).
 \newblock
   \url{https://medium.com/rialto-ai/beginnings-of-algorithmic-trading-19eccce902a1}.
 \newblock [Online blog post, accessed 2019-04-15].
+
+\bibitem[Ruder, 2016]{ruder2016overview}
+Ruder, S. (2016).
+\newblock An overview of gradient descent optimization algorithms.
+\newblock {\em arXiv preprint arXiv:1609.04747}.
 
 \bibitem[Sezer and Ozbayoglu, 2018]{sezer2018algorithmic}
 Sezer, O.~B. and Ozbayoglu, A.~M. (2018).
@@ -77,6 +131,12 @@ Sirignano, J. and Cont, R. (2018).
 \newblock Universal features of price formation in financial markets:
   perspectives from deep learning.
 \newblock {\em Available at SSRN 3141294}.
+
+\bibitem[Srivastava et~al., 2014]{srivastava2014dropout}
+Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
+  R. (2014).
+\newblock Dropout: a simple way to prevent neural networks from overfitting.
+\newblock {\em The journal of machine learning research}, 15(1):1929--1958.
 
 \bibitem[Tsay, 2005]{tsay2005analysis}
 Tsay, R.~S. (2005).

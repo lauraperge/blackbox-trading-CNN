@@ -63,6 +63,8 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\inputen
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\inputenc.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\multirow\multirow.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\multirow\multirow.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty
@@ -83,6 +85,8 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsb
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\cite\cite.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\cite\cite.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty
@@ -255,14 +259,11 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmbx6.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmbx9.tfm
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmbx5.tfm
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb7t.tfm
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CNNCtrf.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CNNCtrf.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CNNCtrf.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CNNCtrf.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CNNCtrf.png
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\vf\adobe\times\ptmb7t.vf
-INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\Confusion_matrix.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\Confusion_matrix.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\Confusion_matrix.png

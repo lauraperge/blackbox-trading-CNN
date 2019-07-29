@@ -1,11 +1,13 @@
 \documentclass[11pt, a4paper]{article}
 \usepackage[english, science, titlepage]{ku-frontpage}
 \usepackage[utf8]{inputenc}
-\usepackage{booktabs}
+\usepackage{booktabs, multirow}
 \usepackage{amsfonts, amssymb}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\usepackage{array}
+\newcolumntype{L}{>{\centering\arraybackslash}m{3cm}}
 
 \usepackage{cite, hyperref, nameref}
 \usepackage{natbib, apalike, url}
@@ -311,28 +313,27 @@ There are multiple reasons to pursue this approach. Firstly, if we were to label
     \label{fig:Labelling}
 \end{figure}
 
-\subsection{Recognizing Patterns with Deep CNN - NOT READY}
+\subsection{Recognizing Patterns with Deep CNN}
 \label{subsec:DM:RecPatwCNN}
-Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (deep) that also employ convolution in one or more layers as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). %As per Chapter 9.2 of \cite{goodfellow2016deep}) 
-There are three main arguments why CNNs are relatively popular and some of these make them particularly advantageous for the model.
-Firstly, it can process fairly raw high dimensional data and extract the most important features for the given exercise. Secondly, the sparse connectivity in the network prove to be computationally very efficient .... And last but not least, ...
+Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (hence deep) that also employ convolution operation in one or more layers as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). 
+The CNN has many advantageous properties but what is most important for our use-case is that it can process fairly raw high dimensional data and extract the most important features for the given exercise. Moreover, the sparse connectivity in the network prove to be computationally more efficient and better in generalization when compared with multilayer perceptrons (which are fully connected networks). Deep neural networks have many constituents that shall be chosen for the data and objective of the model. Below we will get an overview of these choices and the final model design (also see Figure \ref{fig:CNNstruct}).
 
-The activation function that is mostly used throughout the model is Leaky ReLu, which is a version of the commonly used ReLu function. ReLu stands for rectified linear unit (\cite{hahnloser2000digital}) and is defined as
+The first component that we discuss is the activation function which has an important role in introducing non-linear properties to the neural network. The activation function that is used throughout the models is Leaky ReLU, which is a version of the commonly used ReLU function. ReLU stands for rectified linear unit (\cite{hahnloser2000digital}) and is defined as
 \begin{equation}
-    \label{eq:ReLu}
+    \label{eq:ReLU}
     y = f(x) = \max(0,x).
 \end{equation}
-The popularity of the ReLu is due to it is being computationally cheap, helping faster convergence as it is linear and does not lead to the vanishing of gradients. Lastly, it promotes sparsity since all negative inputs result in zero activation which helps the model in finding meaningful features faster and prevents against overfitting. 
-On the other hand, the fact that all negative results are turned into zero can be an issue when a value keeps giving negative results. In this case the ReLu turns it into zero every time and due to not being any slope below zero the neuron is very likely to remain inactive for the rest of the training. This way, these neurons will have no contribution to the network and this is an even bigger problem if more and more neurons turn up "dead". To prevent against the described disadvantages we use Leaky ReLu which solves the issue by introducing a slope in the negative side of the function (\cite{maas2013rectifier}):
+The ReLU is popular as it prevents against vanishing gradients (\cite{glorot2011deep}) and it has a low computational cost. Lastly, it promotes sparsity since all negative inputs result in zero activation which helps the model in finding meaningful features faster and prevents against overfitting. 
+On the other hand, the fact that all negative results are turned into zero can be an issue when a value keeps giving negative results. In this case the ReLU turns it into zero every time and due to not being any slope below zero the neuron is very likely to remain inactive for the rest of the training. This way, these neurons will have no contribution to the network and this is an even bigger problem if more and more neurons turn up "dead". To prevent against the described disadvantages we use Leaky ReLU which solves the issue by introducing a slope in the negative side of the function (\cite{maas2013rectifier}):
 \begin{equation}
-    \label{eq:LeakyReLu}
+    \label{eq:LeakyReLU}
     y = f(x) = 
    \begin{cases*}
       x & \text{if $x \geq 0$} \\
       \alpha x        & \text{if $x<0$}
     \end{cases*}
 \end{equation}
-where we use $\alpha = 0.3$. The Leaky ReLu also helps accelerating the training process as it is more balanced than the simple ReLu. On the output layer we apply softmax activation that is usually used for multiclass classification problems as it normalizes the outputs of the last layer so it becomes a probability distribution over $K$ classes. The standard softmax function is $\sigma: \mathbb{R}^K \rightarrow \mathbb{R}^K$
+where we use $\alpha = 0.3$. The Leaky ReLU also helps accelerating the training process as it is more balanced than the simple ReLU. On the output layer we apply softmax activation that is usually used for multiclass classification problems as it normalizes the outputs of the last layer so it becomes a probability distribution over $K$ classes. The standard softmax function is $\sigma: \mathbb{R}^K \rightarrow \mathbb{R}^K$
 \begin{equation}
     \label{eq:softmax}
     \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}} 
@@ -366,28 +367,11 @@ where $\gamma$ is the momentum term determining how much of the previous time st
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/CNNCtrf.png}
-    \caption{The basic structure of the Convolutional Neural Network used for trading order prediction.}
+    \caption{The basic structure of the Convolutional Neural Network used for trading order prediction}
     \label{fig:CNNstruct}
 \end{figure}
 
-The model structure is depicted in Figure \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLu, described previously in Equation \ref{eq:LeakyReLu}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLu function. After, these convolutional layers are average pooled with $2 \times 2 \times 3$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLu followed by a second dropout. The information from these layers is condensed in the following fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for individual models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates, L2 regularization strength and the parameters of the optimizer.
-
-\textbf{Finish}
-
-% Let us take a second to recap what we have so far. We have one-dimensional historical stock price data that we preprocessed and created images from the sliding windows of data points. We created 
-%labels of trading actions on our original data and then matched these labels to the relevant images. 
-
-SKELETON:
-
-1. Feed image representations in different channels for colors
-
-2. Optimize number of layers, neurons - maybe tiled CNN
-
-3. Add regularization
-
-5. Other additions/optimization
-
-6. Description of exact build of each model
+The model structure is depicted in Figure \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLU, described previously in Equation \ref{eq:LeakyReLU}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLU function. After, these convolutional layers are average pooled with $2 \times 2 \times 3$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLU followed by a second dropout. The information from these layers is condensed by the flattening of the the feature map (output resulting from previous layer) and feeding it to the fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for asset-specific models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates, L2 regularization strength and the parameters of the optimizer.
 
 \subsection{Evaluation Techniques}
 \label{subsec:DM:Eval}
@@ -421,7 +405,7 @@ or in other words, the precision of a class $K$ tells us the proportion of corre
     \label{eq:f1}
     F1_K = 2 \frac{Precision_K \cdot Recall_K}{Precision_K + Recall_K}.
 \end{equation}
-We will also see average results over the classes for each of these metrics.
+We will also see macro average results over the classes for each of these metrics which means the average of the classwise metric results, e.g. the macro average for the F1-score is $\frac{F1_S + F1_B + F1_H}{3}$.
 
 Furthermore, financial assessment is carried out on the test data which we start by setting an initial capital of $C_0 = 10000$ and a flat transaction based trading commission of $c = 5$ (both in USD). At every time step $t$ the trading orders are executed as per the signals ($s_t$) at price $p_t$ which are predicted by the model for the respective time step.
 In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. The Buy order is completed given money is available (up until the first Buy order, and after each executed Sell) and the Sell order is completed if units of the financial instrument are available for selling (i.e. after each executed Buy), otherwise they are handled as a Hold. In case of a Hold signal at $t$, trade does not take place, only the amount of capital $C_t$ is tracked at the given period.
@@ -464,15 +448,97 @@ It is important to note that all presented results in the paper are biased to so
 
 \subsection{Classification Performance}
 \label{subsec:ER:ClassPerf}
-figures, confusion matrix, accuracy measurements, etc.
+
+\begin{table}[H]
+\begin{tabular}{l|l|cc|cc|cc|cc}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} & \multicolumn{2}{m{2.5cm}|}{Accuracy} & \multicolumn{2}{m{2.5cm}|}{Average* F1} & \multicolumn{2}{m{3cm}|}{Average* Precision} & \multicolumn{2}{m{2.8cm}}{Average* Recall}  \\
+\cline{3-10}
+&& CNN-I & CNN-U & CNN-I & CNN-U & CNN-I & CNN-U & CNN-I & CNN-U \\ \hline \hline
+\multirow{6}{1cm}{2006-2007} & S\&P500          & 0.51          & 0.45 & 0.36 & 0.45          & 0.36 & 0.43          & 0.35 & 0.46          \\
+& Nikkei225        & 0.56          & 0.49 & 0.38 & 0.51          & 0.39 & 0.47          & 0.38 & 0.54          \\
+& Nasdaq           & 0.55          & 0.43 & 0.35 & 0.43          & 0.35 & 0.42          & 0.35 & 0.45          \\
+& AAPL             & 0.59          & 0.43 & 0.36 & 0.41          & 0.37 & 0.40          & 0.36 & 0.41          \\
+& SPY              & 0.57          & 0.44 & 0.38 & 0.47          & 0.38 & 0.44          & 0.38 & 0.50          \\ \cline{2-10}
+& \textit{Average} & \textbf{0.55} & 0.45 & 0.37 & \textbf{0.45} & 0.37 & \textbf{0.43} & 0.36 & \textbf{0.47} \\ \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500          & 0.59          & 0.44 & 0.40 & 0.41          & 0.40 & 0.39          & 0.40 & 0.44          \\
+& Nikkei225        & 0.53          & 0.40 & 0.33 & 0.36          & 0.33 & 0.36          & 0.33 & 0.37          \\
+& Nasdaq           & 0.57          & 0.45 & 0.38 & 0.44          & 0.38 & 0.42          & 0.38 & 0.48          \\
+& AAPL             & 0.58          & 0.43 & 0.37 & 0.42          & 0.37 & 0.39          & 0.37 & 0.44          \\
+& SPY              & 0.58          & 0.44 & 0.38 & 0.43          & 0.38 & 0.41          & 0.38 & 0.45          \\ \cline{2-10}
+& \textit{Average} & \textbf{0.57} & 0.43 & 0.37 & \textbf{0.41} & 0.37 & \textbf{0.39} & 0.37 & \textbf{0.44} \\ \hline
+\multirow{6}{1cm}{2017-2019} & S\&P500          & 0.59          & 0.44 & 0.38 & 0.52          & 0.39 & 0.48          & 0.38 & 0.57          \\
+& Nikkei225        & 0.58          & 0.38 & 0.40 & 0.45          & 0.40 & 0.43          & 0.41 & 0.46          \\
+& Nasdaq           & 0.50          & 0.41 & 0.36 & 0.47          & 0.36 & 0.44          & 0.37 & 0.50          \\
+& AAPL             & 0.55          & 0.37 & 0.35 & 0.46          & 0.35 & 0.43          & 0.35 & 0.49          \\
+& SPY              & 0.56          & 0.42 & 0.37 & 0.49          & 0.36 & 0.45          & 0.37 & 0.53          \\ \cline{2-10}
+& \textit{Average} & \textbf{0.56} & 0.40 & 0.37 & \textbf{0.48} & 0.37 & \textbf{0.45} & 0.37 & \textbf{0.51}
+\end{tabular}
+\caption{Classification results for asset-specific models (CNN-I) and universal models (CNN-U). *Macro average as explained previously.}
+\label{tbl:ClassRes}
+\end{table}
 
 \subsection{Financial Performance}
 \label{subsec:ER:FinPerf}
 description of results of Financial Evaluation, tables, text
 
+\begin{table}[H]
+\begin{tabular}{l|l|ccccc|ccccc}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{m{3cm}|}{Annual Return} & \multicolumn{5}{m{3cm}}{Number of trades} \\ \cline{3-12}
+  &                  &  CNN-I         & CNN-U         & RSI           & BB            & B\&H          & CNN-I            & CNN-U & RSI & BB & B\&H \\ \hline \hline
+\multirow{6}{1cm}{2006-2007} & S\&P500       & 0.07          & \textbf{0.13} & 0.06          & 0.08          & 0.07          & 52               & 89    & 7   & 12 & 2    \\
+  & Nikkei225        &  0.00          & 0.05          & \textbf{0.08} & 0.07          & -0.03         & 44               & 94    & 9   & 11 & 2    \\
+  & Nasdaq       & 0.01          & 0.07          & 0.05          & -0.01         & \textbf{0.08} & 37               & 92    & 7   & 7  & 2    \\
+  & AAPL             & 0.27          & 0.18          & 0.32          & 0.35          & \textbf{0.63} & 38               & 72    & 10  & 10 & 2    \\
+  & SPY              & 0.06          & \textbf{0.12} & 0.06          & 0.03          & 0.09          & 44               & 94    & 7   & 7  & 2    \\ \cline{2-12}
+  & \textit{Average}  & 0.08          & 0.11          & 0.11          & 0.10          & \textbf{0.17} & 43               & 88    & 8   & 9  & 2    \\ \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500    & 0.12          & \textbf{0.17} & 0.06          & 0.14          & 0.16          & 32               & 78    & 6   & 6  & 2    \\
+  & Nikkei225    & -0.07         & -0.02         & 0.05          & \textbf{0.13} & 0.06          & 38               & 69    & 8   & 12 & 2    \\
+  & Nasdaq       & 0.18          & 0.13          & 0.15          & \textbf{0.31} & 0.28          & 45               & 84    & 6   & 12 & 2    \\
+  & AAPL        & 0.61          & 0.75          & 0.23          & 0.28          & \textbf{0.85} & 51               & 80    & 6   & 8  & 2    \\
+  & SPY           & 0.05          & \textbf{0.22} & 0.07          & 0.08          & 0.19          & 32               & 72    & 6   & 6  & 2    \\ \cline{2-12}
+  & \textit{Average} & 0.18          & 0.25          & 0.11          & 0.19          & \textbf{0.31} & 40               & 77    & 6   & 9  & 2    \\ \hline
+\multirow{6}{1cm}{2017-2019} & S\&P500       & 0.05          & 0.01          & -0.01         & \textbf{0.11} & 0.08          & 40               & 120   & 5   & 13 & 2    \\
+  & Nikkei225     & 0.09          & \textbf{0.11} & 0.05          & 0.00          & 0.02          & 51               & 111   & 9   & 11 & 2    \\
+  & Nasdaq         & 0.02          & 0.05          & 0.05          & 0.10          & \textbf{0.11} & 56               & 112   & 7   & 11 & 2    \\
+  & AAPL      & 0.07          & 0.09          & \textbf{0.18} & -0.01         & 0.13          & 47               & 114   & 11  & 11 & 2    \\
+  & SPY       & 0.04          & 0.06          & 0.00          & \textbf{0.11} & \textbf{0.11} & 49               & 116   & 5   & 13 & 2    \\ \cline{2-12}
+  & \textit{Average} & 0.05          & 0.06          & 0.05          & 0.06          & \textbf{0.09} & 49               & 115   & 7   & 12 & 2   
+\end{tabular}
+\caption{Annual returns and Number of trades for the asset-specific model (CNN-I), the universal model (CNN-U) and the competing strategies: Relative Strength Index (RSI), Bollinger Bands (BB) and Buy\&Hold (B\&H)}
+\label{tbl:FinResMain}
+\end{table}
+
 \subsection{Time Consumption}
 \label{subsec:ER:TimePerf}
-How long it takes to train, how long it takes to predict
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|cc|cc}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} & \multicolumn{2}{m{3.5cm}}{Training time (mm:ss) } & \multicolumn{2}{m{3.5cm}}{Testing time (s)} \\ \cline{3-6}
+&& CNN-I & CNN-U & CNN-I & CNN-U \\ 
+\hline \hline
+\multirow{6}{1cm}{2006-2007} & S\&P500   & 08:30 & 42:09 & 0.41 & 0.40 \\
+          & Nikkei225 & 07:12 & 42:09 & 0.59 & 0.09 \\
+          & Nasdaq    & 04:59 & 42:09 & 0.41 & 0.09 \\
+          & AAPL      & 10:56 & 42:09 & 0.60 & 0.07 \\
+          & SPY       & 03:53 & 42:09 & 0.63 & 0.09 \\ \cline{2-6}
+          & \textit{Average}   & 07:06 & 42:09 & 0.53 & 0.15 \\ \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500   & 10:11 & 35:15 & 0.30 & 0.39 \\ 
+          & Nikkei225 & 05:52 & 35:15 & 0.30 & 0.09 \\
+          & Nasdaq    & 04:07 & 35:15 & 0.30 & 0.10 \\
+          & AAPL      & 06:35 & 35:15 & 0.68 & 0.09 \\
+          & SPY       & 04:56 & 35:15 & 0.61 & 0.10 \\ \cline{2-6}
+          & \textit{Average}   & 06:20 & 35:15 & 0.44 & 0.15 \\\hline
+\multirow{6}{1cm}{2017-2019} & S\&P500   & 15:33 & 31:00 & 0.33 & 0.31 \\
+          & Nikkei225 & 08:34 & 31:00 & 0.30 & 0.06 \\
+          & Nasdaq    & 06:41 & 31:00 & 0.29 & 0.08 \\
+          & AAPL      & 05:52 & 31:00 & 0.31 & 0.07 \\
+          & SPY       & 05:35 & 31:00 & 0.32 & 0.06 \\ \cline{2-6}
+          & \textit{Average}   & 08:27 & 31:00 & 0.31 & 0.12
+\end{tabular}
+\caption{Training and testing times of asset-specific models (CNN-I) and universal models (CNN-U)}
+\label{tbl:TimeRes}
+\end{table}
 
 \section{Discussion}
 \label{sec:Discuss}
@@ -537,6 +603,36 @@ and
     upperBB = MA_d + c \sigma_d.
 \end{equation}
 The strategy is to Buy when the Adjusted Close price decreases below the $lowerBB$ and Sell if it increases above the $upperBB$.
+
+\subsection{Additional Financial Results}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|ccccc}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{m{6cm}}{Cumulative Return}  \\ \cline{3-7}
+  &                  &  CNN-I         & CNN-U         & RSI           & BB            & B\&H \\ \hline \hline
+\multirow{6}{1cm}{2006-2007}  & S\&P500          & 0.15              & \textbf{0.28} & 0.13          & 0.16          & 0.15          \\
+  & Nikkei225        & 0.00              & 0.10          & \textbf{0.16} & 0.13          & -0.07         \\
+  & Nasdaq           & 0.01              & \textbf{0.13} & 0.10          & -0.01         & 0.17          \\
+  & AAPL             & 0.62              & 0.39          & 0.73          & 0.83          & \textbf{1.64} \\
+  & SPY              & 0.13              & \textbf{0.25} & 0.13          & 0.06          & 0.19          \\ \cline{2-7}
+  & \textit{Average} & 0.18              & 0.23          & 0.25          & 0.23          & \textbf{0.42} \\ \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500          & 0.25              & \textbf{0.37} & 0.12          & 0.30          & 0.35          \\
+  & Nikkei225        & -0.14             & -0.05         & 0.10          & \textbf{0.28} & 0.13          \\
+  & Nasdaq           & 0.39              & 0.28          & 0.32          & \textbf{0.71} & 0.63          \\
+  & AAPL             & 1.60              & 2.05          & 0.52          & 0.64          & \textbf{2.41} \\
+  & SPY              & 0.11              & \textbf{0.49} & 0.15          & 0.16          & 0.41          \\ \cline{2-7}
+  & \textit{Average} & 0.44              & 0.63          & 0.24          & 0.42          & \textbf{0.79} \\ \hline
+\multirow{6}{1cm}{2017-2019} &  S\&P500          & 0.11              & 0.03          & -0.02         & \textbf{0.22} & 0.18          \\
+  & Nikkei225        & 0.19              & \textbf{0.23} & 0.10          & 0.01          & 0.03          \\
+  & Nasdaq           & 0.03              & 0.11          & 0.11          & 0.22          & \textbf{0.23} \\
+  & AAPL             & 0.15              & 0.19          & \textbf{0.40} & -0.03         & 0.27          \\
+  & SPY              & 0.09              & 0.12          & -0.01         & \textbf{0.24} & 0.22          \\ \cline{2-7}
+  & \textit{Average} & 0.11              & 0.14          & 0.12          & 0.13          & \textbf{0.19}
+\end{tabular}
+\caption{Cumulative returns for the asset-specific model (CNN-I), the universal model (CNN-U) and the competing strategies: Relative Strength Index (RSI), Bollinger Bands (BB) and Buy\&Hold (B\&H)}
+\label{tbl:Cummulative}
+\end{table}
 
 \subsection{Data Sources}
 
