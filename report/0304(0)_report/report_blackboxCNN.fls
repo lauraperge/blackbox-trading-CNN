@@ -65,6 +65,14 @@ INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\boo
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\multirow\multirow.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\multirow\multirow.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\multicol.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\multicol.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption3.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption3.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcaption.sty
+INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcaption.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\amsfonts.sty
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\amssymb.sty
@@ -269,6 +277,66 @@ INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\Confusion_matrix.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\Confusion_matrix.png
 INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\Confusion_matrix.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_aggreg.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_GSPC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_N225.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_IXIC.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_AAPL.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_indiv_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_SPY.png
+INPUT c:\Users\Corvinus\Documents\UCPH\Thesis\blackbox-trading-CNN\report\0304(0)_report\images\CMs\CM_univ_SPY.png
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1pcr.fd
 INPUT C:\Users\Corvinus\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\adobe\courier\pcrr7t.tfm

@@ -1,7 +1,9 @@
 \documentclass[11pt, a4paper]{article}
 \usepackage[english, science, titlepage]{ku-frontpage}
 \usepackage[utf8]{inputenc}
-\usepackage{booktabs, multirow}
+\usepackage{booktabs, multirow, multicol}
+\usepackage{caption}
+\usepackage{subcaption, graphicx}
 \usepackage{amsfonts, amssymb}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -371,7 +373,7 @@ where $\gamma$ is the momentum term determining how much of the previous time st
     \label{fig:CNNstruct}
 \end{figure}
 
-The model structure is depicted in Figure \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLU, described previously in Equation \ref{eq:LeakyReLU}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLU function. After, these convolutional layers are average pooled with $2 \times 2 \times 3$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLU followed by a second dropout. The information from these layers is condensed by the flattening of the the feature map (output resulting from previous layer) and feeding it to the fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for asset-specific models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates, L2 regularization strength and the parameters of the optimizer.
+The model structure is depicted in Figure \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLU, described previously in Equation \ref{eq:LeakyReLU}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLU function. After, these convolutional layers are average pooled with $3 \times 2 \times 2$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLU followed by a second dropout. The information from these layers is condensed by the flattening of the the feature map (output resulting from previous layer) and feeding it to the fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for asset-specific models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights (as there is an imbalance between the three classes), mini-batch sizes, dropout rates, L2 regularization strength and the parameters of the optimizer.
 
 \subsection{Evaluation Techniques}
 \label{subsec:DM:Eval}
@@ -477,13 +479,27 @@ It is important to note that all presented results in the paper are biased to so
 \label{tbl:ClassRes}
 \end{table}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\textwidth]{images/CMs/CM_indiv_aggreg.png}
+    \caption{Confusion matrix of the asset-specific model results aggregated for all testing periods and assets}
+    \label{fig:CMAggrI}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\textwidth]{images/CMs/CM_univ_aggreg.png}
+    \caption{Confusion matrix of the universal model results aggregated for all testing periods and assets}
+    \label{fig:CMAggrU}
+\end{figure}
+
 \subsection{Financial Performance}
 \label{subsec:ER:FinPerf}
 description of results of Financial Evaluation, tables, text
 
 \begin{table}[H]
 \begin{tabular}{l|l|ccccc|ccccc}
-\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{m{3cm}|}{Annual Return} & \multicolumn{5}{m{3cm}}{Number of trades} \\ \cline{3-12}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{c|}{Annual Return} & \multicolumn{5}{c}{Number of trades} \\ \cline{3-12}
   &                  &  CNN-I         & CNN-U         & RSI           & BB            & B\&H          & CNN-I            & CNN-U & RSI & BB & B\&H \\ \hline \hline
 \multirow{6}{1cm}{2006-2007} & S\&P500       & 0.07          & \textbf{0.13} & 0.06          & 0.08          & 0.07          & 52               & 89    & 7   & 12 & 2    \\
   & Nikkei225        &  0.00          & 0.05          & \textbf{0.08} & 0.07          & -0.03         & 44               & 94    & 9   & 11 & 2    \\
@@ -609,7 +625,7 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|ccccc}
-\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{m{6cm}}{Cumulative Return}  \\ \cline{3-7}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{c}{Cumulative Return}  \\ \cline{3-7}
   &                  &  CNN-I         & CNN-U         & RSI           & BB            & B\&H \\ \hline \hline
 \multirow{6}{1cm}{2006-2007}  & S\&P500          & 0.15              & \textbf{0.28} & 0.13          & 0.16          & 0.15          \\
   & Nikkei225        & 0.00              & 0.10          & \textbf{0.16} & 0.13          & -0.07         \\
@@ -633,6 +649,163 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
 \caption{Cumulative returns for the asset-specific model (CNN-I), the universal model (CNN-U) and the competing strategies: Relative Strength Index (RSI), Bollinger Bands (BB) and Buy\&Hold (B\&H)}
 \label{tbl:Cummulative}
 \end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|ccccc}
+        \multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} &       \multicolumn{5}{c}{Total P\&L}  \\ \cline{3-7}
+          &           & CNN-I   & CNN-U   & RSI     & BB      & B\&H    \\
+          \hline \hline
+\multirow{6}{1cm}{2006-2007} & S\&P500   & 1458.8  & 2847.8  & 1272.0  & 1586.4  & 1519.7    \\
+          & Nikkei225 & -34.5   & 1012.3  & 1620.6  & 1343.8  & -653.7   \\
+          & Nasdaq    & 143.3   & 1342.7  & 1005.3  & -126.2  & 1707.0 \\
+          & AAPL      & 6154.6  & 3903.5  & 7302.7  & 8317.7  & 16403.0  \\
+          & SPY       & 1279.8  & 2497.2  & 1290.8  & 589.2   & 1902.8 \\
+          \cline{2-7}
+          & \textit{Average}   & 1800.4  & 2320.7  & 2498.3  & 2342.2  & 4175.7 \\
+          \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500   & 2457.6  & 3654.2  & 1228.8  & 2965.7  & 3548.41  \\
+          & Nikkei225 & -1357.1 & -453.96 & 968.87  & 2816.9  & 1300.62  \\
+          & Nasdaq    & 3877    & 2826.8  & 3174.2  & 7121.2  & 6281.82 \\
+          & AAPL      & 16021   & 20501   & 5158.1  & 6367.5  & 24082.4 \\
+          & SPY       & 1096.5  & 4908.4  & 1465.2  & 1575.5  & 4116.83\\
+          \cline{2-7}
+          & \textit{Average}   & 4419.0  & 6287.2  & 2399.0  & 4169.3  & 7866.0   \\
+\hline
+\multirow{6}{1cm}{2017-2019}   & S\&P500   & 1104.3  & 274.94  & -242.14 & 2243.1  & 1783.94 \\
+          & Nikkei225 & 1876.1  & 2306.2  & 1002.5  & 79.543  & 343.745 \\
+          & Nasdaq    & 346.09  & 1130.5  & 1085.4  & 2188.6  & 2286.33  \\
+          & AAPL      & 1507.3  & 1904.8  & 4030.5  & -252.19 & 2724.64  \\
+          & SPY       & 855.28  & 1189.2  & -97.977 & 2374.1  & 2236.45 \\
+          \cline{2-7}
+          & \textit{Average}   & 1137.8  & 1361.1  & 1155.6  & 1326.6  & 1875.0 
+\end{tabular}
+\caption{Total Profit and Loss (P\&L) for the asset-specific model (CNN-I), the universal model (CNN-U) and the competing strategies: Relative Strength Index (RSI), Bollinger Bands (BB) and Buy\&Hold (B\&H)}
+\label{tbl:PandL}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|ccccc}
+        \multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}}  &       \multicolumn{5}{c}{Average P\&L per Trade}  \\ \cline{3-7}
+          &           & CNN-I   & CNN-U   & RSI     & BB      & B\&H    \\
+          \hline \hline
+\multirow{6}{1cm}{2006-2007} & S\&P500   & 28.1   & 32.0   & 181.7  & 132.2  & 759.9  \\
+          & Nikkei225 &-0.8   & 10.8   & 180.1  & 122.2  & -326.9 \\
+          & Nasdaq   & 3.9    & 14.6   & 143.6  & -18.0  & 853.5  \\
+          & AAPL     & 162.0  & 54.2   & 730.3  & 831.8  & 8201.5 \\
+          & SPY       & 29.1   & 26.6   & 184.4  & 84.2   & 951.4  \\
+          \cline{2-7}
+          & \textit{Average}    & 44.4   & 27.6   & 284.0  & 230.5  & 2087.9 \\
+          \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500   & 76.8   & 46.849 & 204.8  & 494.3  & 1774.2 \\
+          & Nikkei225  & -35.71 & -6.579 & 121.1  & 234.7  & 650.31 \\
+          & Nasdaq    & 86.16  & 33.652 & 529    & 593.4  & 3140.9 \\
+          & AAPL      & 314.1  & 256.26 & 859.7  & 795.9  & 12041  \\
+          & SPY       & 34.27  & 68.172 & 244.2  & 262.6  & 2058.4 \\
+          \cline{2-7}
+          & \textit{Average}  & 95.1   & 79.7   & 391.8  & 476.2  & 3933.0 \\
+\hline
+\multirow{6}{1cm}{2017-2019}   & S\&P500  & 27.61  & 2.2911 & -48.43 & 172.5  & 891.97 \\
+          & Nikkei225 & 36.79  & 20.776 & 111.4  & 7.231  & 171.87 \\
+          & Nasdaq    & 6.18   & 10.094 & 155.1  & 199    & 1143.2 \\
+          & AAPL    & 32.07  & 16.708 & 366.4  & -22.93 & 1362.3 \\
+          & SPY   & 17.45  & 10.252 & -19.6  & 182.6  & 1118.2 \\
+          \cline{2-7}
+          & \textit{Average}   & 24.0   & 12.0   & 113.0  & 107.7  & 937.5 
+\end{tabular}
+\caption{Average Profit and Loss (P\&L) per Trade for the asset-specific model (CNN-I), the universal model (CNN-U) and the competing strategies: Relative Strength Index (RSI), Bollinger Bands (BB) and Buy\&Hold (B\&H)}
+\label{tbl:PandLAvg}
+\end{table}
+
+\subsection{Confusion Matrices for each asset and model variant}
+\label{subsec:App:CMs}
+
+\begin{figure}[H]
+
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include first image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_indiv_GSPC.png}  
+  \caption{S\&P500 asset-specific model}
+  \label{fig:subGSPCI}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include second image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_univ_GSPC.png}  
+  \caption{S\&P500 universal model}
+  \label{fig:subGSPCU}
+\end{subfigure}
+
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include first image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_indiv_N225.png}  
+  \caption{Nikkei 225 asset-specific model}
+  \label{fig:subN225I}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include second image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_univ_N225.png}  
+  \caption{Nikkei 225 universal model}
+  \label{fig:subN225U}
+\end{subfigure}
+
+\caption{Confusion matrices for S\&P500 and Nikkei 225 for each model variant, aggregated over testing periods}
+\label{fig:AppCMs1}
+\end{figure}
+
+\begin{figure}[H]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include first image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_indiv_IXIC.png}  
+  \caption{Nasdaq asset-specific model}
+  \label{fig:subIXICI}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include second image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_univ_IXIC.png}  
+  \caption{Nasdaq universal model}
+  \label{fig:subIXICU}
+\end{subfigure}
+
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include first image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_indiv_AAPL.png}  
+  \caption{Apple asset-specific model}
+  \label{fig:subAAPLI}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include second image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_univ_AAPL.png}  
+  \caption{Apple universal model}
+  \label{fig:subAAPLU}
+\end{subfigure}
+
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include first image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_indiv_SPY.png}  
+  \caption{SPY ETF asset-specific model}
+  \label{fig:subSPYI}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  % include second image
+  \includegraphics[width=.75\linewidth]{images/CMs/CM_univ_SPY.png}  
+  \caption{SPY ETF universal model}
+  \label{fig:subSPYU}
+\end{subfigure}
+
+\caption{Confusion matrices for Nasdaq, Apple and SPY ETF for each  model variant, aggregated over testing periods}
+\label{fig:AppCMs2}
+\end{figure}
 
 \subsection{Data Sources}
 
@@ -720,7 +893,7 @@ The list of sources for all downloaded datasets can be found in Tables \ref{tbl:
         Corn                                                                        & \url{https://www.macrotrends.net/2532/corn-prices-historical-chart-data}                                                                    & June 8, 2019              \\
         Coffee                                                                      & \url{https://www.macrotrends.net/2535/coffee-prices-historical-chart-data}                                                                  & June 8, 2019              \\
         Soybean oil                                                                 & \url{https://www.macrotrends.net/2538/soybean-oil-prices-historical-chart-data}                                                             & June 8, 2019              \\ \hline
-        \end{tabular}
+        \end{tabular} 
         \caption{Data sources: Commodities}
         \label{tbl:datasets_commods}
     \end{table}
