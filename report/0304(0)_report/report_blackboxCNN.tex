@@ -410,7 +410,7 @@ or in other words, the precision of a class $K$ tells us the proportion of corre
 We will also see macro average results over the classes for each of these metrics which means the average of the classwise metric results, e.g. the macro average for the F1-score is $\frac{F1_S + F1_B + F1_H}{3}$.
 
 Furthermore, financial assessment is carried out on the test data which we start by setting an initial capital of $C_0 = 10000$ and a flat transaction based trading commission of $c = 5$ (both in USD). At every time step $t$ the trading orders are executed as per the signals ($s_t$) at price $p_t$ which are predicted by the model for the respective time step.
-In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. The Buy order is completed given money is available (up until the first Buy order, and after each executed Sell) and the Sell order is completed if units of the financial instrument are available for selling (i.e. after each executed Buy), otherwise they are handled as a Hold. In case of a Hold signal at $t$, trade does not take place, only the amount of capital $C_t$ is tracked at the given period.
+In case of repeating consequent signals, the first signal prompts a trading action given cash/the asset is available in holdings. The Buy order is completed given money is available (up until the first Buy order, and after each executed Sell) and the Sell order is completed if units of the financial instrument are available for selling (i.e. after each executed Buy), otherwise they are handled as a Hold. In case of a Hold signal at $t$, trade does not take place, only the amount of capital $C_t$ is tracked at the given period. As a safety feature, to avoid obvious mistakes by the model, a "Buy" order is only executed if the current price is not higher than the previous and a "Sell" order is only executed if the current price is not lower than the previous.
 Assets are assumed to be traded in any increments. Using the described approach over the period $t=1, \dots, T$ the following measurements are calculated for the financial performance evaluation:
 
 \begin{itemize}
@@ -445,15 +445,22 @@ In order to assess feasibility we will also present how much time it takes for t
 
 It is important to note that all presented results in the paper are biased to some extent, since creating unbiased results requires excessive computational resources and time which is not given within the scope of this research. To create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
 
-\section{Evaluation Results}
+\section{Results}
 \label{sec:ER}
+
+In this section we cover the main results of the asset-specific and universal model, together with the financial results of the competing strategies. In the following section, we will discuss the reasons behind the results and their implications.
 
 \subsection{Classification Performance}
 \label{subsec:ER:ClassPerf}
 
+The classification performance results can be seen in Table \ref{tbl:ClassRes} and Figures \ref{fig:CMAggrI} - \ref{fig:CMAggrU}.
+Regarding accuracy, the asset-specific model ended up producing higher test accuracy scores. 
+
+On the other hand, F1, Precision and Recall scores are higher for the universal model setting for almost all periods and assets.
+
 \begin{table}[H]
 \begin{tabular}{l|l|cc|cc|cc|cc}
-\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} & \multicolumn{2}{m{2.5cm}|}{Accuracy} & \multicolumn{2}{m{2.5cm}|}{Average* F1} & \multicolumn{2}{m{3cm}|}{Average* Precision} & \multicolumn{2}{m{2.8cm}}{Average* Recall}  \\
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} & \multicolumn{2}{c|}{Accuracy} & \multicolumn{2}{c|}{Average* F1} & \multicolumn{2}{c|}{Average* Precision} & \multicolumn{2}{c}{Average* Recall}  \\
 \cline{3-10}
 && CNN-I & CNN-U & CNN-I & CNN-U & CNN-I & CNN-U & CNN-I & CNN-U \\ \hline \hline
 \multirow{6}{1cm}{2006-2007} & S\&P500          & 0.51          & 0.45 & 0.36 & 0.45          & 0.36 & 0.43          & 0.35 & 0.46          \\
@@ -479,6 +486,10 @@ It is important to note that all presented results in the paper are biased to so
 \label{tbl:ClassRes}
 \end{table}
 
+In Figure \ref{fig:CMAggrI}, we can see the confusion matrix for the asset-specific model aggregated over all periods and testing assets. The matrix shows that most observations are classified as "Hold" which is partially due to the imbalanced data used for training (around 70\% is "Hold"). As discussed before, the model was trained using weights to help with this issue but it did not entirely eliminate the effect. The greatest proportion of the "Sell" and "Buy" labels were misclassified as "Hold" and a significant number of "Hold" images were wrongly predicted to be "Sell" or "Buy". 22\% of "Buy" images were correctly classified as "Buy" while 17.7\% of them as "Sell". 19\% of "Sell" images were correctly labelled "Sell" and 13.6\% of them as "Buy". The wrong cross-classifications between "Sell" and "Buy" are mostly corrected in the actual ordering process using the previously described safety feature.\footnote{Only buying if current price is not higher than previous and vice versa.}
+
+Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model results across all periods and testing assets. Once again there were a lot of predictions of "Hold" but a slightly different weighting during training resulted in a different confusion matrix. Here, many of the "Hold" images were classified as "Buy" or "Sell" but also more "Sell" and "Buy" predictions were correct, 42\% and 60\% respectively. There were more misclassifications across the "Buy" and "Sell" subsets too, 28\% of "Buy"-s were classified as "Sell" and 29\% of "Sell"-s as "Buy". Confusion matrices for each asset and model variant (aggregated over test periods) can be found in the Appendices.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=.6\textwidth]{images/CMs/CM_indiv_aggreg.png}
@@ -495,7 +506,10 @@ It is important to note that all presented results in the paper are biased to so
 
 \subsection{Financial Performance}
 \label{subsec:ER:FinPerf}
-description of results of Financial Evaluation, tables, text
+
+The annual returns and number of trades for each model, asset and period are displayed in Table \ref{tbl:FinResMain}. 
+
+In terms of average annual returns, in each period, the Buy\&Hold strategy brought the best results but this average is largely influenced by the outstanding annual price growth of the Apple stock. In most cases the universal model produced more annual returns than the individual model. In the first period, the asset-specific model, in the second, the RSI and in the third both of these performed the worst. The universal model prompted the most trading activity, more than 8 times than the more traditional ones. The asset-specific model resulted in a lot of trades but it is still around half of that prompted by the universal. 
 
 \begin{table}[H]
 \begin{tabular}{l|l|ccccc|ccccc}
@@ -524,8 +538,18 @@ description of results of Financial Evaluation, tables, text
 \label{tbl:FinResMain}
 \end{table}
 
+Additional financial results about cummulative returns, total profit \& loss and average P\&L per trade can be seen in the Appendices.
+
 \subsection{Time Consumption}
 \label{subsec:ER:TimePerf}
+
+The results of timing were calculated while running in Google Colaboratory using Google's Nvidia Tesla K80 GPU and 12GB of RAM.
+
+The average training time of the asset-specific model in the first test period is 7 minutes and 6 seconds, which is $1/6$ of the universal model's 42 minutes and 9 seconds. In the second period, the universal model took 35 minutes and 15 seconds to train, 5.6 times longer than the asset-specific model, and in the third period, the universal model training only took 3.65 longer than the average 8 minutes and 27 seconds of the individual model training. These numbers depend on batch size, the number of images passed for training and model complexity.
+
+The time to produce predictions for an image takes on average less in case of the universal model build but both models come up with a prediction generally in less than a minute (with two exceptions in the testing period 2009-2010).
+
+
 
 \begin{table}[H]
 \centering
@@ -893,7 +917,7 @@ The list of sources for all downloaded datasets can be found in Tables \ref{tbl:
         Corn                                                                        & \url{https://www.macrotrends.net/2532/corn-prices-historical-chart-data}                                                                    & June 8, 2019              \\
         Coffee                                                                      & \url{https://www.macrotrends.net/2535/coffee-prices-historical-chart-data}                                                                  & June 8, 2019              \\
         Soybean oil                                                                 & \url{https://www.macrotrends.net/2538/soybean-oil-prices-historical-chart-data}                                                             & June 8, 2019              \\ \hline
-        \end{tabular} 
+        \end{tabular}
         \caption{Data sources: Commodities}
         \label{tbl:datasets_commods}
     \end{table}
