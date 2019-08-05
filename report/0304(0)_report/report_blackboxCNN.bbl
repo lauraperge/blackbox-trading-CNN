@@ -11,6 +11,14 @@ Campanharo, A.~S., Sirer, M.~I., Malmgren, R.~D., Ramos, F.~M., and Amaral, L.
 \newblock Duality between time series and networks.
 \newblock {\em PloS one}, 6(8):e23378.
 
+\bibitem[Chakraborty, 1999]{chakraborty1999effect}
+Chakraborty, B. (1999).
+\newblock Effect of a sparse architecture on generalization behaviour of
+  connectionist networks: A comparative study.
+\newblock In {\em IEEE SMC'99 Conference Proceedings. 1999 IEEE International
+  Conference on Systems, Man, and Cybernetics (Cat. No. 99CH37028)}, volume~3,
+  pages 418--423. IEEE.
+
 \bibitem[de~Vitry, 2018]{gaf_medium}
 de~Vitry, L. (2018).
 \newblock Encoding time series as images, gramian angular field imaging.
@@ -142,6 +150,14 @@ Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
 Tsay, R.~S. (2005).
 \newblock {\em Analysis of financial time series}, volume 543.
 \newblock John wiley \& sons.
+
+\bibitem[Uniqtech, 2018]{MLPmedium}
+Uniqtech (2018).
+\newblock Multilayer perceptron (mlp) vs convolutional neural network in deep
+  learning.
+\newblock
+  \url{https://medium.com/data-science-bootcamp/multilayer-perceptron-mlp-vs-convolutional-neural-network-in-deep-learning-c890f487a8f1}.
+\newblock [Online blog post, accessed 2019-08-05].
 
 \bibitem[Wang and Oates, 2015]{wang2015encoding}
 Wang, Z. and Oates, T. (2015).
