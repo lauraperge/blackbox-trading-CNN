@@ -1,5 +1,14 @@
 \begin{thebibliography}{}
 
+\bibitem[Antognini, 2019]{ObrienStack}
+Antognini, J.~O. (2019).
+\newblock Why are neural networks becoming deeper, but not wider?
+\newblock Cross Validated. \url{https://stats.stackexchange.com/q/223637},
+  (version: 2019-02-06).
+\newblock [Author's link:
+  https://stats.stackexchange.com/users/115448/j-obrien-antognini, accessed:
+  2019-08-09].
+
 \bibitem[Bollinger, 2002]{bollinger2002bollinger}
 Bollinger, J. (2002).
 \newblock {\em Bollinger on Bollinger bands}.
@@ -22,7 +31,7 @@ Chakraborty, B. (1999).
 \bibitem[de~Vitry, 2018]{gaf_medium}
 de~Vitry, L. (2018).
 \newblock Encoding time series as images, gramian angular field imaging.
-\newblock
+\newblock Medium, Analytics Vidhya.
   \url{https://medium.com/analytics-vidhya/encoding-time-series-as-images-b043becbdbf3}.
 \newblock [Online blog post, accessed 2019-06-11].
 
@@ -85,7 +94,7 @@ JP, E. (1987).
 \bibitem[Lemus, 2018]{lemus_2018}
 Lemus, G. (2018).
 \newblock Why financial time series lstm prediction fails.
-\newblock
+\newblock Medium.
   \url{https://medium.com/datadriveninvestor/why-financial-time-series-lstm-prediction-fails-4d1486d336e0}.
 
 \bibitem[Maas et~al., 2013]{maas2013rectifier}
@@ -119,7 +128,7 @@ Polyak, B.~T. (1964).
 \bibitem[RIALTO.AI, 2018]{rialtohistory}
 RIALTO.AI (2018).
 \newblock Beginnings of algorithmic trading.
-\newblock
+\newblock Medium.
   \url{https://medium.com/rialto-ai/beginnings-of-algorithmic-trading-19eccce902a1}.
 \newblock [Online blog post, accessed 2019-04-15].
 
@@ -155,7 +164,7 @@ Tsay, R.~S. (2005).
 Uniqtech (2018).
 \newblock Multilayer perceptron (mlp) vs convolutional neural network in deep
   learning.
-\newblock
+\newblock Medium.
   \url{https://medium.com/data-science-bootcamp/multilayer-perceptron-mlp-vs-convolutional-neural-network-in-deep-learning-c890f487a8f1}.
 \newblock [Online blog post, accessed 2019-08-05].
 
