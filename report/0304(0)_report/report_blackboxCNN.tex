@@ -521,19 +521,28 @@ In terms of average annual returns, in each period, the Buy\&Hold strategy broug
   & Nikkei225        &  0.00          & 0.05          & \textbf{0.08} & 0.07          & -0.03         & 44               & 94    & 9   & 11 & 2    \\
   & Nasdaq       & 0.01          & 0.07          & 0.05          & -0.01         & \textbf{0.08} & 37               & 92    & 7   & 7  & 2    \\
   & AAPL             & 0.27          & 0.18          & 0.32          & 0.35          & \textbf{0.63} & 38               & 72    & 10  & 10 & 2    \\
-  & SPY              & 0.06          & \textbf{0.12} & 0.06          & 0.03          & 0.09          & 44               & 94    & 7   & 7  & 2    \\ \cline{2-12}
+  & SPY              & 0.06          & \textbf{0.12} & 0.06          & 0.03          & 0.09          & 44               & 94    & 7   & 7  & 2    \\ 
+  \cline{2-12}
+  & \textit{Std.Dev.}  & 0.11 & 0.05 & 0.11 & 0.14 & 0.26 & 6 & 9 & 1 & 2 & 0    \\
+  \cline{2-12}
   & \textit{Average}  & 0.08          & 0.11          & 0.11          & 0.10          & \textbf{0.17} & 43               & 88    & 8   & 9  & 2    \\ \hline
 \multirow{6}{1cm}{2009-2010} & S\&P500    & 0.12          & \textbf{0.17} & 0.06          & 0.14          & 0.16          & 32               & 78    & 6   & 6  & 2    \\
   & Nikkei225    & -0.07         & -0.02         & 0.05          & \textbf{0.13} & 0.06          & 38               & 69    & 8   & 12 & 2    \\
   & Nasdaq       & 0.18          & 0.13          & 0.15          & \textbf{0.31} & 0.28          & 45               & 84    & 6   & 12 & 2    \\
   & AAPL        & 0.61          & 0.75          & 0.23          & 0.28          & \textbf{0.85} & 51               & 80    & 6   & 8  & 2    \\
-  & SPY           & 0.05          & \textbf{0.22} & 0.07          & 0.08          & 0.19          & 32               & 72    & 6   & 6  & 2    \\ \cline{2-12}
+  & SPY           & 0.05          & \textbf{0.22} & 0.07          & 0.08          & 0.19          & 32               & 72    & 6   & 6  & 2    \\ 
+  \cline{2-12}
+  & \textit{Std.Dev.}  & 0.26 & 0.29 & 0.08 & 0.10 & 0.31 & 8 & 6 & 1 & 3 & 0   \\
+  \cline{2-12}
   & \textit{Average} & 0.18          & 0.25          & 0.11          & 0.19          & \textbf{0.31} & 40               & 77    & 6   & 9  & 2    \\ \hline
 \multirow{6}{1cm}{2017-2019} & S\&P500       & 0.05          & 0.01          & -0.01         & \textbf{0.11} & 0.08          & 40               & 120   & 5   & 13 & 2    \\
   & Nikkei225     & 0.09          & \textbf{0.11} & 0.05          & 0.00          & 0.02          & 51               & 111   & 9   & 11 & 2    \\
   & Nasdaq         & 0.02          & 0.05          & 0.05          & 0.10          & \textbf{0.11} & 56               & 112   & 7   & 11 & 2    \\
   & AAPL      & 0.07          & 0.09          & \textbf{0.18} & -0.01         & 0.13          & 47               & 114   & 11  & 11 & 2    \\
-  & SPY       & 0.04          & 0.06          & 0.00          & \textbf{0.11} & \textbf{0.11} & 49               & 116   & 5   & 13 & 2    \\ \cline{2-12}
+  & SPY       & 0.04          & 0.06          & 0.00          & \textbf{0.11} & \textbf{0.11} & 49               & 116   & 5   & 13 & 2    \\ 
+  \cline{2-12}
+  & \textit{Std.Dev.}  & 0.03 & 0.04 & 0.08 & 0.06 & 0.04 & 6 & 4 & 3 & 1 & 0\\
+  \cline{2-12}
   & \textit{Average} & 0.05          & 0.06          & 0.05          & 0.06          & \textbf{0.09} & 49               & 115   & 7   & 12 & 2   
 \end{tabular}
 \caption{Annual returns and Number of trades for the asset-specific model (CNN-I), the universal model (CNN-U) and the competing strategies: Relative Strength Index (RSI), Bollinger Bands (BB) and Buy\&Hold (B\&H)}
@@ -594,23 +603,26 @@ We note, that the two model builds are not only differing in the data used for t
 The main metric to determine performance of the different strategies in annual return. 
 
 \subsection{Feasibility \& Constraints}
-Overall, looking at Table \ref{tbl:TimeRes} and the training/prediction times both CNN model variants are feasible to train and use for prediction. Retraining of the model does not take too long, and that can easily fit into the time when the markets are closed. Moreover, in our tests we used a model for two years worth of predictions and the results are still promising (HOPE SO!!!) which suggests that retraining of the model does not have to take place on a daily basis. The prediction time is quick enough even for intraday trading purposes. 
+Overall, looking at Table \ref{tbl:TimeRes} and the training/prediction times both CNN model variants are feasible to train and use for prediction. Retraining of the model does not take too long, and that can easily fit into the time when the markets are closed. Moreover, in our tests we used a model for two years worth of predictions and the results are still promising which suggests that retraining of the model does not have to take place on a daily basis. The prediction time is quick enough even for intraday trading purposes. (CALCULATE THE TIME FOR CREATING AN IMAGE INPUT!!)
 
 \section{Conclusion}
 \label{sec:Conclusion}
 
-\textbf{As a real world application:}
-Model creation:
 
-- different combinations, further tuning, state-of-the art CNN
+CONCLUSION
 
-- Potential ways to go: intraday and higher frequency trading, tuning of labelling and image window size and the entire model. Creating a model based on a combination of RNN/LSTM and CNN (further research how that is feasible in practice).
+There are a lot of different ways to carry on investigating the introduced model. To explore the potential of the idea, however, there is a need for sufficient time and computational resources. Below, we cover the most relevant ways this model could be improved given ample resources.
 
-Testing:
+For further enhancement of model performance, the model tuning could be carried out on a larger range of hyperparameters and model components. This further tuning would be more reliable if each model build would be validated multiple times on varying validation sets (REFER TO PROPER CV PRACTICE). There is a potential that the state-of-the-art techniques of CNNs and deep learning could also be applied on this model, further enhancing the results. These techniques include (LIST AND REFER).
 
-- if resources allow at least 50-100 model tests to map out apprx. distribution of results and correct the bias
+In a real world scenario a more rigorous testing of the model would be required before accepting the results and putting the model into production. Similarly, as during training, each model build should be trained and tested multiple times on different subsets of the test data to ensure unbiased evaluation of the model performance. (ADD RESOURCES ABOUT VALUATION)
 
-- more assets, for different economic regimes
+To enable asymptotic significance testing when matching the performance against other strategies it would make sense to test the model on more assets and look at different economic regimes to see how the model performs against e.g. a Buy \& Hold strategy in a market with decreasing prices. A further potential feature would be setting class weights dynamically, either in a rule-based setting or using a sort of regression model. For example, if an external indicator of market conditions suggests a bear market and the traders would want a more selling-heavy behaviour in such a market, they can set up a rule that changes the weights of the loss function, so that more "Sell" signals are produced than normally. Note, that this dynamic change can be generalized for the entire model, thus we can optimize a model for specific market conditions or risk-aversion levels and set up an algorithm to switch between the pre-trained models.
+
+We mentioned previously, that the model is trained once before testing it on an entire two year of data. It is worth to note, that it would make sense to test if the model produces better results with a more frequent retraining plan, especially if it is used for intraday training. This lead to the next point which is about the model making profit by trading a lot but turning smaller profits per trade (see \ref{tbl:PandLAvg}) as opposed to the competing strategies. This resembles the trading patterns of high-frequency trading strategies, which might indicate that the model could be successful in that domain. However, this should once again be tested through a customized experiment.
+
+Another option would be changing the assumptions of the model and use training images as if they were frames in a video. This means that we would assume that the images are in fact dependent on each other on the time domain. Such an assumption would imply that the use of a recurrent neural network (RNN) or a long-short term memory network (LSTM) could be used to learn these dependencies in the data. Then, we could connect this model with the CNN and use the two models together to enhance each other's performance. Further investigation would be required to work out the architecture of this network and find out how the integration is feasible to serve the purpose of automatic trading. (FURTHER REFERENCE AND COMMENTS!)
+
 
 \section{Appendices}
 \label{sec:App}
