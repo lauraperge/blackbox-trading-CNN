@@ -79,10 +79,9 @@ However, there are plenty of difficulties when it comes to prediction of financi
 
 On the other hand, in this paper, we avert from the application of forecasting the next element of a series and concentrate on predicting trading decisions based on the present prices. We train the model to recognize periods, in the end of which one should make a buying or selling order. 
 
-\textbf{OBJECTIVES: TO BE MODIFIED ACCORDING TO OUTCOME}
 The goal of this paper is to develop a simple but powerful model that can make real-time trading decisions utilizing a convolutional neural network. For this, we need to capture as much dynamic 
 and static information from the one-dimensional time series as possible which we achieve by turning them into images. The classification exercise requires labels which we choose to represent trading orders of "Buy", "Sell" and "Hold". 
-These are preliminarily defined on the training set using a suitable algorithm that is designed to ensure profitability. The ultimate objective is a compact multilevel trading model that takes care of both the creation of image representations and the prediction of financially successful trading strategies using these images, for data that is fed to the model in real time. We also make a contrast between a model trained and used for a specific financial instrument and a "universal" model of multiple assets motivated by the work of \cite{sirignano2018universal}. The expected outcome is that the universal model will give more robustly successful results.
+These are preliminarily defined on the training set using a suitable algorithm that is designed to ensure profitability. The ultimate objective is a compact multilevel trading model that takes care of both the creation of image representations and the prediction of financially successful trading strategies using these images, for data that is fed to the model in real time. The hope is that this model will outperform more traditional algorithmic trading strategies. We also make a contrast between a model trained and used for a specific financial instrument (the asset-specific model) and a universal model trained on a range of different assets motivated by the work of \cite{sirignano2018universal}. The expected outcome is that the universal model will give more robustly successful results, i.e. it will show better generalization abilities and higher returns. 
 
 In the section \nameref{sec:RelWork}, we look at the path of publications that motivated and built the foundation of our approach. Then, the section \nameref{sec:DM} provides us with information about the kind of data we use throughout 
 the paper, moreover, we introduce the methodologies implemented from the data preparation to the prediction phase. These include the transformation of one-dimensional time series into two-dimensional images, 
@@ -318,7 +317,7 @@ There are multiple reasons to pursue this approach. Firstly, if we were to label
 \subsection{Recognizing Patterns with Deep CNN}
 \label{subsec:DM:RecPatwCNN}
 Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (hence deep) that also employ convolution operation in one or more layers as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). 
-The CNN has many advantageous properties but what is most important for our use-case is that it can process fairly raw high dimensional data and extract the most important features for the given exercise. It accomplishes this by the use of filters which change the original input in different way in an attempt to learn relevant features for solving the problem. An example of a filter could be a blurring filter that moves along the image, and when it finds a distinctive contrast, it changes the color to fall a bit closer to the neighboring one. Moreover, the sparse connectivity in the network prove to be computationally more efficient and better in generalization when compared with multilayer perceptrons (MLP).\footnote{On how generalization is improved by removing redundancies see \cite{chakraborty1999effect}.} As it is also described in \cite{MLPmedium}, MLPs are fully connected neural networks with at least three layers (input, hidden and output) and the issue with fully connectedness is that the number of parameters equals the product of parameters on the different layers and this can increase very quickly with more complicated networks. It is inefficient due to redundancies in the network, also, MLPs flatten the output of each layer before feeding into the next one which disregards spatial information. The CNN however can account for local connectivity (see orange and green filters in Figure \ref{fig:CNNstruct}), the weights are shared (strolling the same filters over the entire image), and as for being sparse, each neuron in a layer is not connected to each neuron in the neighbouring layer. Deep neural networks have many constituents that shall be chosen for the data and objective of the model. Below we will get an overview of these choices and the final model design (also see Figure \ref{fig:CNNstruct}).
+The CNN has many advantageous properties but what is most important for our use-case is that it can process fairly raw high dimensional data and extract the most important features for the given exercise. It accomplishes this by the use of filters which change the original input in different ways in an attempt to learn relevant features for solving the problem. An example of a filter could be a blurring filter that moves along the image, and when it finds a distinctive contrast, it changes the color to fall a bit closer to the neighboring one. Moreover, the sparse connectivity in the network prove to be computationally more efficient and better in generalization when compared with multilayer perceptrons (MLP).\footnote{On how generalization is improved by removing redundancies see \cite{chakraborty1999effect}.} As it is also described in \cite{MLPmedium}, MLPs are fully connected neural networks with at least three layers (input, hidden and output) and the issue with fully connectedness is that the number of parameters equals the product of parameters on the different layers and this can increase very quickly with more complicated networks. It is inefficient due to redundancies in the network, also, MLPs flatten the output of each layer before feeding into the next one which disregards spatial information. The CNN however can account for local connectivity (see orange and green filters in Figure \ref{fig:CNNstruct}), the weights are shared (strolling the same filters over the entire image), and as for being sparse, each neuron in a layer is not connected to each neuron in the neighbouring layer. Deep neural networks have many constituents that shall be chosen for the data and objective of the model. Below we will get an overview of these choices and the final model design (also see Figure \ref{fig:CNNstruct}).
 
 The first component that we discuss is the activation function which has an important role in introducing non-linear properties to the neural network. The activation function that is used throughout the models is Leaky ReLU, which is a version of the commonly used ReLU function. ReLU stands for rectified linear unit (\cite{hahnloser2000digital}) and is defined as
 \begin{equation}
@@ -444,6 +443,7 @@ Moreover, the evaluation of competing algorithmic trading techniques, for the sa
 There are three methods considered for comparison: the Buy \& Hold, the momentum-based Relative Strength Index (RSI), and a volatility-based strategy using the Bollinger Bands (BB).\footnote{The strategies are described in the Appendices: \nameref{app:CompetingStrats}}
 
 In order to assess feasibility we will also present how much time it takes for the model to train and to return predictions from the trained model. Since creating new image representations is part of making a new trading decision every time a new value appears in the time series (e.g. new daily price), we will also check how long this image creation phase takes.
+The execution time for image creation will be shown in milliseconds per generation of a new image instance, with turning the price series into a return series and then creating all three variations of the image: RP, GAF and MTF. The values are calculated for different image sizes and they are the mean execution times from 1000 runs for each image size.
 
 It is important to note that all presented results in the paper are biased to some extent, since creating unbiased results requires excessive computational resources and time which is not given within the scope of this research. To create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
 
@@ -558,36 +558,45 @@ The results of timing were calculated while running in Google Colaboratory using
 
 The average training time of the asset-specific model in the first test period is 7 minutes and 6 seconds, which is $1/6$ of the universal model's 42 minutes and 9 seconds. In the second period, the universal model took 35 minutes and 15 seconds to train, 5.6 times longer than the asset-specific model, and in the third period, the universal model training only took 3.65 longer than the average 8 minutes and 27 seconds of the individual model training. These numbers depend on batch size, the number of images passed for training and model complexity.
 
-The time to produce predictions for an image takes on average less in case of the universal model build but both models come up with a prediction generally in less than a minute (with two exceptions in the testing period 2009-2010).
+The time to produce predictions for an image takes on average less in case of the universal model build but in each case both models come up with a prediction in less than a 1.5 milliseconds.
 
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|cc|cc}
-\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} & \multicolumn{2}{m{3.5cm}}{Training time (mm:ss) } & \multicolumn{2}{m{3.5cm}}{Testing time (s)} \\ \cline{3-6}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}} & \multicolumn{1}{m{1.5cm}|}{\multirow{2}{1.5cm}{Tested Assets}} & \multicolumn{2}{c|}{Training time (mm:ss) } & \multicolumn{2}{c}{Testing time (ms/image)} \\ \cline{3-6}
 && CNN-I & CNN-U & CNN-I & CNN-U \\ 
 \hline \hline
-\multirow{6}{1cm}{2006-2007} & S\&P500   & 08:30 & 42:09 & 0.41 & 0.40 \\
-          & Nikkei225 & 07:12 & 42:09 & 0.59 & 0.09 \\
-          & Nasdaq    & 04:59 & 42:09 & 0.41 & 0.09 \\
-          & AAPL      & 10:56 & 42:09 & 0.60 & 0.07 \\
-          & SPY       & 03:53 & 42:09 & 0.63 & 0.09 \\ \cline{2-6}
-          & \textit{Average}   & 07:06 & 42:09 & 0.53 & 0.15 \\ \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500   & 10:11 & 35:15 & 0.30 & 0.39 \\ 
-          & Nikkei225 & 05:52 & 35:15 & 0.30 & 0.09 \\
-          & Nasdaq    & 04:07 & 35:15 & 0.30 & 0.10 \\
-          & AAPL      & 06:35 & 35:15 & 0.68 & 0.09 \\
-          & SPY       & 04:56 & 35:15 & 0.61 & 0.10 \\ \cline{2-6}
-          & \textit{Average}   & 06:20 & 35:15 & 0.44 & 0.15 \\\hline
-\multirow{6}{1cm}{2017-2019} & S\&P500   & 15:33 & 31:00 & 0.33 & 0.31 \\
-          & Nikkei225 & 08:34 & 31:00 & 0.30 & 0.06 \\
-          & Nasdaq    & 06:41 & 31:00 & 0.29 & 0.08 \\
-          & AAPL      & 05:52 & 31:00 & 0.31 & 0.07 \\
-          & SPY       & 05:35 & 31:00 & 0.32 & 0.06 \\ \cline{2-6}
-          & \textit{Average}   & 08:27 & 31:00 & 0.31 & 0.12
+\multirow{6}{1cm}{2006-2007} & S\&P500   & 08:30 & 42:09 & 0.79 & 0.77 \\
+          & Nikkei225 & 07:12 & 42:09 & 1.14 & 0.17 \\
+          & Nasdaq    & 04:59 & 42:09 & 0.79 & 0.17 \\
+          & AAPL      & 10:56 & 42:09 & 1.16 & 0.13 \\
+          & SPY       & 03:53 & 42:09 & 1.21 & 0.17 \\ \cline{2-6}
+          & \textit{Average}   & 07:06 & 42:09 & 1.02 & 0.29 \\ \hline
+\multirow{6}{1cm}{2009-2010} & S\&P500   & 10:11 & 35:15 & 0.58 & 0.75 \\ 
+          & Nikkei225 & 05:52 & 35:15 & 0.58 & 0.17 \\
+          & Nasdaq    & 04:07 & 35:15 & 0.58 & 0.19 \\
+          & AAPL      & 06:35 & 35:15 & 1.31 & 0.17 \\
+          & SPY       & 04:56 & 35:15 & 1.17 & 0.19 \\ \cline{2-6}
+          & \textit{Average}   & 06:20 & 35:15 & 0.84 & 0.30 \\\hline
+\multirow{6}{1cm}{2017-2019} & S\&P500   & 15:33 & 31:00 & 0.63 & 0.59 \\
+          & Nikkei225 & 08:34 & 31:00 & 0.57 & 0.11 \\
+          & Nasdaq    & 06:41 & 31:00 & 0.55 & 0.15 \\
+          & AAPL      & 05:52 & 31:00 & 0.59 & 0.13 \\
+          & SPY       & 05:35 & 31:00 & 0.61 & 0.11 \\ \cline{2-6}
+          & \textit{Average}   & 08:27 & 31:00 & 0.59 & 0.22
 \end{tabular}
-\caption{Training and testing times of asset-specific models (CNN-I) and universal models (CNN-U). Note, that the training times for the different assets in case of the universal model is the same as only one universal model is trained per period which is then used to return trading signal predictions on each asset's testing data.}
+\caption{Training and testing times of asset-specific models (CNN-I) and universal models (CNN-U). Note, that the training times for the different assets in case of the universal model is the same as only one universal model is trained per period which is then used to return trading signal predictions on each asset's testing data per image on average.}
 \label{tbl:TimeRes}
 \end{table}
+
+In Figure \ref{fig:imageCrea}, we can see how long it takes to create the three representations required for the prediction of a new trading signal upon observation of a new price. The figure shows execution times to transform a price series into a return series with $N$ elements and then create three $N \times N$ sized image representations of those, one RP, one GAF and one MTF with the parameters set as discussed in the section \nameref{sec:DM}. Our model uses $30 \times 30$ images, so in our case on average it takes $3.59$ milliseconds to make new inputs. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/Image_Trf_Times.png}
+    \caption{The plot shows the number of milliseconds it takes on average to turn a price series into a return series and create three image representations (RP, GAF and MTF).}
+    \label{fig:imageCrea}
+\end{figure}
 
 \section{Discussion}
 \label{sec:Discuss}
@@ -600,18 +609,12 @@ We note, that the two model builds are not only differing in the data used for t
 
 The main metric to determine performance of the different strategies in annual return. 
 
-\subsection{Feasibility \& Constraints}
+\subsection{Applicability based on execution times}
 
-Overall, looking at the training/prediction times in Table \ref{tbl:TimeRes}, both CNN model variants are feasible to train and use for prediction. The retraining of the asset-specific models take on average less than 10 minutes and the universal model training times are also below 45 minutes on average. These periods can easily fit into the time when the markets are closed and can further be decreased given more computational capacity (stronger GPU or TPU). The universal model training takes longer due to the larger amount of training images but in that case we only have to train one model which we can then use for the prediction of trading signals for multiple assets, not just one.
-Moreover, in our tests we used a model for two years worth of predictions and the results are still promising which suggests that retraining of the model does not have to take place on a daily basis. The prediction time is quick enough even for intraday trading purposes. In Figure 
+Overall, looking at the training/prediction times in Table \ref{tbl:TimeRes}, both CNN model variants are feasible to train and use for prediction as a real world trading application. The retraining of the asset-specific models take on average less than 10 minutes and the universal model training times are also below 45 minutes on average. These periods can easily fit into the time when the markets are closed and can further be decreased given more computational capacity (stronger GPU or TPU). The universal model training takes longer due to the larger amount of training images but in that case we only have to train one model which we can then use for the prediction of trading signals for multiple assets, not just one.
+Moreover, in our tests we used a model for two years worth of predictions and the results are still promising which suggests that retraining of the model does not have to take place on a daily basis. 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{images/Image_Trf_Times.png}
-    \caption{The plot shows the number of seconds it takes on average to turn a price series into a return series and create three image representations (RP, GAF and MTF). The return series is always as long as the size of the image, so we get one instance we wish to predict on. The seconds are calculated as the average of 1000 tests per image size.}
-    \label{fig:imageCrea}
-\end{figure}
-
+The prediction time is quick enough even for intraday trading purposes. This is true even if we add the $3.59$ ms input creation time (see Figure \ref{fig:imageCrea}) to these prediction times so we know how long it takes for the model to return a trade signal given it observes a new price. To be more concise with the current input and model settings, for the asset-specific model, it takes maximum $4.9$ ($=1.31 + 3.59$) milliseconds, and for the universal model, a maximum of $4.36$ ($=0.77 + 3.59$) milliseconds to return a prediction. This means that given there is no further delay in observing the price and/or in executing a trading order getting it, one could trade on a 5 millisecond frequency. Of course, on top of this we should add server call times and time of order execution, but the model can provide trading orders swift enough for high-frequency trading.
 
 \section{Conclusion}
 \label{sec:Conclusion}
