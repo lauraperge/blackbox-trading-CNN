@@ -443,7 +443,7 @@ To monitor the performance over different economic regimes, we test the model th
 Moreover, the evaluation of competing algorithmic trading techniques, for the same testing periods with the same financial metrics provided in Equations \ref{eq:totPL} - \ref{eq:avgpl}, are carried out to make the evaluation more comprehensive.
 There are three methods considered for comparison: the Buy \& Hold, the momentum-based Relative Strength Index (RSI), and a volatility-based strategy using the Bollinger Bands (BB).\footnote{The strategies are described in the Appendices: \nameref{app:CompetingStrats}}
 
-In order to assess feasibility we will also present how much time it takes for the model to train and to return predictions from the trained model.
+In order to assess feasibility we will also present how much time it takes for the model to train and to return predictions from the trained model. Since creating new image representations is part of making a new trading decision every time a new value appears in the time series (e.g. new daily price), we will also check how long this image creation phase takes.
 
 It is important to note that all presented results in the paper are biased to some extent, since creating unbiased results requires excessive computational resources and time which is not given within the scope of this research. To create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
 
@@ -560,8 +560,6 @@ The average training time of the asset-specific model in the first test period i
 
 The time to produce predictions for an image takes on average less in case of the universal model build but both models come up with a prediction generally in less than a minute (with two exceptions in the testing period 2009-2010).
 
-
-
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|cc|cc}
@@ -587,7 +585,7 @@ The time to produce predictions for an image takes on average less in case of th
           & SPY       & 05:35 & 31:00 & 0.32 & 0.06 \\ \cline{2-6}
           & \textit{Average}   & 08:27 & 31:00 & 0.31 & 0.12
 \end{tabular}
-\caption{Training and testing times of asset-specific models (CNN-I) and universal models (CNN-U)}
+\caption{Training and testing times of asset-specific models (CNN-I) and universal models (CNN-U). Note, that the training times for the different assets in case of the universal model is the same as only one universal model is trained per period which is then used to return trading signal predictions on each asset's testing data.}
 \label{tbl:TimeRes}
 \end{table}
 
@@ -603,7 +601,17 @@ We note, that the two model builds are not only differing in the data used for t
 The main metric to determine performance of the different strategies in annual return. 
 
 \subsection{Feasibility \& Constraints}
-Overall, looking at Table \ref{tbl:TimeRes} and the training/prediction times both CNN model variants are feasible to train and use for prediction. Retraining of the model does not take too long, and that can easily fit into the time when the markets are closed. Moreover, in our tests we used a model for two years worth of predictions and the results are still promising which suggests that retraining of the model does not have to take place on a daily basis. The prediction time is quick enough even for intraday trading purposes. (CALCULATE THE TIME FOR CREATING AN IMAGE INPUT!!)
+
+Overall, looking at the training/prediction times in Table \ref{tbl:TimeRes}, both CNN model variants are feasible to train and use for prediction. The retraining of the asset-specific models take on average less than 10 minutes and the universal model training times are also below 45 minutes on average. These periods can easily fit into the time when the markets are closed and can further be decreased given more computational capacity (stronger GPU or TPU). The universal model training takes longer due to the larger amount of training images but in that case we only have to train one model which we can then use for the prediction of trading signals for multiple assets, not just one.
+Moreover, in our tests we used a model for two years worth of predictions and the results are still promising which suggests that retraining of the model does not have to take place on a daily basis. The prediction time is quick enough even for intraday trading purposes. In Figure 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/Image_Trf_Times.png}
+    \caption{The plot shows the number of seconds it takes on average to turn a price series into a return series and create three image representations (RP, GAF and MTF). The return series is always as long as the size of the image, so we get one instance we wish to predict on. The seconds are calculated as the average of 1000 tests per image size.}
+    \label{fig:imageCrea}
+\end{figure}
+
 
 \section{Conclusion}
 \label{sec:Conclusion}
