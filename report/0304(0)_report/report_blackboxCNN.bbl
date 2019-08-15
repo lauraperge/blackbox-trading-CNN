@@ -156,6 +156,11 @@ Sezer, O.~B. and Ozbayoglu, A.~M. (2019).
   deep convolutional neural networks.
 \newblock {\em arXiv preprint arXiv:1903.04610}.
 
+\bibitem[Simonyan and Zisserman, 2014]{simonyan2014very}
+Simonyan, K. and Zisserman, A. (2014).
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock {\em arXiv preprint arXiv:1409.1556}.
+
 \bibitem[Sirignano and Cont, 2018]{sirignano2018universal}
 Sirignano, J. and Cont, R. (2018).
 \newblock Universal features of price formation in financial markets:
@@ -167,6 +172,12 @@ Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
   R. (2014).
 \newblock Dropout: a simple way to prevent neural networks from overfitting.
 \newblock {\em The journal of machine learning research}, 15(1):1929--1958.
+
+\bibitem[Szegedy et~al., 2016]{szegedy2016inception}
+Szegedy, C., Ioffe, S., Vanhoucke, V., and Alemi, A. (2016).
+\newblock Inception-v4, inception-resnet and the impact of residual connections
+  on learning. corr abs/1602.07261.
+\newblock {\em URL http://arxiv. org/abs/1602.07261}.
 
 \bibitem[Tsay, 2005]{tsay2005analysis}
 Tsay, R.~S. (2005).
@@ -192,5 +203,11 @@ Wang, Z. and Oates, T. (2015).
 Wilder~Jr, J.~W. (1986).
 \newblock The relative strength index.
 \newblock {\em J. of Technical Analysis of Stocks and Commodities}, 4:343--346.
+
+\bibitem[Zoph et~al., 2018]{zoph2018learning}
+Zoph, B., Vasudevan, V., Shlens, J., and Le, Q.~V. (2018).
+\newblock Learning transferable architectures for scalable image recognition.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 8697--8710.
 
 \end{thebibliography}
