@@ -45,9 +45,9 @@ def data_to_labelled_img(data, column_name, label_window_size, image_window_size
             'RP' - Recurrence Plot
             'MTF' - Markov Transition Field.
         
-        num_bin : int (default = 4)
+        num_bin : int (default = 5)
             if image_trf_strat is 'MTF' num_bin determines the number of bins (by quantiles) to create per images in the MTF algorithm
-            Default is 4.
+            Default is 5.
 
         padding_RP :  int (default = 0)
             number of rows/columns of zero padding to be added to the right and bottom

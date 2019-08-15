@@ -438,7 +438,8 @@ Assets are assumed to be traded in any increments. Using the described approach 
     \end{align}
 \end{itemize}
 
-To monitor the performance over different economic regimes, we test the model throughout approximately 2 year periods in 2006-2007, 2009-2010 and May 2017 - June 2019. The models will be trained on all previous available data up to the first day of testing. 
+To monitor the performance over different economic regimes, we test the model throughout approximately 2 year periods in 2006-2007, 2008-2009 and May 2017 - June 2019. The first testing period is one before the crisis, the second one is during the financial crisis and the latest is to show current market conditions. 
+The models will be trained on all previous available data up to the first day of testing. 
 Moreover, the evaluation of competing algorithmic trading techniques, for the same testing periods with the same financial metrics provided in Equations \ref{eq:totPL} - \ref{eq:avgpl}, are carried out to make the evaluation more comprehensive.
 There are three methods considered for comparison: the Buy \& Hold, the momentum-based Relative Strength Index (RSI), and a volatility-based strategy using the Bollinger Bands (BB).\footnote{The strategies are described in the Appendices: \nameref{app:CompetingStrats}}
 
@@ -471,12 +472,12 @@ On the other hand, F1, Precision and Recall scores are higher for the universal 
 & AAPL             & 0.59          & 0.43 & 0.36 & 0.41          & 0.37 & 0.40          & 0.36 & 0.41          \\
 & SPY              & 0.57          & 0.44 & 0.38 & 0.47          & 0.38 & 0.44          & 0.38 & 0.50          \\ \cline{2-10}
 & \textit{Average} & \textbf{0.55} & 0.45 & 0.37 & \textbf{0.45} & 0.37 & \textbf{0.43} & 0.36 & \textbf{0.47} \\ \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500          & 0.59          & 0.44 & 0.40 & 0.41          & 0.40 & 0.39          & 0.40 & 0.44          \\
-& Nikkei225        & 0.53          & 0.40 & 0.33 & 0.36          & 0.33 & 0.36          & 0.33 & 0.37          \\
-& Nasdaq           & 0.57          & 0.45 & 0.38 & 0.44          & 0.38 & 0.42          & 0.38 & 0.48          \\
-& AAPL             & 0.58          & 0.43 & 0.37 & 0.42          & 0.37 & 0.39          & 0.37 & 0.44          \\
-& SPY              & 0.58          & 0.44 & 0.38 & 0.43          & 0.38 & 0.41          & 0.38 & 0.45          \\ \cline{2-10}
-& \textit{Average} & \textbf{0.57} & 0.43 & 0.37 & \textbf{0.41} & 0.37 & \textbf{0.39} & 0.37 & \textbf{0.44} \\ \hline
+\multirow{6}{1cm}{2008-2009} & S\&P500          & 0.52          & 0.35 & 0.37 & 0.38          & 0.37 & 0.38          & 0.38 & 0.38          \\
+          & Nikkei225        & 0.53          & 0.35 & 0.35 & 0.39          & 0.36 & 0.39          & 0.35 & 0.39          \\
+          & Nasdaq           & 0.59          & 0.38 & 0.35 & 0.41          & 0.35 & 0.42          & 0.35 & 0.41          \\
+          & AAPL             & 0.60          & 0.37 & 0.34 & 0.41          & 0.34 & 0.41          & 0.34 & 0.41          \\
+          & SPY              & 0.56          & 0.36 & 0.37 & 0.41          & 0.36 & 0.41          & 0.37 & 0.42          \\ \cline{2-10} 
+          & \textit{Average} & \textbf{0.56} & 0.36 & 0.36 & \textbf{0.40} & 0.36 & \textbf{0.40} & 0.36 & \textbf{0.40} \\ \hline
 \multirow{6}{1cm}{2017-2019} & S\&P500          & 0.59          & 0.44 & 0.38 & 0.52          & 0.39 & 0.48          & 0.38 & 0.57          \\
 & Nikkei225        & 0.58          & 0.38 & 0.40 & 0.45          & 0.40 & 0.43          & 0.41 & 0.46          \\
 & Nasdaq           & 0.50          & 0.41 & 0.36 & 0.47          & 0.36 & 0.44          & 0.37 & 0.50          \\
@@ -488,9 +489,9 @@ On the other hand, F1, Precision and Recall scores are higher for the universal 
 \label{tbl:ClassRes}
 \end{table}
 
-In Figure \ref{fig:CMAggrI}, we can see the confusion matrix for the asset-specific model aggregated over all periods and testing assets. The matrix shows that most observations are classified as "Hold" which is partially due to the imbalanced data used for training (around 70\% is "Hold"). As discussed before, the model was trained using weights in the loss function to help with this issue but it did not entirely eliminate the effect. The greatest proportion of the "Sell" and "Buy" labels were misclassified as "Hold" and a significant number of "Hold" images were wrongly predicted to be "Sell" or "Buy". 22\% of "Buy" images were correctly classified as "Buy" while 17.7\% of them as "Sell". 19\% of "Sell" images were correctly labelled "Sell" and 13.6\% of them as "Buy". The wrong cross-classifications between "Sell" and "Buy" are mostly corrected in the actual ordering process using the previously described safety feature.\footnote{Only buying if current price is not higher than previous and vice versa.}
+In Figure \ref{fig:CMAggrI}, we can see the confusion matrix for the asset-specific model aggregated over all periods and testing assets. The matrix shows that most observations are classified as "Hold" which is partially due to the imbalanced data used for training (around 70\% is "Hold"). As discussed before, the model was trained using weights in the loss function to help with this issue but it did not entirely eliminate the effect. The greatest proportion of the "Sell" and "Buy" labels were misclassified as "Hold" and a significant number of "Hold" images were wrongly predicted to be "Sell" or "Buy". 19.8\% of "Buy" images were correctly classified as "Buy" while 14.8\% of them as "Sell". 20.4\% of "Sell" images were correctly labelled "Sell" and 19.6\% of them as "Buy". While the wrong cross-classifications between "Sell" and "Buy" are signs that the classification performance should be enhanced, these instances are corrected in the actual ordering process using the previously described safety feature\footnote{Only buying if current price is not higher than previous and vice versa.}, thus their only negative influence on financial results comes from missing a trading opportunity.
 
-Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model results across all periods and testing assets. Once again there were a lot of predictions of "Hold" but a slightly different weighting of the losses and a smaller training set resulted in a different confusion matrix. Here, many of the "Hold" images were classified as "Buy" or "Sell" but also more "Sell" and "Buy" predictions were correct, 42\% and 60\% respectively. There were more misclassifications across the "Buy" and "Sell" subsets too, 28\% of "Buy"-s were classified as "Sell" and 29\% of "Sell"-s as "Buy". Confusion matrices for each asset and model variant (aggregated over test periods) can be found in the Appendices.
+Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model results across all periods and testing assets. Here, a slightly different weighting of the losses and a smaller training set resulted in a different confusion matrix where most of the predictions are "Sell". Many of the "Hold" images were classified as "Buy" or "Sell" but also more "Sell" and "Buy" predictions were correct, 54.3\% and 48.3\% respectively. There were more misclassifications across the "Buy" and "Sell" subsets too, 40.6\% of "Buy"-s were classified as "Sell" and 24.2\% of "Sell"-s as "Buy". Confusion matrices for each asset and model variant (aggregated over test periods) can be found in the Appendices.
 
 \begin{figure}[H]
     \centering
@@ -511,7 +512,7 @@ Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model 
 
 The annual returns and number of trades for each model, asset and period are displayed in Table \ref{tbl:FinResMain}. 
 
-In terms of average annual returns, in each period, the Buy\&Hold strategy brought the best results but this average is largely influenced by the outstanding annual price growth of the Apple stock. In most cases the universal model produced more annual returns than the individual model. In the first period, the asset-specific model, in the second, the RSI and in the third both of these performed the worst. The universal model prompted the most trading activity, more than 8 times than the more traditional ones. The asset-specific model resulted in a lot of trades but it is still around half of that prompted by the universal. 
+In terms of average annual returns, in the period before the crisis and the latest period starting in May 2017, the Buy\&Hold strategy brought the best results, but in the first period, this average is largely influenced by the outstanding annual price growth of the Apple stock. During the financial crisis (2008-2009) the universal model and the asset-specific model brought the highest and positive returns, though with the exception of Apple's stock, all prices decreased during the period. In most cases the universal model produced more annual returns than the individual model. In the first period, the asset-specific model, in the second, the RSI and in the third the two equally performed the worst. The universal model prompted the most trading activity, more than 8 times than the more traditional ones. The asset-specific model resulted in a lot of trades but on average it is still  49\% of that prompted by the universal. 
 
 \begin{table}[H]
 \begin{tabular}{l|l|ccccc|ccccc}
@@ -526,15 +527,13 @@ In terms of average annual returns, in each period, the Buy\&Hold strategy broug
   & \textit{Std.Dev.}  & 0.11 & 0.05 & 0.11 & 0.14 & 0.26 & 6 & 9 & 1 & 2 & 0    \\
   \cline{2-12}
   & \textit{Average}  & 0.08          & 0.11          & 0.11          & 0.10          & \textbf{0.17} & 43               & 88    & 8   & 9  & 2    \\ \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500    & 0.12          & \textbf{0.17} & 0.06          & 0.14          & 0.16          & 32               & 78    & 6   & 6  & 2    \\
-  & Nikkei225    & -0.07         & -0.02         & 0.05          & \textbf{0.13} & 0.06          & 38               & 69    & 8   & 12 & 2    \\
-  & Nasdaq       & 0.18          & 0.13          & 0.15          & \textbf{0.31} & 0.28          & 45               & 84    & 6   & 12 & 2    \\
-  & AAPL        & 0.61          & 0.75          & 0.23          & 0.28          & \textbf{0.85} & 51               & 80    & 6   & 8  & 2    \\
-  & SPY           & 0.05          & \textbf{0.22} & 0.07          & 0.08          & 0.19          & 32               & 72    & 6   & 6  & 2    \\ 
-  \cline{2-12}
-  & \textit{Std.Dev.}  & 0.26 & 0.29 & 0.08 & 0.10 & 0.31 & 8 & 6 & 1 & 3 & 0   \\
-  \cline{2-12}
-  & \textit{Average} & 0.18          & 0.25          & 0.11          & 0.19          & \textbf{0.31} & 40               & 77    & 6   & 9  & 2    \\ \hline
+\multirow{6}{1cm}{2008-2009} & S\&P500           & 0.03 & \textbf{0.16} & -0.20 & -0.13 & -0.12 & 57 & 64 & 2 & 6  & 2 \\
+ & Nikkei225         & 0.01 & \textbf{0.03} & -0.10 & -0.14 & -0.17 & 46 & 66 & 8 & 9  & 2 \\
+ & Nasdaq            & 0.10 & \textbf{0.22} & -0.12 & 0.05  & -0.07 & 34 & 68 & 4 & 14 & 2 \\
+ & AAPL              & \textbf{0.35} & 0.05 & -0.23 & -0.16 & 0.04  & 30 & 62 & 6 & 10 & 2 \\
+ & SPY               & 0.03 & \textbf{0.33} & -0.19 & -0.16 & -0.10 & 37 & 78 & 2 & 6  & 2 \\ \cline{2-12} 
+ & \textit{Std.Dev.} & 0.14 & 0.13 & 0.05  & 0.09  & 0.08  & 11 & 6  & 3 & 3  & 0 \\ \cline{2-12} 
+ & \textit{Average}  & 0.10 & \textbf{0.16} & -0.17 & -0.11 & -0.08 & 41 & 68 & 4 & 9  & 2 \\ \hline
 \multirow{6}{1cm}{2017-2019} & S\&P500       & 0.05          & 0.01          & -0.01         & \textbf{0.11} & 0.08          & 40               & 120   & 5   & 13 & 2    \\
   & Nikkei225     & 0.09          & \textbf{0.11} & 0.05          & 0.00          & 0.02          & 51               & 111   & 9   & 11 & 2    \\
   & Nasdaq         & 0.02          & 0.05          & 0.05          & 0.10          & \textbf{0.11} & 56               & 112   & 7   & 11 & 2    \\
@@ -556,7 +555,8 @@ Additional financial results about cummulative returns, total profit \& loss and
 
 The results of timing were calculated while running in Google Colaboratory using Google's Nvidia Tesla K80 GPU and 12GB of RAM.
 
-The average training time of the asset-specific model in the first test period is 7 minutes and 6 seconds, which is $1/6$ of the universal model's 42 minutes and 9 seconds. In the second period, the universal model took 35 minutes and 15 seconds to train, 5.6 times longer than the asset-specific model, and in the third period, the universal model training only took 3.65 longer than the average 8 minutes and 27 seconds of the individual model training. These numbers depend on batch size, the number of images passed for training and model complexity.
+The average training time of the asset-specific model in the first test period is 7 minutes and 6 seconds, which is $1/6$ of the universal model's 42 minutes and 9 seconds. 
+In the second period, the universal model took 42 minutes and 35 seconds to train, 6.5 times longer than the asset-specific model, and in the third period, the universal model training only took 3.65 longer than the average 8 minutes and 27 seconds of the individual model training. These numbers depend on batch size, the number of images passed for training and model complexity.
 
 The time to produce predictions for an image takes on average less in case of the universal model build but in each case both models come up with a prediction in less than a 1.5 milliseconds.
 
@@ -572,12 +572,12 @@ The time to produce predictions for an image takes on average less in case of th
           & AAPL      & 10:56 & 42:09 & 1.16 & 0.13 \\
           & SPY       & 03:53 & 42:09 & 1.21 & 0.17 \\ \cline{2-6}
           & \textit{Average}   & 07:06 & 42:09 & 1.02 & 0.29 \\ \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500   & 10:11 & 35:15 & 0.58 & 0.75 \\ 
-          & Nikkei225 & 05:52 & 35:15 & 0.58 & 0.17 \\
-          & Nasdaq    & 04:07 & 35:15 & 0.58 & 0.19 \\
-          & AAPL      & 06:35 & 35:15 & 1.31 & 0.17 \\
-          & SPY       & 04:56 & 35:15 & 1.17 & 0.19 \\ \cline{2-6}
-          & \textit{Average}   & 06:20 & 35:15 & 0.84 & 0.30 \\\hline
+\multirow{6}{1cm}{2008-2009} & S\&P500          & 08:04 & 42:35 & 0.71 & 0.74 \\
+ & Nikkei225        & 07:57 & 42:35 & 0.76 & 0.18 \\
+ & Nasdaq           & 06:29 & 42:35 & 0.73 & 0.18 \\
+ & AAPL             & 06:00 & 42:35 & 0.77 & 0.17 \\
+ & SPY              & 04:09 & 42:35 & 0.73 & 0.19 \\ \cline{2-6} 
+ & \textit{Average} & 06:32 & 42:35 & 0.74 & 0.29 \\\hline
 \multirow{6}{1cm}{2017-2019} & S\&P500   & 15:33 & 31:00 & 0.63 & 0.59 \\
           & Nikkei225 & 08:34 & 31:00 & 0.57 & 0.11 \\
           & Nasdaq    & 06:41 & 31:00 & 0.55 & 0.15 \\
@@ -611,10 +611,10 @@ The main metric to determine performance of the different strategies in annual r
 
 \subsection{Applicability based on execution times}
 
-Overall, looking at the training/prediction times in Table \ref{tbl:TimeRes}, both CNN model variants are feasible to train and use for prediction as a real world trading application. The retraining of the asset-specific models take on average less than 10 minutes and the universal model training times are also below 45 minutes on average. These periods can easily fit into the time when the markets are closed and can further be decreased given more computational capacity (stronger GPU or TPU). The universal model training takes longer due to the larger amount of training images but in that case we only have to train one model which we can then use for the prediction of trading signals for multiple assets, not just one.
+Overall, looking at the training/prediction times in Table \ref{tbl:TimeRes}, both CNN model variants are feasible to train and use for prediction as a real world trading application. The training of the asset-specific models take on average less than 10 minutes and the universal model training times are also below 45 minutes. These periods can easily fit into the time when the markets are closed and can further be decreased given more computational capacity (stronger GPU or TPU). The universal model training takes longer due to the larger amount of training images but in that case we only have to train one model which we can then use for the prediction of trading signals for multiple assets, not just one.
 Moreover, in our tests we used a model for two years worth of predictions and the results are still promising which suggests that retraining of the model does not have to take place on a daily basis. 
 
-The prediction time is quick enough even for intraday trading purposes. This is true even if we add the $3.59$ ms input creation time (see Figure \ref{fig:imageCrea}) to these prediction times so we know how long it takes for the model to return a trade signal given it observes a new price. To be more concise with the current input and model settings, for the asset-specific model, it takes maximum $4.9$ ($=1.31 + 3.59$) milliseconds, and for the universal model, a maximum of $4.36$ ($=0.77 + 3.59$) milliseconds to return a prediction. This means that given there is no further delay in observing the price and/or in executing a trading order getting it, one could trade on a 5 millisecond frequency. Of course, on top of this we should add server call times and time of order execution, but the model can provide trading orders swift enough for high-frequency trading.
+The prediction time is quick enough even for intraday trading purposes. This is true even if we add the $3.59$ ms input creation time (see Figure \ref{fig:imageCrea}) to these prediction times so we know how long it takes for the model to return a trade signal given it observes a new price. To be more concise with the current input and model settings, for the asset-specific model, it takes maximum $4.8$ ($=1.21 + 3.59$) milliseconds, and for the universal model, a maximum of $4.36$ ($=0.77 + 3.59$) milliseconds to return a prediction. This means that given there is no further delay in observing the price and/or in executing a trading order getting it, one could trade on a 5 millisecond frequency. Of course, on top of this we should add server call times and time of order execution, but the model can provide trading orders swift enough for high-frequency trading.
 
 \section{Conclusion}
 \label{sec:Conclusion}
@@ -632,7 +632,9 @@ To enable asymptotic significance testing when matching the performance against 
 
 We mentioned previously, that the model is trained once before testing it on an entire two year of data. It is worth to note, that it would make sense to test if the model produces better results with a more frequent retraining plan, especially if it is used for intraday training. This lead to the next point which is about the model making profit by trading a lot but turning smaller profits per trade (see \ref{tbl:PandLAvg}) as opposed to the competing strategies. This resembles the trading patterns of high-frequency trading strategies, which might indicate that the model could be successful in that domain. However, this should once again be tested through a customized experiment.
 
-Another option would be changing the assumptions of the model and use training images as if they were frames in a video. This means that we would assume that the images are in fact dependent on each other on the time domain. Such an assumption would imply that the use of a recurrent neural network (RNN) or a long-short term memory network (LSTM) could be used to learn these dependencies in the data. Then, we could connect this model with the CNN and use the two models together to enhance each other's performance. Further investigation would be required to work out the architecture of this network and find out how the integration is feasible to serve the purpose of automatic trading. (FURTHER REFERENCE AND COMMENTS!)
+Another option would be changing the assumptions of the model and use training images as if they were frames in a video where we wish to catch a pattern. This means that we would assume that the images are in fact dependent on each other on the time domain. Such an assumption would imply that the use of a recurrent neural network (RNN) or a long-short term memory network (LSTM) could be used to learn these dependencies in the data. Then, we could connect this model with the CNN and use the two models together to enhance each other's performance. Further investigation would be required to work out the architecture of this network and find out how the integration is feasible to serve the purpose of automatic trading. Similar use cases in the literature include emotion recognition in videos such as \cite{ebrahimi2015recurrent}.
+
+Some of the general elements that could see further experimentation are the labelling and image creation methodology. It would be an option to alter the labels from "Buy", "Hold", "Sell" to a more granular version, e.g.: "Buy", "Weak-Buy", "Sell", "Weak-Sell", "Hold", thereby marking points leading up to a "Sell"/"Buy" signal that might be misinterpreted by the model. This would also ease the issue of label imbalance. Image creation can happen in various ways and the introduced transformation strategies can be modified or switched out entirely by other approaches. Besides using technical indicators as in \cite{sezer2018algorithmic}, more and more novel approaches appear in the literature \cite{sezer2019financial}.
 
 
 \section{Appendices}
@@ -696,12 +698,13 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
   & AAPL             & 0.62              & 0.39          & 0.73          & 0.83          & \textbf{1.64} \\
   & SPY              & 0.13              & \textbf{0.25} & 0.13          & 0.06          & 0.19          \\ \cline{2-7}
   & \textit{Average} & 0.18              & 0.23          & 0.25          & 0.23          & \textbf{0.42} \\ \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500          & 0.25              & \textbf{0.37} & 0.12          & 0.30          & 0.35          \\
-  & Nikkei225        & -0.14             & -0.05         & 0.10          & \textbf{0.28} & 0.13          \\
-  & Nasdaq           & 0.39              & 0.28          & 0.32          & \textbf{0.71} & 0.63          \\
-  & AAPL             & 1.60              & 2.05          & 0.52          & 0.64          & \textbf{2.41} \\
-  & SPY              & 0.11              & \textbf{0.49} & 0.15          & 0.16          & 0.41          \\ \cline{2-7}
-  & \textit{Average} & 0.44              & 0.63          & 0.24          & 0.42          & \textbf{0.79} \\ \hline
+\multirow{6}{1cm}{2008-2009} & S\&P500           & 0.06 & 0.34 & -0.36 & -0.24 & -0.23 \\
+ & Nikkei225         & 0.02 & 0.06 & -0.20 & -0.26 & -0.31 \\
+ & Nasdaq            & 0.21 & 0.48 & -0.22 & 0.10  & -0.13 \\
+ & AAPL              & 0.81 & 0.09 & -0.40 & -0.29 & 0.08  \\
+ & SPY               & 0.06 & 0.78 & -0.34 & -0.30 & -0.19 \\ \cline{2-7} 
+ & \textit{Std.Dev.} & 0.33 & 0.30 & 0.09  & 0.17  & 0.15  \\ \cline{2-7} 
+ & \textit{Average}  & 0.23 & \textbf{0.35} & -0.30 & -0.20 & -0.16 \\ \hline
 \multirow{6}{1cm}{2017-2019} &  S\&P500          & 0.11              & 0.03          & -0.02         & \textbf{0.22} & 0.18          \\
   & Nikkei225        & 0.19              & \textbf{0.23} & 0.10          & 0.01          & 0.03          \\
   & Nasdaq           & 0.03              & 0.11          & 0.11          & 0.22          & \textbf{0.23} \\
@@ -727,13 +730,12 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
           \cline{2-7}
           & \textit{Average}   & 1800.4  & 2320.7  & 2498.3  & 2342.2  & 4175.7 \\
           \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500   & 2457.6  & 3654.2  & 1228.8  & 2965.7  & 3548.41  \\
-          & Nikkei225 & -1357.1 & -453.96 & 968.87  & 2816.9  & 1300.62  \\
-          & Nasdaq    & 3877    & 2826.8  & 3174.2  & 7121.2  & 6281.82 \\
-          & AAPL      & 16021   & 20501   & 5158.1  & 6367.5  & 24082.4 \\
-          & SPY       & 1096.5  & 4908.4  & 1465.2  & 1575.5  & 4116.83\\
-          \cline{2-7}
-          & \textit{Average}   & 4419.0  & 6287.2  & 2399.0  & 4169.3  & 7866.0   \\
+\multirow{6}{1cm}{2008-2009}& S\&P500          & 637.38057 & 3438.6511 & -3594.3205 & -2397.558047 & -2303.42 \\
+ & Nikkei225        & 164.49485 & 603.74205 & -1961.0303 & -2589.666034 & -3118.85 \\
+ & Nasdaq           & 2122.0565 & 4820.6943 & -2215.5182 & 1036.167335  & -1290.85 \\
+ & AAPL             & 8143.8459 & 923.59957 & -4049.3022 & -2903.647088 & 800.139  \\
+ & SPY              & 565.9161  & 7791.3412 & -3396.8085 & -2964.096614 & -1948.54 \\ \cline{2-7} 
+ & \textit{Average} & 2326.7    & 3515.6    & -3043.4    & -1963.8      & -1572.3   \\
 \hline
 \multirow{6}{1cm}{2017-2019}   & S\&P500   & 1104.3  & 274.94  & -242.14 & 2243.1  & 1783.94 \\
           & Nikkei225 & 1876.1  & 2306.2  & 1002.5  & 79.543  & 343.745 \\
@@ -761,13 +763,12 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
           \cline{2-7}
           & \textit{Average}    & 44.4   & 27.6   & 284.0  & 230.5  & 2087.9 \\
           \hline
-\multirow{6}{1cm}{2009-2010} & S\&P500   & 76.8   & 46.849 & 204.8  & 494.3  & 1774.2 \\
-          & Nikkei225  & -35.71 & -6.579 & 121.1  & 234.7  & 650.31 \\
-          & Nasdaq    & 86.16  & 33.652 & 529    & 593.4  & 3140.9 \\
-          & AAPL      & 314.1  & 256.26 & 859.7  & 795.9  & 12041  \\
-          & SPY       & 34.27  & 68.172 & 244.2  & 262.6  & 2058.4 \\
-          \cline{2-7}
-          & \textit{Average}  & 95.1   & 79.7   & 391.8  & 476.2  & 3933.0 \\
+\multirow{6}{1cm}{2008-2009} & S\&P500          & 11.18 & 53.729 & -1797  & -399.6 & -1151.7 \\
+ & Nikkei225        & 3.576 & 9.1476 & -245.1 & -287.7 & -1559.4 \\
+ & Nasdaq           & 62.41 & 70.893 & -553.9 & 74.01  & -645.42 \\
+ & AAPL             & 271.5 & 14.897 & -674.9 & -290.4 & 400.07  \\
+ & SPY              & 15.3  & 99.889 & -1698  & -494   & -974.27 \\ \cline{2-7} 
+ & \textit{Average} & 72.8  & 49.7   & -993.9 & -279.5 & -786.2 \\
 \hline
 \multirow{6}{1cm}{2017-2019}   & S\&P500  & 27.61  & 2.2911 & -48.43 & 172.5  & 891.97 \\
           & Nikkei225 & 36.79  & 20.776 & 111.4  & 7.231  & 171.87 \\

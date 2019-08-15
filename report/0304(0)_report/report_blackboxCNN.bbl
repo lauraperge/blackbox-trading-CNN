@@ -35,6 +35,13 @@ de~Vitry, L. (2018).
   \url{https://medium.com/analytics-vidhya/encoding-time-series-as-images-b043becbdbf3}.
 \newblock [Online blog post, accessed 2019-06-11].
 
+\bibitem[Ebrahimi~Kahou et~al., 2015]{ebrahimi2015recurrent}
+Ebrahimi~Kahou, S., Michalski, V., Konda, K., Memisevic, R., and Pal, C.
+  (2015).
+\newblock Recurrent neural networks for emotion recognition in video.
+\newblock In {\em Proceedings of the 2015 ACM on International Conference on
+  Multimodal Interaction}, pages 467--474. ACM.
+
 \bibitem[Fukushima, 1979]{fukushima1979neural}
 Fukushima, K. (1979).
 \newblock Neural network model for a mechanism of pattern recognition
@@ -142,6 +149,12 @@ Sezer, O.~B. and Ozbayoglu, A.~M. (2018).
 \newblock Algorithmic financial trading with deep convolutional neural
   networks: Time series to image conversion approach.
 \newblock {\em Applied Soft Computing}, 70:525--538.
+
+\bibitem[Sezer and Ozbayoglu, 2019]{sezer2019financial}
+Sezer, O.~B. and Ozbayoglu, A.~M. (2019).
+\newblock Financial trading model with stock bar chart image time series with
+  deep convolutional neural networks.
+\newblock {\em arXiv preprint arXiv:1903.04610}.
 
 \bibitem[Sirignano and Cont, 2018]{sirignano2018universal}
 Sirignano, J. and Cont, R. (2018).
