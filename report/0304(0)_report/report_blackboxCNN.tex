@@ -446,7 +446,15 @@ There are three methods considered for comparison: the Buy \& Hold, the momentum
 In order to assess feasibility we will also present how much time it takes for the model to train and to return predictions from the trained model. Since creating new image representations is part of making a new trading decision every time a new value appears in the time series (e.g. new daily price), we will also check how long this image creation phase takes.
 The execution time for image creation will be shown in milliseconds per generation of a new image instance, with turning the price series into a return series and then creating all three variations of the image: RP, GAF and MTF. The values are calculated for different image sizes and they are the mean execution times from 1000 runs for each image size.
 
-It is important to note that all presented results in the paper are biased to some extent, since creating unbiased results requires excessive computational resources and time which is not given within the scope of this research. To create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
+It is important to note that all presented results in the paper are biased to some extent, because if one would wish to create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. However, making these unbiased results requires excessive computational resources and time which is not given within the scope of this research. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
+
+In addition, both in case of the classification results and the financial results we will carry out a dependent, two-tailed Student's t-test for paired samples (\cite{student1908probable}) in order to find out if the results are significantly different from each other for the different models. In case of the classification, the t-test will show us for each period if the mean accuracy, F1-score, precision and recall are significantly different from each other for the universal versus the asset-specific model build. For the financial results, a similar test will be carried out to see if the different model variants produce significantly different mean annual returns in each testing period. The metrics that we will run the tests on are all numeric and continuous, thus the difference of each pair of these metrics is continuous as well. We also assume that the differences of the measurements in each pair of observations are coming from a normal distribution, and that each pair is independent from another. The null-hypothesis for each comparison will be that the mean of the measurements for the given metric is the same for the compared model variants. The alternative hypothesis is that they differ. In the \nameref{sec:ER} section the p-values will be displayed each of which will give the probability of observing the test results under the null-hypothesis. The test statistic is calculated for a metric $M$ for model variants $a$ and $b$ and for measurements $i = 1, \dots, n$ the following way. First, we calculate the differences: for each $i$, $M^D = M^a - M^b$, then we calculate the mean ($\bar{M}^D$) and the standard deviation ($s^D$) of the observations $M^D_i$, $i = 1, \dots, n$, ans we use them to return the test statistic
+\begin{equation}
+    \label{eq:ttest}
+    t = \frac{\bar{M}^D}{s^D / \sqrt{n}}
+\end{equation}
+
+which then can be used to get the two-tailed p-value, $p = 2* Pr(T > |t|)$, where $T$ is the critical value of the Student t distribution with $n-1$ degrees of freedom.
 
 \section{Results}
 \label{sec:ER}
@@ -506,6 +514,27 @@ Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model 
     \caption{Confusion matrix of the universal model results aggregated for all testing periods and assets}
     \label{fig:CMAggrU}
 \end{figure}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|c}
+ Test period & Metric    & \multicolumn{1}{c}{p-value (equal means)} \\ \hline \hline
+ \multirow{4}{1cm}{2006-2007}  & Accuracy  & 0.003                  \\
+ & F1-score   & 0.002                  \\
+ & Precision & 0.002                  \\
+ & Recall  & 0.003                  \\ \hline
+ \multirow{4}{1cm}{2008-2009} & Accuracy  & 0.000                  \\
+ & F1-score   & 0.017                  \\
+ & Precision & 0.016                  \\
+ & Recall  & 0.019                  \\ \hline
+ \multirow{4}{1cm}{2017-2019} & Accuracy  & 0.001                  \\
+ & F1-score   & 0.003                  \\
+ & Precision & 0.002                  \\
+ & Recall  & 0.004                 
+\end{tabular}
+\caption{Significance test: dependent Student's t-test on paired samples for classification scores. The null-hypothesis for each metric is that there is no significant difference in the mean scores of the asset-specific and universal model within each testing period.}
+\label{tbl:ClassSign}
+\end{table}
 
 \subsection{Financial Performance}
 \label{subsec:ER:FinPerf}

@@ -173,6 +173,11 @@ Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
 \newblock Dropout: a simple way to prevent neural networks from overfitting.
 \newblock {\em The journal of machine learning research}, 15(1):1929--1958.
 
+\bibitem[Student, 1908]{student1908probable}
+Student (1908).
+\newblock The probable error of a mean.
+\newblock {\em Biometrika}, pages 1--25.
+
 \bibitem[Szegedy et~al., 2016]{szegedy2016inception}
 Szegedy, C., Ioffe, S., Vanhoucke, V., and Alemi, A. (2016).
 \newblock Inception-v4, inception-resnet and the impact of residual connections
