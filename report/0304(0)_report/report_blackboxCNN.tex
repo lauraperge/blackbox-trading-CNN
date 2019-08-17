@@ -372,7 +372,10 @@ where $\gamma$ is the momentum term determining how much of the previous time st
     \label{fig:CNNstruct}
 \end{figure}
 
-To further facilitate the understanding of the model, the general visualization of deep neural networks is used to depict its architecture in \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLU, described previously in Equation \ref{eq:LeakyReLU}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLU function. After, these convolutional layers are average pooled with $3 \times 2 \times 2$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLU followed by a second dropout. The information from these layers is condensed by the flattening of the the feature map (output resulting from previous layer) and feeding it to the fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for asset-specific models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. Such aspects include the class weights applied in the loss function (as there is an imbalance between the three classes), mini-batch sizes, dropout rates and L2 regularization strength. The weighted loss function is similar to that in \ref{eq:KL} but each element of the sum is weighted with the predefined weight of the true class. Thus more weight is added to the smaller "Buy" and "Sell" classes ensuring that they are sufficiently represented in the losses.
+To further facilitate the understanding of the model, the general visualization of deep neural networks is used to depict its architecture in \ref{fig:CNNstruct}. For each window of 30 subsequent return values the 3 image representations (each of size $30 \times 30$) are fed to the model through the color channels serving as an input. These are then filtered with $32$ kernels of size $3 \times 3 \times 3$ (using zero padding to maintain image size, and the stride is 1) which gives us 32 convolutional layers of size $3 \times 30 \times 30$. It is worth to note that we use small filters due to our images being also relatively small. The activation map of the layers is obtained by using Leaky ReLU, described previously in Equation \ref{eq:LeakyReLU}, preceded by batch normalization in order to prevent against overfitting. This is further supported by a dropout layer with $0.3$ drop rate \footnote{The drop rate in the first and second dropout layer is $0.3$ for each model built on individual assets but it varies according to tuning in the universal model builds ($0.25$ in certain periods).}. Next, we have 64 convolutional layers of size $3 \times 30 \times 30 \times$ created using filters with the same characteristics as before (including stride and zero padding). This is followed by batch normalization, and then the activation map is once again made using the Leaky ReLU function. After, these convolutional layers are average pooled with $3 \times 2 \times 2$ kernels which results in 64 layers of size $3 \times 15 \times 15$ on which we again apply the Leaky ReLU followed by a second dropout. 
+The information from these layers is condensed by the flattening of the the feature map (output resulting from previous layer) and feeding it to the fully connected layer of size $128$. This is also followed by batch normalization and dropout with $0.5$ drop rate for asset-specific models and $0.3$ or $0.25$ drop rates for the universal models. The decreased dropout is sufficient for the universal asset model due to the larger amount of training data already aiding generalization capabilities. Finally, there is the output layer with softmax activation that gives us the probabilities for each image being "Sell", "Buy" or "Hold" class. 
+The described architecture reflects the basic build of each model that has been trained and tested. Some hyperparameters and further settings were customized in the tuning phase for each model. 
+Such aspects include the class weights applied in the loss function (as there is an imbalance between the three classes), mini-batch sizes, hyper-parameters of the objective function, dropout rates and L2 regularization strength. The weighted loss function is similar to that in \ref{eq:KL} but each element of the sum is weighted with the predefined weight of the true class. Thus more weight is added to the smaller "Buy" and "Sell" classes ensuring that they are sufficiently represented in the losses.
 
 We attempted to train deeper models (with more hidden layers) and wider models (with more neurons per layer) but the networks did not improve the results of this smaller network, moreover, in some cases they even showed reduced generalization capability. This is commonly reported in deep learning research (\cite{ObrienStack}), and the explanation is that, up to a point, increasing the complexity of a network help learning more abstract features and more combinations of these features, but it also encourages memorization instead of learning broader rules thereby limiting generalization. Thus, we adopted a simpler high level model skeleton that is common in the field, similar to that in \cite{sezer2018algorithmic}, but with a customized mix of components as specified above.
 
@@ -467,7 +470,7 @@ In this section we cover the main results of the asset-specific and universal mo
 The classification performance results can be seen in Table \ref{tbl:ClassRes} and Figures \ref{fig:CMAggrI} - \ref{fig:CMAggrU}.
 Regarding accuracy, the asset-specific model ended up producing higher test accuracy scores. 
 
-On the other hand, F1, Precision and Recall scores are higher for the universal model setting for almost all periods and assets.
+On the other hand, F1, Precision and Recall scores are higher for the universal model setting for almost all periods and assets. In the second testing period, the classification results of the universal model build are generally worse than in either period 1 or 3.
 
 \begin{table}[H]
 \begin{tabular}{l|l|cc|cc|cc|cc}
@@ -497,23 +500,25 @@ On the other hand, F1, Precision and Recall scores are higher for the universal 
 \label{tbl:ClassRes}
 \end{table}
 
-In Figure \ref{fig:CMAggrI}, we can see the confusion matrix for the asset-specific model aggregated over all periods and testing assets. The matrix shows that most observations are classified as "Hold" which is partially due to the imbalanced data used for training (around 70\% is "Hold"). As discussed before, the model was trained using weights in the loss function to help with this issue but it did not entirely eliminate the effect. The greatest proportion of the "Sell" and "Buy" labels were misclassified as "Hold" and a significant number of "Hold" images were wrongly predicted to be "Sell" or "Buy". 19.8\% of "Buy" images were correctly classified as "Buy" while 14.8\% of them as "Sell". 20.4\% of "Sell" images were correctly labelled "Sell" and 19.6\% of them as "Buy". While the wrong cross-classifications between "Sell" and "Buy" are signs that the classification performance should be enhanced, these instances are corrected in the actual ordering process using the previously described safety feature\footnote{Only buying if current price is not higher than previous and vice versa.}, thus their only negative influence on financial results comes from missing a trading opportunity.
+In Figure \ref{fig:CMAggrI}, we can see the confusion matrix for the asset-specific model aggregated over all periods and testing assets. The matrix shows that most observations are classified as "Hold" which is partially due to the imbalanced data used for training (around 70\% is "Hold"). As discussed before, the model was trained using weights in the loss function to help with this issue but it did not entirely eliminate the effect. The greatest proportion of the "Sell" and "Buy" labels were misclassified as "Hold" and a significant number of "Hold" images were wrongly predicted to be "Sell" or "Buy". 19.8\% of "Buy" images were correctly classified as "Buy" while 14.8\% of them as "Sell". 20.4\% of "Sell" images were correctly labelled "Sell" and 19.6\% of them as "Buy". While the wrong cross-classifications between "Sell" and "Buy" are signs that the classification performance should be enhanced, these instances are corrected in the actual ordering process using the previously described safety feature\footnote{Only buying if current price is not higher than previous and vice versa. Note, that in case the true label for an image would be "Buy" ("Sell") based on a special pattern described in Figure \ref{fig:Labelling}, Plot 8 (Plot 10), then this feature would not prevent against the falsely predicted "Sell" ("Buy") trade order.}, thus their only negative influence on financial results comes from missing a trading opportunity.
 
 Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model results across all periods and testing assets. Here, a slightly different weighting of the losses and a smaller training set resulted in a different confusion matrix where most of the predictions are "Sell". Many of the "Hold" images were classified as "Buy" or "Sell" but also more "Sell" and "Buy" predictions were correct, 54.3\% and 48.3\% respectively. There were more misclassifications across the "Buy" and "Sell" subsets too, 40.6\% of "Buy"-s were classified as "Sell" and 24.2\% of "Sell"-s as "Buy". Confusion matrices for each asset and model variant (aggregated over test periods) can be found in the Appendices.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.6\textwidth]{images/CMs/CM_indiv_aggreg.png}
+    \includegraphics[width=.62\textwidth]{images/CMs/CM_indiv_aggreg.png}
     \caption{Confusion matrix of the asset-specific model results aggregated for all testing periods and assets}
     \label{fig:CMAggrI}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.6\textwidth]{images/CMs/CM_univ_aggreg.png}
+    \includegraphics[width=.62\textwidth]{images/CMs/CM_univ_aggreg.png}
     \caption{Confusion matrix of the universal model results aggregated for all testing periods and assets}
     \label{fig:CMAggrU}
 \end{figure}
+
+As per Table \ref{tbl:ClassSign}, mean accuracy scores are significantly higher in case of the asset-specific model build, in each of the testing periods, at significance level $0.005$. In testing periods 1 and 3, the mean (macro) F1-score, precision and recall scores are all significantly higher in case of the universal model build at significance level $0.05$. In period 2, the mean F1-score, precision and recall are all significantly higher in case of the universal model at significance level $0.02$. 
 
 \begin{table}[H]
 \centering
@@ -577,7 +582,41 @@ In terms of average annual returns, in the period before the crisis and the late
 \label{tbl:FinResMain}
 \end{table}
 
-Additional financial results about cummulative returns, total profit \& loss and average P\&L per trade can be seen in the Appendices.
+The significance test results for the annual returns are in Table \ref{tbl:AnnRes_Signf}. The mean annual returns are not significantly different for any of the strategy combinations in the first and last testing period. On the other hand, during the crisis (2008-2009), the annual returns produced by the asset-specific and the universal model build are significantly higher when matched against the other three competing strategies (at significance level $0.05$ except for the asset-specific model versus the BB strategy when the significance level is $0.1$). The annual returns are, however, not significantly different when comparing the asset-specific and universal models.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|c}
+\multicolumn{1}{m{1cm}|}{\multirow{2}{1cm}{Test period}}  & \multicolumn{2}{c|}{Strategies}  & \multicolumn{1}{m{2cm}}{\multirow{2}{2cm}{p-value of equal means}} \\ \cline{2-3}
+             & Strategy 1 & Strategy 2 &         \\ \hline \hline
+\multirow{7}{1cm}{2006-2007}  & CNN-I      & CNN-U      & 0.41    \\
+             & CNN-I      & RSI        & 0.12    \\
+             & CNN-I      & BB         & 0.39    \\
+             & CNN-I      & B\&H       & 0.28    \\
+             & CNN-U      & RSI        & 0.91    \\
+             & CNN-U      & BB         & 0.92    \\
+             & CNN-U      & B\&H       & 0.58    \\ \hline
+\multirow{7}{1cm}{2008-2009} & CNN-I      & CNN-U      & 0.62    \\
+             & CNN-I      & RSI        & 0.03    \\
+             & CNN-I      & BB         & 0.05    \\
+             & CNN-I      & B\&H       & 0.00    \\
+             & CNN-U      & RSI        & 0.01    \\
+             & CNN-U      & BB         & 0.01    \\
+             & CNN-U      & B\&H       & 0.03    \\ \hline
+\multirow{7}{1cm}{2017-2019}  & CNN-I      & CNN-U      & 0.48    \\
+             & CNN-I      & RSI        & 0.97    \\
+             & CNN-I      & BB         & 0.85    \\
+             & CNN-I      & B\&H       & 0.30    \\
+             & CNN-U      & RSI        & 0.71    \\
+             & CNN-U      & BB         & 0.95    \\
+             & CNN-U      & B\&H       & 0.47   
+\end{tabular}
+\caption{Significance test: dependent Student’s t-test on paired samples of annual returns for each testing period. The null-hypothesis for each pair of strategies is that the mean annual return in a given period is equal}
+\label{tbl:AnnRes_Signf}
+\end{table}
+
+
+Additional financial results about cumulative returns, total profit \& loss and average P\&L per trade can be seen in the Appendices.
 
 \subsection{Time Consumption}
 \label{subsec:ER:TimePerf}
@@ -620,7 +659,7 @@ The time to produce predictions for an image takes on average less in case of th
 
 In Figure \ref{fig:imageCrea}, we can see how long it takes to create the three representations required for the prediction of a new trading signal upon observation of a new price. The figure shows execution times to transform a price series into a return series with $N$ elements and then create three $N \times N$ sized image representations of those, one RP, one GAF and one MTF with the parameters set as discussed in the section \nameref{sec:DM}. Our model uses $30 \times 30$ images, so in our case on average it takes $3.59$ milliseconds to make new inputs. 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{images/Image_Trf_Times.png}
     \caption{The plot shows the number of milliseconds it takes on average to turn a price series into a return series and create three image representations (RP, GAF and MTF).}
@@ -632,11 +671,40 @@ In Figure \ref{fig:imageCrea}, we can see how long it takes to create the three 
 
 \subsection{Asset-specific models \& Universal models}
 
-We note, that the two model builds are not only differing in the data used for training but as per best practice in building a deep learning model, further tuning was carried out to obtain the highest possible performance of the model. As discussed before, these differences are reflected in mini batch sizes, regularization hyper-parameters and class weights applied on the loss function.
+We note, that the two model builds are not only differing in the data used for training but as per best practice in building a deep learning model, further tuning was carried out to obtain the highest possible performance of the model. As discussed before, these differences are reflected in mini batch sizes, regularization and optimization hyper-parameters, and class weights applied on the loss function.
+
+To determine the differences between the two model builds, we will firstly concentrate on the classification results. We saw in Table \ref{tbl:ClassSign} and \ref{tbl:ClassRes}, that mean accuracy is higher in case of the asset-specific model builds. Since accuracy is adding up the diagonal of the confusion matrix, and then dividing it with the sum of all elements of the confusion matrix, the reason for the difference in accuracy is clear when comparing the diagonal of Figure \ref{fig:CMAggrI} and Figure \ref{fig:CMAggrU}. The asset-specific model predicts much more of the "Hold" labelled images as "Hold" than the universal build, which in turn classifies much more of the "Buy" and "Sell" images correctly, but not enough to offset the misclassified "Hold" images which results in the lower accuracy. All of the macro F1, precision and recall scores provide us with a better tool to examine the results of classification when we are interested in the complete picture and not the overpowering effect of the successful prediction of one class. These scores are significantly higher in case of the universal model build (even in testing period 2 where these measurements are lower) and this result is due to the macro averages being dragged down by the poor rate of correct classifications of the "Buy" and "Sell" images as shown in the \nameref{subsec:ER:ClassPerf} section. We should note, that the achieved classification results should be further enhanced by changing the network architecture, by altering the input or using other tools, however, the time constraint allowed for the presented results.
+
+But what drives these differences between the models? Firstly, the weights applied on the loss function to fight class imbalance, have an impact on the distribution of the predicted classes. Furthermore, the underlying data for the training of the two model architectures differ which is then naturally reflected in the results. 
+
+In our case, we should of course seek many correct predictions for each of the classes, but for trading purposes, we are less interested in predicting many correct "Hold"-s, and more inclined to find the points where we should make a move. This might be dependent on the asset price's movements and fluctuations, or the attitude of the investor but in most cases it is more important to classify lots of "Sell" and "Buy" points correctly. The reason for this is, that many of the incorrect classifications of these two classes only represent a missed opportunity to trade: when they are predicted to be “Hold”, or when the earlier mentioned safety feature prevents order-execution. The downside to this is the increase in the number of misclassified “Hold” points, since unless the safety feature prevents against order-execution, we experience lots of trades that happen at the wrong time and this would to some extent also eliminate the positive effect of the correct predictions. For example, by executing a false “Buy” order in place of a “Hold”, the algorithm prohibits the execution of the correctly predicted “Buy” a couple time steps later. To see how the two strategies differ we move on to the comparison of financial performance.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{images/CNNIvsCNNU.png}
+    \caption{Comparison of annual returns of the asset-specific model (CNN-I) and the universal model (CNN-U) for each testing period and asset.}
+    \label{fig:CNNIvsCNNU}
+\end{figure}
+Though there are no significant differences in the mean annual returns of the asset-specific and universal models, the universal model scored higher in annual returns in 12 out of 15 cases. Figure \ref{fig:CNNIvsCNNU} shows that the three exceptions are the Apple stock in both the first and second period, and in the third period, the annual return was a bit higher in the test period using the model trained on the S\&P500 data exclusively than using the universal set. We also see that the universal model on average executes more than 2 times as many trades as the asset-specific model, which is due to the higher number of “Buy” and “Sell” predictions. 
+In Figures \ref{fig:AAPLcapevol} - \ref{fig:SPYcapevol}, we show two examples to point out the pros and cons of having more “Buy” and “Sell” predictions, both correct and incorrect, as in case of the universal model, and alternatively, more correct “Hold” predictions, but less “Buy” and “Sell” as well, as in case of the asset-specific model. The capital evolution plot when trading the AAPL stock according to the different trading strategies during 2008-2009 shows an example when the asset-specific model clearly performs great financially as opposed to any of the other strategies. The periods if constant capital signifies times when the capital is hold in cash, while periods of following the price movements of the asset (purple B\&H line) signifies periods of holding the instrument. Now, one distinguishing aspect of the blue line in Figure \ref{fig:AAPLcapevol}, showing the capital changes according to the trade orders of the asset-specific model, to the yellow line (denoting the same for the universal model) is that the asset-specific model keeps the asset-form for longer periods of time, while the universal model only does that for shorter periods. The advances from keeping the asset for longer periods appear during March 2008 - May 2008 and for briefer periods in November 2008 and March 2009. These were periods where the universal model failed to avoid selling the asset prematurely which might be due to the many false predictions of "Sell". Turning to Figure \ref{fig:SPYcapevol} which shows the capital evolution for the same period but trading the SPDR S\&P500 ETF instances. Contrary to the previous, here the universal model provides higher returns (path marked by the yellow line) which proved fruitful during e.g. the periods August 2008 - October 2008 and March 2009. Since many of the trading opportunities were missed due to the lack of predicted "Buy" and "Sell" orders, the asset-specific model to some extent, was taken by the downward stream of the market (though it managed to perform better). 
+It is worth to note, that, during the periods of keeping cash, one could utilize the money in different ways such that further probable gains are acquired from trading other instruments or investing in the risk-free asset (if it gives positive returns). This could boost the trader's income while employing the universal model. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/capitals/Capitals2_AAPL.png}
+    \caption{The evolution of the capital (initial capital is \$ 10,000) during 2008-2009 trading the AAPL stock according to the different trading strategies: asset-specific model (CNN-i), universal model (CNN-u), RSI, BB and Buy\&Hold (B\&H)}
+    \label{fig:AAPLcapevol}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/capitals/Capitals2_SPY.png}
+    \caption{The evolution of the capital (initial capital is \$ 10,000) during 2008-2009 trading the SPY according to the different trading strategies: asset-specific model (CNN-i), universal model (CNN-u), RSI, BB and Buy\&Hold (B\&H)}
+    \label{fig:SPYcapevol}
+\end{figure}
 
 \subsection{Competing algorithmic strategies \& the CNN}
 
 The main metric to determine performance of the different strategies in annual return. 
+
+
 
 \subsection{Applicability based on execution times}
 
