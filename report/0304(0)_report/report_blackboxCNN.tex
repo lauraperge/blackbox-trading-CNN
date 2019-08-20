@@ -124,7 +124,8 @@ The 5 asset-specific models are based on the historical adjusted daily closing p
 The universal model contains all five assets above and others listed in table \ref{tbl:univ_data}. The assets are selected to represent various asset classes: major stocks, stock indices, exchange traded funds, foreign exchange rates and commodity prices.
 
 \begin{table}[]
-\begin{tabular}{@{}lll@{}}
+\centering
+\begin{tabular}{@{}l|l|l@{}}
 \toprule
 \textbf{Name}                   & \textbf{Symbol} & \textbf{Dates}          \\ \midrule
 \textbf{Main assets}            &                 &                         \\
@@ -451,13 +452,13 @@ The execution time for image creation will be shown in milliseconds per generati
 
 It is important to note that all presented results in the paper are biased to some extent, because if one would wish to create unbiased results, each model would need to be run many times with different validation sets. This way, using all results we could assess the overall average performance and via standard deviations we could see how stable/robust the results are. However, making these unbiased results requires excessive computational resources and time which is not given within the scope of this research. Such detailed assessments can be a part of future researches. In this paper, the mentioned issue is partially overcome by testing on different asset classes and time periods.
 
-In addition, both in case of the classification results and the financial results we will carry out a dependent, two-tailed Student's t-test for paired samples (\cite{student1908probable}) in order to find out if the results are significantly different from each other for the different models. In case of the classification, the t-test will show us for each period if the mean accuracy, F1-score, precision and recall are significantly different from each other for the universal versus the asset-specific model build. For the financial results, a similar test will be carried out to see if the different model variants produce significantly different mean annual returns in each testing period. The metrics that we will run the tests on are all numeric and continuous, thus the difference of each pair of these metrics is continuous as well. We also assume that the differences of the measurements in each pair of observations are coming from a normal distribution, and that each pair is independent from another. The null-hypothesis for each comparison will be that the mean of the measurements for the given metric is the same for the compared model variants. The alternative hypothesis is that they differ. In the \nameref{sec:ER} section the p-values will be displayed each of which will give the probability of observing the test results under the null-hypothesis. The test statistic is calculated for a metric $M$ for model variants $a$ and $b$ and for measurements $i = 1, \dots, n$ the following way. First, we calculate the differences: for each $i$, $M^D = M^a - M^b$, then we calculate the mean ($\bar{M}^D$) and the standard deviation ($s^D$) of the observations $M^D_i$, $i = 1, \dots, n$, ans we use them to return the test statistic
+In addition, both in case of the classification results and the financial results we will carry out a dependent, two-tailed Student's t-test for paired samples (\cite{student1908probable}) in order to find out if the results are significantly different from each other for the different models. In case of the classification, the t-test will show us for each period if the mean accuracy, F1-score, precision and recall are significantly different from each other for the universal versus the asset-specific model build. For the financial results, a similar test will be carried out to see if the different model variants produce significantly different mean annual returns in each testing period. The metrics that we will run the tests on are all numeric and continuous, thus the difference of each pair of these metrics is continuous as well. We also assume that the differences of the measurements in each pair of observations are coming from a normal distribution, and that each pair is independent from another. The null-hypothesis for each comparison will be that the mean of the measurements for the given metric is the same for the compared model variants. The alternative hypothesis is that they differ. In the \nameref{sec:ER} section, the p-values will be displayed. All of these p-values will give the probability of observing the test results under the null-hypothesis. The test statistic is calculated for a metric $M$ for model variants $a$ and $b$ and for measurements $i = 1, \dots, n$ the following way. First, we calculate the differences: for each $i$, $M_i^D = M_i^a - M_i^b$, then we calculate the mean ($\bar{M}^D$) and the standard deviation ($s^D$) of the observations $M^D_i$, $i = 1, \dots, n$, and we use them to return the test statistic:
 \begin{equation}
     \label{eq:ttest}
     t = \frac{\bar{M}^D}{s^D / \sqrt{n}}
 \end{equation}
 
-which then can be used to get the two-tailed p-value, $p = 2* Pr(T > |t|)$, where $T$ is the critical value of the Student t distribution with $n-1$ degrees of freedom. We note, that the sample size of altogether 10 observations per test is very small but, with the above assumptions, the results should be good enough for supporting the comparison process.
+which then can be used to get the two-tailed p-value, $p = 2* Pr(T > |t|)$, where $T$ is the critical value of the Student t distribution with $n-1$ degrees of freedom. We note, that the sample size of altogether 5-5 observations per test is very small but, with the above assumptions, the results should be good enough for supporting the comparison process.
 
 \section{Results}
 \label{sec:ER}
@@ -688,15 +689,15 @@ To see how the two strategies differ, we move on to the comparison of financial 
     \label{fig:CNNIvsCNNU}
 \end{figure}
 Though there are no significant differences in the mean annual returns of the asset-specific and universal models, the universal model produced higher annual returns in 12 out of 15 cases. 
-Figure \ref{fig:CNNIvsCNNU} shows that the three exceptions are the Apple stock in both the first and second period, and in the third period, the annual return was a bit higher in the test period using the model trained on the S\&P500 data exclusively, than using the universal set. We also see that the universal model on average executes more than 2 times as many trades as the asset-specific model, which is due to the higher number of “Buy” and “Sell” predictions. 
-In Figure \ref{fig:AAPLcapevol} we will see the positive effect of a larger number of correct “Hold” predictions, on the cost of less “Buy” and “Sell”, as in case of the asset-specific model.
-Moreover, we use \ref{fig:SPYcapevol} to point out the why, in some casesm it is worth to have more “Buy” and “Sell” predictions, correct and incorrect as well, as in case of the universal model. 
+Figure \ref{fig:CNNIvsCNNU} shows that the three exceptions are the Apple stock in both the first and second period, and in the third period, the annual return was a bit higher using the model trained on the S\&P500 data exclusively, than using the universal set. We also see that the universal model on average executes more than 2 times as many trades as the asset-specific model, which is due to the higher number of “Buy” and “Sell” predictions. 
+In Figure \ref{fig:AAPLcapevol} we see the positive effect of a larger number of correct “Hold” predictions, on the cost of less “Buy” and “Sell”, as in case of the asset-specific model.
+Moreover, we use Figure \ref{fig:SPYcapevol} to point out why, in some cases, it is worth to have more “Buy” and “Sell” predictions, correct and incorrect as well, as in case of the universal model. 
 The capital evolution plot when trading the AAPL stock according to the different trading strategies during 2008-2009 shows an example when the asset-specific model clearly performs great financially as opposed to any of the other strategies. The periods of constant capital signifies times when the capital is hold in cash, while periods of following the price movements of the asset (purple B\&H line) signifies periods of holding the instrument. Now, one distinguishing aspect of the blue line in Figure \ref{fig:AAPLcapevol}, showing the capital changes according to the trade orders of the asset-specific model, to the yellow line (denoting the same for the universal model) is that the asset-specific model keeps the asset-form for longer periods of time, while the universal model only does that for shorter periods. 
 The advances from keeping the asset for longer periods appear during March 2008 - May 2008 and for briefer periods in November 2008 and March 2009. These were periods where the universal model failed to avoid selling the asset prematurely which might be due to the many false predictions of "Sell". Now we are turning to Figure \ref{fig:SPYcapevol} which shows the capital evolution for the same period but trading the SPDR S\&P500 ETF instances. 
 Contrary to the previous, here the universal model provides higher returns (path marked by the yellow line) which proved fruitful during e.g. the periods August 2008 - October 2008 and March 2009. Since many of the trading opportunities were missed due to the lack of predicted "Buy" and "Sell" orders, the asset-specific model was taken by the downward stream of the market (though it still managed to perform better). 
 It is worth to note, that, during the periods of keeping cash, one could utilize the money in different ways such that further probable gains are acquired from trading other instruments or investing in the risk-free asset (if it gives positive returns). This could boost the trader's income while employing the universal model. 
 
-Overall, both the asset-specific and universal model builds have their benefits and flaws and both could use further tuning to encourage better classification performance. However, the universal model seem to perform slightly better in many almost all cases and finds more of the trading points correctly, thus we deem that to be a bit better. Also, in case of a similar performance, model training takes longer for the universal model, but training just one model, with lots of asset-prices all around the market would make this model more robustly useful for a trader. 
+Overall, both the asset-specific and universal model builds have their benefits and flaws and both could use further tuning to encourage better classification performance. However, the universal model seem to perform slightly better in almost all cases and finds more of the trading points correctly, thus we deem that to be a bit better. Also, in case of a similar performance, model training takes longer for the universal model, but training just one model, with the prices of many assets of various types would make this model more robustly useful for a trader. 
 For example, if a trader decides to return predictions for a new asset, in case of the asset-specific model, a whole newly tuned model building and training is required. On the other hand, if the newly traded asset is part of the universal model build, there is no need for retraining, the universal model can be readily used.
 \begin{figure}[H]
     \centering
@@ -715,10 +716,9 @@ For example, if a trader decides to return predictions for a new asset, in case 
 \subsection{Competing algorithmic strategies \& the CNN}
 
 The main metric to determine performance of the different strategies is annual return. 
-
 To recap, we compare the financial profitability of the CNN-I (asset-specific model) and the CNN-U (universal model), with two traditional strategies: the RSI (relative strength index) and the BB (Bollinger Bands), and a simple market following strategy, the B\&H (Buy\&Hold). 
 Table \ref{tbl:FinResMain} shows the annual returns in each testing period for each asset, and from Table \ref{tbl:AnnRes_Signf} we know, that the differences in mean annual returns as opposed to the traditional and B\&H strategies were only significant in the period 2008-2009. 
-These results indicate that the although the CNN models generally perform similarly good as the other strategies during economic regimes with increasing prices. However, during a period of falling prices, such as the financial crisis, when the traditional strategies fail to generate income, the CNN still makes for positive returns. 
+These results indicate that the CNN models generally perform similarly good as the other strategies during economic regimes with increasing prices. However, during a period of falling prices, such as the financial crisis, when the traditional strategies fail to generate income, the CNN still makes for positive returns. 
 Figure \ref{fig:CNNvsComp_2} shows these returns for the different strategies and testing assets. The lowest returns were acquired during the trading of the Nikkei225, but it is still a high profit considering that its price fall on average 17\% annually during the period. As we can see in Figure \ref{fig:N225capevol}, up to October 2008, the trading with the RSI strategy ensured some profits but then failed to sell before the further fall in price and so it stayed in the negative zone. The two CNN models behaved very similarly. 
 Except for some brief periods in 2009, the universal setting managed to find more of the timely "Buy" and "Sell" points than the asset-specific one. Despite both CNN models failed to sell just before October 2008, they could still save the capital with some well-timed orders in October 2008.
 \begin{figure}[ht]
@@ -735,19 +735,43 @@ Except for some brief periods in 2009, the universal setting managed to find mor
     \label{fig:N225capevol}
 \end{figure}
 
-Moving on to testing period 1, we can see in the left plot in Figure \ref{fig:CNNvsComp_P1P3} that the trades initiated by the CNN-U model brought higher profits than any other strategy in case of the S\&P500 and the SPY. It also bought positive profits when trading the Nikkei225, when the price was actually falling, but could not score above the RSI and the BB strategies. The CNN also performed relatively poor when the price of the AAPL stock was soaring (63\% annually on average). 
+Moving on to testing period 1, we can see in the left plot in Figure \ref{fig:CNNvsComp_P1P3} that the trades initiated by the CNN-U model brought higher profits than any other strategy in case of the S\&P500 and the SPY. It also brought positive profits when trading the Nikkei225, when the price was actually falling, but could not score above the RSI and the BB strategies. The CNN also performed relatively poor when the price of the AAPL stock was soaring (63\% annually on average). 
 
-%Look at plot about AAPL, look at another one where CNN-U best, discuss
+In Figure \ref{fig:P1_AAPLcapevol}, we can see that the CNN-U model did not quite manage to find the timely trading points and only provided capital above the B\&H during June 2006 - September 2006 when the stock price was decreasing a bit. The trading strategy dictated by the CNN-I was quite successful up until May 2007. After that point the stock price started fluctuating quite a lot and increased much faster than in the previous part of the period and the CNN could not keep up with this change in the distribution. 
 
-%Do the same as above for Period 3.
-
-%Make general discussion
-\begin{figure}[ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{images/CNNvsComp_P1P3.png}
     \caption{Annual returns after trading different assets during test periods 1 (2007-2007) and 2 (May 2017 - June 2019) according to the strategies: asset-specific model (CNN-I), universal model (CNN-U), RSI, BB and Buy\&Hold (B\&H)}
     \label{fig:CNNvsComp_P1P3}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/capitals/Capitals1_AAPL.png}
+    \caption{The evolution of the capital (initial capital is \$ 10,000) during 2006-2007 trading the Apple stock according to the different trading strategies: asset-specific model (CNN-i), universal model (CNN-u), RSI, BB and Buy\&Hold (B\&H)}
+    \label{fig:P1_AAPLcapevol}
+\end{figure}
+
+In the latest period of May 2017 - June 2019, the market is similar to that in the first period but with slightly higher returns. The exception is the Apple stock which did not see such a growth lately as 10 years earlier. Although there is no significant difference between the mean annual returns during this period, the CNN models showed a weaker performance. The expectation was that the models would prove more successful due to the larger amount of past data that can be used to train the model. 
+This was reflected in the slightly improved classification results in testing period 3 but not so much in the financial results. The Nikkei225 was the only asset that was traded more profitably by the CNN models than the competing strategies.
+
+In Figure \ref{fig:P3_N225capevol} we can observe that the capital handled by the CNNs was vastly following the asset price from March 2018 with shorter periods of keeping cash. Then, between December 2018 and January 2019 both CNN models manage to sell the assets just before the price plunges and make great gains on the increase during the rest of 2019. The RSI and BB lead capitals both followed the plunge and lost a lot of it in doing so. 
+The path of the capital when the SPY is traded during the third period in Figure \ref{fig:P3_SPYcapevol} shows an example where both CNN models failed to predict a "Sell" sign before the prices dropped in December 2018 - January 2019. Though the BB (green line) buys the asset when the price drops by a lot (passing the lower BB), when the prices keep falling, it never sells until the price starts increasing again. Now, if the price increases and quick enough, the trader just loses a lot without actually waiting for the price to grow again and initiate the sell then. A typical case of this is trading the SPY ETF between February 2018 and June 2018 or between October 2018 and February 2019. 
+The CNN models make a similar mistake in the second mentioned period: they both fail to make profits on the fluctuations starting in October 2018, and then, when the price drops, they both hold the asset and lose a lot of the built up capital. Afterwards, the CNN-I sells during the first two month of 2019 and thus misses out on the increasing market. The CNN-U also sells in January 2019 but keeps buying and selling, making some steps upwards. The RSI however done a good job in following the market price and at times moving above the Buy\&Hold capital. A plausible reason why the CNN model made profits over other strategies during this plunge during December 2018 - February 2019 in case of the N225 is that there was a clear-cut peak just before it. There, the model found a selling point and since the price quickly corrected back, there was not enough time for a "Buy" order to ruin the earnings. However, the price of the SPY did not just fall from a peaky point but had multiple small local maximums afterwards. The CNN-U bought into SPY at the second one, while the CNN-I at the third. This might be an issue that can be fixed by increasing the window of prices when we label the images, but such a change might also result in missed opportunities elsewhere. It is also worth to note, that the CNN models perform a very active trading strategy when compared with the other strategies.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.99\textwidth]{images/capitals/Capitals3_N225.png}
+    \caption{The evolution of the capital (initial capital is \$ 10,000) during 2017-2019 trading the Nikkei225 according to the different trading strategies: asset-specific model (CNN-i), universal model (CNN-u), RSI, BB and Buy\&Hold (B\&H)}
+    \label{fig:P3_N225capevol}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.99\textwidth]{images/capitals/Capitals3_SPY.png}
+    \caption{The evolution of the capital (initial capital is \$ 10,000) during 2017-2019 trading the SPDR S\&P500 ETF according to the different trading strategies: asset-specific model (CNN-i), universal model (CNN-u), RSI, BB and Buy\&Hold (B\&H)}
+    \label{fig:P3_SPYcapevol}
+\end{figure}
+To sum up, the CNN models perform similarly to more traditional strategies and the Buy\&Hold given a growing market, but during a crisis with longer periods of low prices and some extreme fluctuations, the automatic trading models based on the CNN can outperform the competing strategies by quite a lot in profitability. The development of classification performance should further increase the expedience of the model, bringing in further profits. 
 
 \subsection{Applicability based on execution times}
 
