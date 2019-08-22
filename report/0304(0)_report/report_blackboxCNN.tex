@@ -43,6 +43,7 @@
 \begin{abstract}
     Something.
 \end{abstract}
+\newpage
 
 \section{Introduction}
 People have been trading on financial markets for more than 200 years and with time, the internet, and technological advancement, the process has changed and evolved into what it is today:  
@@ -51,13 +52,12 @@ artificial intelligence and machine learning applications.
 
 But what were some major milestones of this evolution? As nicely summarized by \cite{rialtohistory}  employing algorithms in trading for calculation of asset prices goes back to the beginning of the 20th century. In the early 1950s, Harry Markowitz brought computational finance to existence in the pursuit of portfolio optimization. During that time, the computational 
 resources were inadequate to efficiently utilize these algorithms in trading. From the 1970s to 1990s, 
-large-scale computerization, the introduction of PCs, the internet and then amongst other systems the ECN (Electronic Communication Network) completely changed the game. Automation became a 
-feasible solution, and algorithms are way faster to react with Buy/Sell orders on the market than humans. Trading is now not only for institutions or professionals and a chosen few but for 
-every person with access to the internet. Intraday and high-frequency trading emerged and so, using algorithmic trading strategies with automated execution has become crucial in order to 
+large-scale computerization, the introduction of PCs, the internet and then amongst other systems the ECN (Electronic Communication Network) completely changed the game. Automation is now a feasible solution, and algorithms are way faster to react with Buy/Sell orders on the market than humans. Trading is now not only for institutions or professionals and a chosen few but for every person with access to the internet. 
+Intraday and high-frequency trading emerged and so, using algorithmic trading strategies with automated execution has become crucial in order to 
 trade on these markets. 
 
 There is another influential idea that has been around for several decades but has just gained space due to technological progress and the wide-spread access to computational power: artificial intelligence, more 
-concisely machine learning and deep learning. 
+precisely machine learning and deep learning. 
 The first paper about creating a model of the human neural networks was by \cite{mcculloch1943logical} and many more have followed ever since. 
 One more achievement related to our topic was the first convolutional neural network (CNN) by \cite{fukushima1979neural} which is the first deep learning model for handwritten character and other 
 pattern recognition.
@@ -73,11 +73,11 @@ Traditional means include autoregressive (AR) and/or moving average models (MA, 
 Another limitation is the expectation of stationarity which is solved in the ARIMA (autoregressive integrated moving average) model that still remains linear but takes some preliminary transformation steps 
 to turn the problem into a stationary ARMA. Although linearity is mostly acceptable in time series prediction problems, it is not true in all cases, and for that reason  
 ARCH and GARCH (\textit{generalized} autoregressive conditional heteroskedasticity) models were invented. These complex models provided solutions to time series analytics which have long been in use and provide explicit insight into the time-dependence structure of the data.\footnote{The interested reader can find more information on these methods in for example Section 2 and 3 of \cite{tsay2005analysis}.}
-In the field of AI and deep learning, recurrent neural networks (RNN) is a kind that was engineered to deal with sequential data. To address the issue of remembering long term temporal dependencies long 
+In the field of AI and deep learning, recurrent neural networks (RNN) are a kind that was engineered to deal with sequential data. To address the issue of remembering long term temporal dependencies long 
 short term memory (LSTM) networks were created which are heavily used in time series forecasting problems (\cite{Hochr97LSTM}). 
-However, there are plenty of difficulties when it comes to prediction of financial time series. Accurate forecasting with these techniques require a lot of data, moreover, financial time series are many times non-stationary and influenced by regime changes \cite{lemus_2018}.
+However, there are plenty of difficulties when it comes to prediction of financial time series. Accurate forecasting with these techniques require a lot of data, moreover, financial time series are often non-stationary and influenced by regime changes \cite{lemus_2018}.
 
-On the other hand, in this paper, we avert from the application of forecasting the next element of a series and concentrate on predicting trading decisions based on the present prices. We train the model to recognize periods, in the end of which one should make a buying or selling order. 
+On the other hand, in this paper, we avert from the application of forecasting the next element of a series and concentrate on predicting trading decisions based on the present prices. We train the model to recognize periods, in the end of which one should make a buying or selling order, or just hold.
 
 The goal of this paper is to develop a simple but powerful model that can make real-time trading decisions utilizing a convolutional neural network. For this, we need to capture as much dynamic 
 and static information from the one-dimensional time series as possible which we achieve by turning them into images. The classification exercise requires labels which we choose to represent trading orders of "Buy", "Sell" and "Hold". 
@@ -100,13 +100,13 @@ The overall heuristics of this paper largely resembles the one published by \cit
 One potential issue with the image transformation methodology used by the mentioned paper is that the resulting plot does not directly represent the input time series. The image is dependent of the choice of technical indicators and their ordering in the grid. Therefore, we turn to \cite{hatami2018classification} which proposes a similar model but with using Recurrence Plots for transformation; and \cite{wang2015encoding} which uses Markov Transition Fields and Gramian Angular Fields in the different color channels (RGB) of the resulting image. Both methods require a window of elements from the series and maps those to two dimensions according to different formulas which we cover in details in the section \nameref{subsec:DM:TS2IM}.
 
 \section{Data and Methodology}
-Overall, 6 models are trained, tuned and tested. There are 5 individual models each exclusively trained and tested on one assigned dataset. This is used to analyze the performance of asset-specific model builds. 
-Then, we train the universal model on data coming from 35 financial assets, including the 5 used in the asset-specific models, and test it on these 5 assets once again. This system allows us to compare the performance of the universal model to the asset-specific ones. In order to obtain a more broad assessment, we assess performance on three training and testing time periods but this will be explained in further detail in the section \nameref{subsec:DM:Eval}.
+Overall, six models are trained, tuned and tested. There are five individual models each exclusively trained and tested on one assigned dataset. This is used to analyze the performance of asset-specific model builds. 
+Then, we train the universal model on data coming from 35 financial assets, including the five used in the asset-specific models, and test it on these five assets once again, but on a part of the data that is separate from the one used for training. This system allows us to compare the performance of the universal model to the asset-specific ones. In order to obtain a more broad assessment, we assess performance on three training and testing time periods but this will be explained in further detail in the section \nameref{subsec:DM:Eval}.
 
 In a real life scenario, the asset-specific models translate to a trader picking certain assets to trade, then gathering all available historical prices for those assets, training and tuning a model for each of them and then use one model per asset to generate trading signals. 
 On the other hand, we could imagine a trader gathering data of many assets, including those he wishes to trade, train and tune one universal model on all available data, and use that to generate trading signals for any of the instruments selected for trading. Also, in the second case the trader can start generating trading signals for each of the assets used for training the universal model while in the asset-specific case he needs to collect the historical data of the new asset and build a new model for it.
 
-In the upcoming subsections we will look into what data is used for each of the 6 models, how training, tuning and testing is approached to get comprehensive results, and what other trading techniques we match our performance against.
+In the upcoming subsections we will look into what data is used for each of the six models, how training, tuning and testing is approached to get comprehensive results, and what other trading techniques we match our performance against.
 
 The model structure that will be introduced throughout this section is similar to that in \cite{sezer2018algorithmic}, but novel in the use of the Recurrence Plot, Gramian Angular Field, and Markov Transition Field to create images from financial time series which are then fed to the convolutional neural network via the color channels. The models are also independently tuned on different datasets and the universal model build is something the authors above did not experiment with. 
 
@@ -124,7 +124,7 @@ The 5 asset-specific models are based on the historical adjusted daily closing p
     \item SPDR S\&P 500 ETF Trust.
 \end{itemize} 
 
-The universal model contains all five assets above and others listed in table \ref{tbl:univ_data}. The assets are selected to represent various asset classes: major stocks, stock indices, exchange traded funds, foreign exchange rates and commodity prices.
+The universal model contains all five assets above and others listed in Table \ref{tbl:univ_data}. The assets are selected to represent various asset classes: major stocks, stock indices, exchange traded funds, foreign exchange rates and commodity prices.
 
 \begin{table}[]
 \centering
@@ -188,14 +188,14 @@ given $x = (x_1, \dots, x_n)$ is a univariate time series and $x_i$ is its $i^{t
 \subsection{Transformation Strategies: Time Series to Images}
 \label{subsec:DM:TS2IM}
 
-We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size $s = 30$ (\textbf{TBM!!}) of the different return time series. This means that for $n$ return values we get $(n - s + 1)$ images. 
+We cover the three techniques mentioned before: Recurrence Plots, Markov Transition Fields and Gramian Angular Fields. All three methods are applied on sliding windows of size $s = 30$ of the different return time series. This means that for $n$ return values we get $(n - s + 1)$ images. 
 
 The \textbf{Recurrence Plots (RP)} originally introduced by \cite{jp1987recurrence} implemented according to \cite{hatami2018classification} are useful when we wish to represent the periodicity of trajectories going through a phase space. The issue with visualization that the RP solves appears when the phase space has more than three dimensions. A recurrence represents the time a trajectory gets back to a previously visited location. In Figure \ref{fig:RP_Def} we use the same explanation presented in Figure 1 of \cite{hatami2018classification}. In the plots it can be observed, how certain values tend to follow each other, for example $x_3 = 1, x_4 = 3$ and then this pattern re-occurs at $x_6, x_7$ which is reflected by $s_3$ and $s_6$ falling to the same phase on the map, and thus by the pixel at $(s_3, s_6)$ being equal to zero.
 
 \begin{figure}[]
     \centering
     \includegraphics[width=\textwidth]{images/RP.PNG}
-    \caption{The left plot shows a time series of 7 observations $x_t$, $t=1,\dots,7$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,13$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the 6 states: $R_{i,j} = Euclidean(s_i,s_j)$.}
+    \caption{The left plot shows a time series of seven observations $x_t$, $t=1,\dots,7$. The plot in the middle shows the two dimensional phase space trajectory that is created from $x$ using a time delay of $\tau = 1$. The states are denoted by $s_k$ for $k=1,\dots,6$ where $s_k = (x_k, x_{k+1})$. On the right, the recurrence plot is a matrix of Euclidean distances between the six states: $R_{i,j} = Euclidean(s_i,s_j)$.}
     \label{fig:RP_Def}
 \end{figure}
 
@@ -206,7 +206,9 @@ As it is pointed out in \cite{hatami2018classification}, time series tend to sho
 \label{eq:RP_R}
     R_{i,j} = \theta(\epsilon-||\vec{s}_i - \vec{s}_j||),\quad \vec{s}(.) \in \mathbb{R}^m, \quad i,j = 1,\dots,K
 \end{equation}
-where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing $30$ consequent return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $29$ states; finally, the R-matrix is calculated based on Equation \ref{eq:RP_R} but with a small change. The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $(29 \times 29)$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. Afterwards, to fit the image size of the two other transformation strategies introduced later, we add a size $1$ zero-padding to the right and bottom of the image.
+where K is the number of considered states $\vec{s}$, $\epsilon$ is a threshold distance, $||.||$ a norm (Euclidean in our case), and $\theta(.)$ the Heaviside function\footnote{The Heaviside function is defined as: $\theta(x) = \frac{d}{dx}\max(0,x)$ for $x \neq 0$}. Summing up the process of creating a recurrence plot for our purposes: first, we start out with a window containing $30$ consecutive return values of an asset; then we create the two-dimensional phase space trajectory ($m=2$) from these series which results in $29$ states; finally, the R-matrix is calculated based on Equation \ref{eq:RP_R} but with a small change. 
+The formula, due to the $\epsilon$ threshold parameter, would give us a matrix of ones and zeros, and to avoid this information loss we simply skip this step and work with the resulting grey-scale images. Also, we use min-max scaling on each resulting image of $(29 \times 29)$ to $[0, 1]$ in order to satisfy the requirements of the CNN's input vectors. 
+Afterwards, to fit the image size of the two other transformation strategies introduced later, we add a size $1$ zero-padding to the right and bottom of the image. Zero-padding here is an additional column and row of zeros added to two neighboring sides of the image to increase its size without modifying the resolution or information content of the original image. Visually, it is a column and row of zeros on the right and bottom sides of our RP image.
 
 % potentially mention RP on prices that increase or decrease similar while on returns it is more distinctive
 
@@ -228,7 +230,7 @@ As noted in \cite{gaf_medium} the use of the Gramian matrix can be motivated by 
         r_i = \frac{t_i}{N}, \quad t_i \in \mathbb{N}
     \end{cases}
 \end{align}
-i.e. we convert the timestamp $t_i$ dividing by $N$ (the number of series instances) and get the radius. As for the angles, they are the angular cosine of the scaled series. Then, we create the Gramian Angular Field by taking the cosine sum between each pair of angles:
+i.e. we convert the timestamp $t_i$ dividing by $N$ (the number of series instances) and get the radius. This means that the radius is longer for values at later time steps. As for the angles, they are the angular cosine of the scaled series. Then, we create the Gramian Angular Field by taking the cosine sum between each pair of angles:
 
 \begin{equation}
 \label{eq:GAF}
@@ -240,16 +242,14 @@ i.e. we convert the timestamp $t_i$ dividing by $N$ (the number of series instan
 \end{pmatrix} \\
 = \Tilde{X}' \cdot \Tilde{X} - \sqrt{I-\Tilde{X}^2}' \cdot \sqrt{I-\Tilde{X}^2}
 \end{equation}
-where $I$ is the unit row vector $[1, 1, \dots, 1]$. Notice, that this is a Gramian-like matrix with a penalized inner product given by\footnote{Please see Appendices \nameref{app:GAF} for the proof.}: $\langle x, y\rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}= x \cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}$. There are several advantages to this construction one of which is preserving the absolute temporal relations. Another aspect is that the diagonal sustains the original (although transformed) time series. Furthermore, the entries $GAF_{ij}$ of the matrix represent the temporal correlation (cosine-similarity) with respect to the different $k= |i-j|$ time intervals, and the main diagonal displays the case of $k=0$. Figure \ref{fig:GAF} shows how the transformation happens for an example scaled time series of $14$ observations. Time can again be tracked going from the top-left to the bottom-right corner.
+where $I$ is the row vector $[1, 1, \dots, 1]$. Notice, that this is a Gramian-like matrix with a penalized inner product given by\footnote{Please see Appendices \nameref{app:GAF} for the proof.}: $\langle x, y\rangle - \sqrt{1-x^2} \cdot \sqrt{1-y^2}= x \cdot y - \sqrt{1-x^2} \cdot \sqrt{1-y^2}$. There are several advantages to this construction one of which is preserving the absolute temporal relations. Another aspect is that the diagonal sustains the original (although transformed) time series. Furthermore, the entries $GAF_{ij}$ of the matrix represent the temporal correlation (cosine-similarity) with respect to the different $k= |i-j|$ time intervals, and the main diagonal displays the case of $k=0$. Figure \ref{fig:GAF} shows how the transformation happens for an example scaled time series of $14$ observations. Time can again be tracked going from the top-left to the bottom-right corner.
 
-\begin{figure}[]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{images/GAF.png}
     \caption{Plot 1 shows the time series scaled to the interval [-1, 1] which is then transformed to polar coordinates. In the polar coordinate system in Plot 2, the first point is the closest to the center, then as time moves forward, the coordinates vary among different angles but move further and further out towards the boundaries of the unit circle. Plot 3 shows the GAF plot that we get by applying the formula in Equation \ref{eq:GAF}. Before applying the CNN, we use min-max scaling to the interval $[0,1]$ to fit the expected input of the model. As Plot 4 demonstrates, this scaling does not change the appearance of the image.}
     \label{fig:GAF}
 \end{figure}
-
-% Importantly, the described encoding map in Equation \ref{eq:gafencode} is bijective as $cos(\phi)$ is monotonic given that $\phi \in [0, \pi]$ which IS NOT TRUE HERE, is it? for the single angles yes, but we add them up, which results in non-bijective transformation, for the different input we can get the same output, maybe the radius makes it?
 
 The third and last transformation strategy introduced is called \textbf{Markov Transition Field (MTF)} and it entails encoding dynamic transition probabilities from a Markov Transition Matrix of discretized quantile bins in a quasi-Gramian matrix. The algorithm is introduced in \cite{wang2015encoding} and inspired by \cite{campanharo2011duality}.
 
@@ -275,10 +275,10 @@ Thus, $W_{ij}$ gives us the probability of moving from the $i^{th}$ bin to the $
     \end{pmatrix}
 \end{equation}
 and an example can be observed in Plot 3 of Figure \ref{fig:MTF}. This resulting image, similarly to the previous two representations trails the flow of time from the top-left to the bottom-right corner.
-The entries of this matrix are already in the range $[0,1]$, so there is no need for further scaling before feeding it to the CNN. The images are created with the same sliding window technique discussed previously. A parameter to decide on is the number of quantile bins to create, and with window size set to $30$ it is set to $5$ in our image construction.\footnote{It should be noted that the number of bins can be optimized via costly hyperparameter optimization but due to limitations in time and computational power this was not carried out in the study.}
+The entries of this matrix are already in the range $[0,1]$, so there is no need for further scaling before feeding it to the CNN. The images are created with the same sliding window technique discussed previously. A parameter to decide on is the number of quantile bins to create, and with window size set to $30$ it is set to five in our image construction.\footnote{It should be noted that the number of bins can be optimized via costly hyperparameter optimization but due to limitations in time and computational power this was not carried out in the study.}
 The MTF can also be understood as the multispan transition probabilities of the series within one step at different points in time.
 
-\begin{figure}[H]
+\begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{images/MTF.png}
     \caption{Plot 1 shows the time series which is assigned to $Q=4$ quantile bins. In Plot 2.a), we can inspect the preliminary state of the Markov Transition Matrix $V$, the elements of which are the counts of the different transitions in the time series $X$, and in Plot 2.b) $W$ is the so-called right stochastic matrix or Markov Transition Matrix, a real stochastic matrix with transition probabilities between the different bins and each row summing to $1$ (see Equation \ref{eq:W}). Plot 3 shows the MTF plot that we get by applying the formula in Equation \ref{eq:MTF}.}
@@ -287,7 +287,7 @@ The MTF can also be understood as the multispan transition probabilities of the 
 
 Overall, the three representations have some common properties, such as how the time dimension is represented in the way the different pixels are located. Also, all three methods provide us a way to transform sliding windows of time series into graphical representations that an image classifier can potentially recognize given proper labels. However, all three transformations show us a slightly different aspect of the series. While the recurrence plot highlights cyclicality and recurring patterns in the data, the GAF illustrates temporal dependencies and the MTF reveals the transition-related behavior in the series. Figure \ref{fig:allTrf} shows an example of all three transformations on the same return series of length $30$.
 
-\begin{figure}[]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/allTrf.PNG}
     \caption{Recurrence Plot, Gramian Angular Field and Markov Transition Field applied on the same return series consisting of 30 observations.}
@@ -320,8 +320,13 @@ There are multiple reasons to pursue this approach. Firstly, if we were to label
 
 \subsection{Recognizing Patterns with Deep CNN}
 \label{subsec:DM:RecPatwCNN}
-Deep convolutional neural networks (CNN) are artificial neural networks (ANN) with multiple layers between the input and output layers (hence deep) that also employ convolution operation in one or more layers as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). 
-The CNN has many advantageous properties but what is most important for our use-case is that it can process fairly raw high dimensional data and extract the most important features for the given exercise. It accomplishes this by the use of filters which change the original input in different ways in an attempt to learn relevant features for solving the problem. An example of a filter could be a blurring filter that moves along the image, and when it finds a distinctive contrast, it changes the color to fall a bit closer to the neighboring one. Moreover, the sparse connectivity in the network prove to be computationally more efficient and better in generalization when compared with multilayer perceptrons (MLP).\footnote{On how generalization is improved by removing redundancies see \cite{chakraborty1999effect}.} As it is also described in \cite{MLPmedium}, MLPs are fully connected neural networks with at least three layers (input, hidden and output) and the issue with fully connectedness is that the number of parameters equals the product of parameters on the different layers and this can increase very quickly with more complicated networks. It is inefficient due to redundancies in the network, also, MLPs flatten the output of each layer before feeding into the next one which disregards spatial information. The CNN however can account for local connectivity (see orange and green filters in Figure \ref{fig:CNNstruct}), the weights are shared (strolling the same filters over the entire image), and as for being sparse, each neuron in a layer is not connected to each neuron in the neighbouring layer. Deep neural networks have many constituents that shall be chosen for the data and objective of the model. Below we will get an overview of these choices and the final model design (also see Figure \ref{fig:CNNstruct}).
+
+Deep convolutional neural networks are artificial neural networks (ANN) with multiple layers between the input and output layers (hence deep) that also employ convolution operation in one or more layers as a substitute for the matrix multiplication (see p.326, Chapter 9 in \cite{goodfellow2016deep}). 
+The CNN has many advantageous properties but what is most important for our use-case is that it can process fairly raw high dimensional data and extract the most important features for the given exercise. It accomplishes this by the use of filters which change the original input in different ways in an attempt to learn relevant features for solving the problem. 
+An example of a $2 \times 2$ filter could be a blurring filter, that moves along all the $2 \times 2$ neighboring pixels of an image. When it finds a distinctive contrast in color between the four ($2 \times 2$) neighboring pixels, it changes their color so they fall a bit closer to each other. Moreover, the sparse connectivity in the network prove to be computationally more efficient and better in generalization when compared with multilayer perceptrons (MLP).\footnote{On how generalization is improved by removing redundancies see \cite{chakraborty1999effect}.} 
+As it is also described in \cite{MLPmedium}, MLPs are fully connected neural networks with at least three layers (input, hidden and output) and the issue with fully connectedness is that the number of parameters equals the product of parameters on the different layers and this can increase very quickly with more complicated networks. 
+It is inefficient due to redundancies in the network, also, MLPs flatten the output of each layer before feeding into the next one which disregards spatial information. The CNN however can account for local connectivity (see orange and green filters in Figure \ref{fig:CNNstruct}), the weights are shared (strolling the same filters over the entire image), and as for being sparse, each neuron in a layer is not connected to each neuron in the neighbouring layer. 
+Deep neural networks have many constituents that shall be chosen for the data and objective of the model. Below we will get an overview of these choices and the final model design (also see Figure \ref{fig:CNNstruct}).
 
 The first component that we discuss is the activation function which has an important role in introducing non-linear properties to the neural network. The activation function that is used throughout the models is Leaky ReLU, which is a version of the commonly used ReLU function. ReLU stands for rectified linear unit (\cite{hahnloser2000digital}) and is defined as
 \begin{equation}
@@ -329,7 +334,8 @@ The first component that we discuss is the activation function which has an impo
     y = f(x) = \max(0,x).
 \end{equation}
 The ReLU is popular as it prevents against vanishing gradients (\cite{glorot2011deep}) and it has a low computational cost. Lastly, it promotes sparsity since all negative inputs result in zero activation which helps the model in finding meaningful features faster and prevents against overfitting. 
-On the other hand, the fact that all negative results are turned into zero can be an issue when a value keeps giving negative results. In this case the ReLU turns it into zero every time and due to not being any slope below zero the neuron is very likely to remain inactive for the rest of the training. This way, these neurons will have no contribution to the network and this is an even bigger problem if more and more neurons turn up "dead". To prevent against the described disadvantages we use Leaky ReLU which solves the issue by introducing a slope in the negative side of the function (\cite{maas2013rectifier}):
+On the other hand, the fact that all negative results are turned into zero can be an issue when a value keeps giving negative results. In this case the ReLU turns it into zero every time and due to not being any slope below zero the neuron is very likely to remain inactive for the rest of the training. 
+This way, these neurons will have no contribution to the network and this is an even bigger problem if more and more neurons turn up "dead". To prevent against the described disadvantages we use Leaky ReLU which solves the issue by introducing a slope in the negative side of the function (\cite{maas2013rectifier}):
 \begin{equation}
     \label{eq:LeakyReLU}
     y = f(x) = 
@@ -682,7 +688,7 @@ To determine the differences between the two model builds, we will firstly conce
 But what drives these differences between the models? Firstly, the weights applied on the loss function to fight class imbalance have an impact on the distribution of the predicted classes. Furthermore, the underlying data for the training of the two model types differs in characteristics and size which is then naturally reflected in the results. 
 
 In our case, we should of course seek many correct predictions for each of the classes, but for trading purposes, we are less interested in predicting many correct "Hold"-s, and more inclined to find the points where we should make a move. This might be dependent on the asset price's movements and fluctuations, or the attitude of the investor but in most cases it is more important to classify lots of "Sell" and "Buy" points correctly. 
-We can think about this by observing that, many times, the incorrect classifications of these two classes only represent a missed opportunity to trade: when they are predicted to be “Hold”, or when the earlier mentioned safety feature prevents order-execution. The downside to this is the increase in the number of misclassified “Hold” points. If the safety feature does not prevent against execution of a "Buy" or "Sell" prediction at a price that should be associated with a "Hold", we experience trades that, to some extent, eliminate the positive effect of the correct predictions. For example, by executing a false “Buy” order in place of a “Hold”, the algorithm prohibits the execution of the correctly predicted “Buy” a couple time steps later. 
+We can think about this by observing that, often the incorrect classifications of these two classes only represent a missed opportunity to trade: when they are predicted to be “Hold”, or when the earlier mentioned safety feature prevents order-execution. The downside to this is the increase in the number of misclassified “Hold” points. If the safety feature does not prevent against execution of a "Buy" or "Sell" prediction at a price that should be associated with a "Hold", we experience trades that, to some extent, eliminate the positive effect of the correct predictions. For example, by executing a false “Buy” order in place of a “Hold”, the algorithm prohibits the execution of the correctly predicted “Buy” a couple time steps later. 
 
 To see how the two strategies differ, we move on to the comparison of financial performance.
 \begin{figure}[ht]
@@ -1138,8 +1144,9 @@ The list of sources for all downloaded datasets can be found in Tables \ref{tbl:
         \caption{Data sources: Commodities}
         \label{tbl:datasets_commods}
     \end{table}
+
     
+
 \bibliography{reference}
 \bibliographystyle{apalike}
-
 \end{document}
