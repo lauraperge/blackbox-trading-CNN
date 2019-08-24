@@ -1,9 +1,6 @@
 # blackbox-trading-CNN
 Time Series Classification with Convolutional Neural Network: Automated Trading by Pattern Recognition (Master's Thesis)
 
-## Getting Started
-TBD
-
 ## Prequisites
 All parts are written in Python 3 (except report which is in LaTex) the requirements can be installed using:
 
@@ -17,27 +14,31 @@ For the CNN and Data preparation I used Jupyter notebooks.
 
 ### data
 All downloaded datasets, trial code for data retrivals via API.
+**/data_raw/\*** has all raw datasets used to create the inputs
 
-* **gemini_BTCUSD 1 minute data\*** (2015-2019) Retrieved: 02-03-2019 https://www.CryptoDataDownload.com
+ **/cnn_input/\*** has all folders that will hold all inputs for the CNN given the *data-check-and-prep-alldata-2Y.ipynb* notebook is ran.
 
-* **IVE_bidask1min_iShares S&P 500 Value Index.csv** (2009-2019) Retrieved: 2019-03-02 http://api.kibot.com
+**/competing-strategies-signals/\*** contains the signals for the test assets based on the RSI and BB algorithmic trading trading_strategies
 
-* **/cnn_input/\*** has all datasets containing the series, labels and image representations for the CNN
+**/logs/\*** gets all logs from *data-check-and-prep-alldata-2Y.ipynb*
 
 ### notebooks
 Jupyter notebooks of CNN versions and Data Preparation
 
-* **data-check-and-prep** uses prewritten modules (See utils) to preliminarily check/modify the data, label and transform it to be ready for the CNN. It visualizes the input/output data and labelling. Its input is any raw dataset from the data or via API, its output goes into data/cnn_input/ and serves as input for the CNN notebooks.
+* **data-check-and-prep-alldata-2Y** uses prewritten modules (See utils) to preliminarily check/modify the data, label and transform it to be ready for the CNN. It visualizes the input/output data and labelling. Its input is any raw dataset (**data/data_raw**), its output goes into data/cnn_input/ and serves as input for the CNN notebooks.
 
-* **CNN-trial-version** is the first (working - TO BE TESTED) version of a tensorflow CNN model with a test dataset and single color channel. It is not optimized or enhanced. input data is the output of data-check-and-prep
+* **Google Colab codes/\*** holds all asset-specific and universal model codes which are trained and tested in 3 different training periods (dates for period 2 to be checked in notebooks that are not ran on period two in case of general use.) CNN, Keras
 
-* **CNN-trial-version-multiple color channels** is the first working version of a tensorflow CNN model with a test dataset and multiple color channels. It is not optimized or enhanced. input data is the output of data-check-and-prep
+* **financial-evaluation** takes all results from the **Results** folder and **competing-strategies-signals** folder and  returns financial performance measurements and figures
 
-* **GC_CNN_trial_version_multiple_color_channels** same as before but used in Google Colaboratory
+* **competing-strategies** creates trading signals for the same datasets given RSI and BB algorithmic trading strategy
 
-* **CNN_keras_multiple_color_channels** working Keras based version of CNN model with 3H Bitcoin dataset and multiple color channels. Not optimized or enhanced. input data is the output of data-check-and-prep
+* **classification&time-evaluation** takes all results from the **Results** folder and returns classification performance metrics
 
 * **/Output/** contains logs from the CNN, later will contain other evaluation outputs as well
+
+### results tables
+Contains all result outputs from *financial-evaluation.ipynb** and *classification&time-evaluation.ipynb*, contains general results table
 
 ### report
 LaTeX report
