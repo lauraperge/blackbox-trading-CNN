@@ -1,6 +1,7 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage[english, science, titlepage]{ku-frontpage}
 \usepackage[utf8]{inputenc}
+\usepackage{setspace}
 \usepackage{booktabs, multirow, multicol}
 \usepackage{caption}
 \usepackage{subcaption, graphicx}
@@ -11,7 +12,7 @@
 \usepackage{array}
 \newcolumntype{L}{>{\centering\arraybackslash}m{3cm}}
 
-\usepackage{cite, hyperref, nameref}
+\usepackage{cite, nameref}
 \usepackage{natbib, apalike, url}
 \usepackage{float}
 
@@ -19,6 +20,8 @@
 \makeatletter
 \g@addto@macro{\UrlBreaks}{\UrlOrds}
 \makeatother
+
+\setstretch{1.3}
 
 \setlength\arraycolsep{2 pt}
 \setcounter{tocdepth}{2}
@@ -28,20 +31,24 @@
 \author{Laura Perge}
 
 \title{Time Series Classification with CNN:}
-\subtitle{ Automated Trading by Pattern Recognition}
+\subtitle{Automated Trading by Pattern Recognition}
 \date{Handed in: \today}
 \advisor{Advisors: Rolf Poulsen, Kenneth H. M. Nielsen, Lasse Bøhling}
 %\frontpageimage{example.png}
 
-%% spellcheck-language "en"
-
 \begin{document}
 \maketitle
-
 \tableofcontents
 
+\newpage
 \begin{abstract}
-    Something.
+    Deep learning models, and within the field even more, convolutional neural networks have become widely popular for large-scale regression and classification purposes. These models can be utilized by traders in the financial markets. 
+    In the paper, we outline an automatic trading solution that is based on a convolutional neural network model. 
+    The inputs of the model are $30 \times 30 \times 3$ images obtained by transforming daily return series of financial assets in a 30-day rolling window fashion. Three image transformation strategies are applied on the return series to ensure that we capture both the dynamic and static properties of the times series: Recurrence Plots, Gramian Angular Fields and Markov Transition Fields. Each image is labelled as a trading order, "Buy", "Sell", or "Hold", based on whether the last price making up the return series which is used to create the image is a local minimum, maximum, or neither. 
+    The convolutional neural network is then trained on such images, so that given a new price appears, a new image is created, and the model returns the most probable trading order. 
+    The model is built both in an asset-specific and in a universal setting. The asset-specific is trained on the returns of the one asset that the predictions are made for, while the universal model is trained on the returns of many different assets from various asset classes.
+    The results show that, during the 2008 financial crisis, both model builds provided significantly higher annual returns than other more traditional algorithmic trading strategies, and, in periods of increasing prices, they do not provide significantly different annual returns either.
+    Furthermore, the universal model setting is more robust, and achieves better classification performance on the test set than the asset-specific, however, on average, there is no significant difference between the annual returns obtained by the two different approaches.
 \end{abstract}
 \newpage
 
@@ -532,6 +539,8 @@ Figure \ref{fig:CMAggrU} is the aggregated confusion matrix for universal model 
 
 As per Table \ref{tbl:ClassSign}, mean accuracy scores are significantly higher in case of the asset-specific model build, in each of the testing periods, at significance level $0.005$. In testing periods 1 and 3, the mean (macro) F1-score, precision and recall scores are all significantly higher in case of the universal model build at significance level $0.05$. In period 2, the mean F1-score, precision and recall are all significantly higher in case of the universal model at significance level $0.02$. 
 
+Hence, we reject the null-hypothesis that the universal and asset-specific models are on average provide an equally good classification performance.
+
 \begin{table}[H]
 \centering
 \begin{tabular}{l|l|c}
@@ -685,7 +694,7 @@ In Figure \ref{fig:imageCrea}, we can see how long it takes to create the three 
 
 We note, that the two model builds are not only differing in the data used for training but as per best practice in building a deep learning model, further tuning was carried out to obtain the highest possible performance of the model. As discussed before, these differences are reflected in mini batch sizes, regularization and optimization hyper-parameters, and class weights applied on the loss function.
 
-To determine the differences between the two model builds, we will firstly concentrate on the classification results. We saw in Table \ref{tbl:ClassSign} and \ref{tbl:ClassRes}, that mean accuracy is higher in case of the asset-specific model builds. Since accuracy is adding up the diagonal of the confusion matrix, and then dividing it with the sum of all elements of the confusion matrix, the reason for the difference in accuracy is clear when comparing the diagonal of Figure \ref{fig:CMAggrI} and Figure \ref{fig:CMAggrU}. The asset-specific model predicts much more of the "Hold" labelled images as "Hold" than the universal build, which in turn classifies much more of the "Buy" and "Sell" images correctly, but not enough to offset the misclassified "Hold" images which results in the lower accuracy. All of the macro F1, precision and recall scores provide us with a better tool to examine the results of classification when we are interested in the complete picture and not the overpowering effect of the successful prediction of one class. These scores are significantly higher in case of the universal model build (even in testing period 2 where these measurements are lower) and this result is due to the macro averages being dragged down by the poor rate of correct classifications of the "Buy" and "Sell" images, as shown in the \nameref{subsec:ER:ClassPerf} section. We should note, that the achieved classification results should be further enhanced by changing the network architecture, by altering the input or using other tools, however, the time constraint allowed for the presented results.
+To determine the differences between the two model builds, we will firstly concentrate on the classification results. We saw in Tables \ref{tbl:ClassSign} and \ref{tbl:ClassRes}, that mean accuracy is higher in case of the asset-specific model builds. Since accuracy is adding up the diagonal of the confusion matrix, and then dividing it with the sum of all elements of the confusion matrix, the reason for the difference in accuracy is clear when comparing the diagonal of Figure \ref{fig:CMAggrI} and Figure \ref{fig:CMAggrU}. The asset-specific model predicts much more of the "Hold" labelled images as "Hold" than the universal build, which in turn classifies much more of the "Buy" and "Sell" images correctly, but not enough to offset the misclassified "Hold" images which results in the lower accuracy. All of the macro F1, precision and recall scores provide us with a better tool to examine the results of classification when we are interested in the complete picture and not the overpowering effect of the successful prediction of one class. These scores are significantly higher in case of the universal model build (even in testing period 2 where these measurements are lower) and this result is due to the macro averages being dragged down by the poor rate of correct classifications of the "Buy" and "Sell" images, as shown in the \nameref{subsec:ER:ClassPerf} section. We should note, that the achieved classification results should be further enhanced by changing the network architecture, by altering the input or using other tools, however, the time constraint allowed for the presented results.
 
 But what drives these differences between the models? Firstly, the weights applied on the loss function to fight class imbalance have an impact on the distribution of the predicted classes. Furthermore, the underlying data for the training of the two model types differs in characteristics and size which is then naturally reflected in the results. 
 
@@ -741,7 +750,7 @@ Except for some brief periods in 2009, the universal setting managed to find mor
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{images/capitals/Capitals2_N225.png}
+    \includegraphics[width=.97\textwidth]{images/capitals/Capitals2_N225.png}
     \caption{The evolution of the capital (initial capital is \$ 10,000) during 2008-2009 trading the Nikkei225 according to the different trading strategies: asset-specific model (CNN-i), universal model (CNN-u), RSI, BB and Buy\&Hold (B\&H)}
     \label{fig:N225capevol}
 \end{figure}
@@ -791,10 +800,10 @@ Moreover, in our tests we used a model for two years worth of predictions and th
 
 The prediction time is quick enough even for intraday trading purposes. This is true even if we add the $3.59$ ms input creation time (see Figure \ref{fig:imageCrea}) to these prediction times so we know how long it takes for the model to return a trade signal given it observes a new price. To be more concise with the current input and model settings, for the asset-specific model, it takes maximum $4.8$ ($=1.21 + 3.59$) milliseconds, and for the universal model, a maximum of $4.36$ ($=0.77 + 3.59$) milliseconds to return a prediction. This means that given there is no further delay in observing the price and/or in executing a trading order getting it, one could trade on a five-millisecond frequency. Of course, on top of this we should add server call times and time of order execution, but the model can provide trading orders swift enough for high-frequency trading.
 
-\section{Conclusion}
+\section{Conclusion and Future Research}
 \label{sec:Conclusion}
 
-The goal, to build a compact model, based on the CNN structure, which turns time series into images and predicts whether the trader should buy, sell or hold the asset at the latest price, is accomplished. The description in the \nameref{sec:DM} section and the code linked in the \nameref{app:GIT} section of the Appendix (\textbf{Lasse, Kenneth, Can I make my repository public on GitHub, or would that be against the contract with EY?}) makes the model and its components reproducible and ready for automation. 
+The goal, to build a compact model, based on the CNN structure, which turns time series into images and predicts whether the trader should buy, sell or hold the asset at the latest price, is accomplished. The description in the \nameref{sec:DM} section and the code linked in the \nameref{app:GIT} section of the Appendix makes the model and its components reproducible and ready for automation. 
 Both the universal and asset-specific builds are capable of capturing the "Buy" and "Sell" patterns to an extent that the annual returns obtained using either one of them is not significantly different from those obtained by the proposed other strategies (RSI, BB, Buy\&Hold) during times when the market has an upward tendency.
 The results also prove that within the boundaries of this experiment, both the CNN-I and CNN-U models beat the mentioned competing strategies during an economic regime with declining prices, such as the 2008 financial crisis. 
 Although the classification performance has room for improvement, the additional progress would potentially make the trading strategy dictated by the model more successful than competing ones, even during a period of increasing prices. 
@@ -818,6 +827,7 @@ Some of the general elements that could see further experimentation are the labe
 
 The overall conclusion is that the proposed model, with the idea of using multiple time series to image transformation strategies, can compete with traditional strategies in the market in its current form. There are, however, multiple approaches to make improvements to this model, which could then lead to a more broad success of the idea.
 
+\newpage
 \section{Appendices}
 \label{sec:App}
 
@@ -883,11 +893,11 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
   & AAPL             & 0.62              & 0.39          & 0.73          & 0.83          & \textbf{1.64} \\
   & SPY              & 0.13              & \textbf{0.25} & 0.13          & 0.06          & 0.19          \\ \cline{2-7}
   & \textit{Average} & 0.18              & 0.23          & 0.25          & 0.23          & \textbf{0.42} \\ \hline
-\multirow{6}{1cm}{2008-2009} & S\&P500           & 0.06 & 0.34 & -0.36 & -0.24 & -0.23 \\
- & Nikkei225         & 0.02 & 0.06 & -0.20 & -0.26 & -0.31 \\
- & Nasdaq            & 0.21 & 0.48 & -0.22 & 0.10  & -0.13 \\
- & AAPL              & 0.81 & 0.09 & -0.40 & -0.29 & 0.08  \\
- & SPY               & 0.06 & 0.78 & -0.34 & -0.30 & -0.19 \\ \cline{2-7} 
+\multirow{6}{1cm}{2008-2009} & S\&P500           & 0.06 & \textbf{0.34} & -0.36 & -0.24 & -0.23 \\
+ & Nikkei225         & 0.02 &\textbf{0.06} & -0.20 & -0.26 & -0.31 \\
+ & Nasdaq            & 0.21 & \textbf{0.48} & -0.22 & 0.10  & -0.13 \\
+ & AAPL              & \textbf{0.81} & 0.09 & -0.40 & -0.29 & 0.08  \\
+ & SPY               & 0.06 & \textbf{0.78} & -0.34 & -0.30 & -0.19 \\ \cline{2-7} 
  & \textit{Std.Dev.} & 0.33 & 0.30 & 0.09  & 0.17  & 0.15  \\ \cline{2-7} 
  & \textit{Average}  & 0.23 & \textbf{0.35} & -0.30 & -0.20 & -0.16 \\ \hline
 \multirow{6}{1cm}{2017-2019} &  S\&P500          & 0.11              & 0.03          & -0.02         & \textbf{0.22} & 0.18          \\
@@ -915,11 +925,11 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
           \cline{2-7}
           & \textit{Average}   & 1800.4  & 2320.7  & 2498.3  & 2342.2  & 4175.7 \\
           \hline
-\multirow{6}{1cm}{2008-2009}& S\&P500          & 637.38057 & 3438.6511 & -3594.3205 & -2397.558047 & -2303.42 \\
- & Nikkei225        & 164.49485 & 603.74205 & -1961.0303 & -2589.666034 & -3118.85 \\
- & Nasdaq           & 2122.0565 & 4820.6943 & -2215.5182 & 1036.167335  & -1290.85 \\
- & AAPL             & 8143.8459 & 923.59957 & -4049.3022 & -2903.647088 & 800.139  \\
- & SPY              & 565.9161  & 7791.3412 & -3396.8085 & -2964.096614 & -1948.54 \\ \cline{2-7} 
+\multirow{6}{1cm}{2008-2009}& S\&P500   & 637.4  & 3438.7 & -3594.3 & -2397.6 & -2303.4 \\
+ & Nikkei225 & 164.5  & 603.7  & -1961.0 & -2589.7 & -3118.8 \\
+ & Nasdaq    & 2122.1 & 4820.7 & -2215.5 & 1036.2  & -1290.8 \\
+ & AAPL      & 8143.8 & 923.6  & -4049.3 & -2903.6 & 800.1   \\
+ & SPY       & 565.9  & 7791.3 & -3396.8 & -2964.1 & -1948.5 \\ \cline{2-7} 
  & \textit{Average} & 2326.7    & 3515.6    & -3043.4    & -1963.8      & -1572.3   \\
 \hline
 \multirow{6}{1cm}{2017-2019}   & S\&P500   & 1104.3  & 274.94  & -242.14 & 2243.1  & 1783.94 \\
@@ -948,11 +958,11 @@ The strategy is to Buy when the Adjusted Close price decreases below the $lowerB
           \cline{2-7}
           & \textit{Average}    & 44.4   & 27.6   & 284.0  & 230.5  & 2087.9 \\
           \hline
-\multirow{6}{1cm}{2008-2009} & S\&P500          & 11.18 & 53.729 & -1797  & -399.6 & -1151.7 \\
- & Nikkei225        & 3.576 & 9.1476 & -245.1 & -287.7 & -1559.4 \\
- & Nasdaq           & 62.41 & 70.893 & -553.9 & 74.01  & -645.42 \\
- & AAPL             & 271.5 & 14.897 & -674.9 & -290.4 & 400.07  \\
- & SPY              & 15.3  & 99.889 & -1698  & -494   & -974.27 \\ \cline{2-7} 
+\multirow{6}{1cm}{2008-2009} & S\&P500   & 11.2  & 53.7 & -1797.2 & -399.6 & -1151.7 \\
+ & Nikkei225 & 3.6   & 9.1  & -245.1  & -287.7 & -1559.4 \\
+ & Nasdaq    & 62.4  & 70.9 & -553.9  & 74.0   & -645.4  \\
+ & AAPL      & 271.5 & 14.9 & -674.9  & -290.4 & 400.1   \\
+ & SPY       & 15.3  & 99.9 & -1698.4 & -494.0 & -974.3 \\ \cline{2-7} 
  & \textit{Average} & 72.8  & 49.7   & -993.9 & -279.5 & -786.2 \\
 \hline
 \multirow{6}{1cm}{2017-2019}   & S\&P500  & 27.61  & 2.2911 & -48.43 & 172.5  & 891.97 \\
@@ -1146,7 +1156,8 @@ The list of sources for all downloaded datasets can be found in Tables \ref{tbl:
         \caption{Data sources: Commodities}
         \label{tbl:datasets_commods}
     \end{table}
-   
+
+\newpage
 
 \bibliography{reference}
 \bibliographystyle{apalike}
